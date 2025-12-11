@@ -1,65 +1,91 @@
-import Image from "next/image";
+"use client";
+
+import { motion } from "framer-motion";
+import { HeroSection } from "@/components/sections/hero-section";
+import { AboutSection } from "@/components/sections/about-section";
+import { ProjectsSection } from "@/components/sections/projects-section";
+import { ExperienceSection } from "@/components/sections/experience-section";
+import { BlogSection } from "@/components/sections/blog-section";
+import { TestimonialsSection } from "@/components/sections/testimonials-section";
+import { AwardsSection } from "@/components/sections/awards-section";
+import { ContactSection } from "@/components/sections/contact-section";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
+import { useLocale } from "@/components/providers/locale-provider";
+import { siteContent } from "@/content";
 
 export default function Home() {
+  const { locale } = useLocale();
+  const content = siteContent[locale];
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="relative min-h-screen bg-background">
+      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+        <motion.div
+          className="absolute left-1/2 top-0 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-gradient-to-br from-primary/25 via-primary/15 to-transparent blur-[180px]"
+          animate={{
+            scale: [1, 1.1, 1],
+            opacity: [0.3, 0.4, 0.3],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+        <motion.div
+          className="absolute left-[10%] top-[30%] h-96 w-96 rounded-full bg-gradient-to-br from-secondary/20 via-secondary/10 to-transparent blur-[140px]"
+          animate={{
+            x: [0, 30, 0],
+            y: [0, -20, 0],
+            scale: [1, 1.15, 1],
+          }}
+          transition={{
+            duration: 25,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+        <motion.div
+          className="absolute bottom-[-10%] right-[5%] h-[500px] w-[500px] rounded-full bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent blur-[180px]"
+          animate={{
+            x: [0, -20, 0],
+            y: [0, 30, 0],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{
+            duration: 30,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      </div>
+      <SiteHeader />
+      <main className="relative">
+        <HeroSection content={content.hero} />
+        <AboutSection content={content.about} locale={locale} />
+        <ProjectsSection
+          locale={locale}
+          headline={content.projects.headline}
+          description={content.projects.description}
+          projects={content.projects.items}
+        />
+        <ExperienceSection locale={locale} content={content.experience} />
+        <BlogSection locale={locale} content={content.blog} />
+        <TestimonialsSection
+          locale={locale}
+          headline={content.testimonials.headline}
+          testimonials={content.testimonials.items}
+        />
+        <AwardsSection
+          locale={locale}
+          headline={content.awards.headline}
+          description={content.awards.description}
+          items={content.awards.items}
+        />
+        <ContactSection locale={locale} content={content.contact} />
       </main>
+      <SiteFooter />
     </div>
   );
 }

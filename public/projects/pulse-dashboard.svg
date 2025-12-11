@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400">
+  <defs>
+    <linearGradient id="bgPulse" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#111827" />
+      <stop offset="100%" stop-color="#1F2937" />
+    </linearGradient>
+    <linearGradient id="accentPulse" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#22D3EE" />
+      <stop offset="100%" stop-color="#0EA5E9" />
+    </linearGradient>
+  </defs>
+  <rect width="640" height="400" fill="url(#bgPulse)" rx="32" />
+  <rect x="56" y="56" width="528" height="288" rx="24" fill="#0F172A" stroke="#1F2937" stroke-width="4" />
+  <rect x="88" y="96" width="192" height="96" rx="16" fill="#1F2937" />
+  <rect x="312" y="96" width="200" height="96" rx="16" fill="#1F2937" />
+  <rect x="88" y="216" width="424" height="88" rx="16" fill="#1F2937" />
+  <polyline points="108,280 152,236 196,260 240,220 284,244 328,204 372,240 416,212 460,232 504,208"
+    fill="none" stroke="url(#accentPulse)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="152" cy="236" r="8" fill="#22D3EE" />
+  <circle cx="240" cy="220" r="8" fill="#22D3EE" />
+  <circle cx="328" cy="204" r="8" fill="#22D3EE" />
+  <circle cx="416" cy="212" r="8" fill="#22D3EE" />
+  <rect x="96" y="104" width="56" height="10" rx="5" fill="#F9FAFB" opacity="0.35" />
+  <rect x="96" y="124" width="72" height="10" rx="5" fill="#F9FAFB" opacity="0.2" />
+  <rect x="96" y="144" width="88" height="10" rx="5" fill="#F9FAFB" opacity="0.2" />
+  <rect x="96" y="236" width="64" height="10" rx="5" fill="#22D3EE" opacity="0.8" />
+  <rect x="416" y="236" width="72" height="10" rx="5" fill="#38BDF8" opacity="0.6" />
+  <rect x="328" y="236" width="56" height="10" rx="5" fill="#38BDF8" opacity="0.6" />
+  <text x="56" y="360" font-family="Inter, Arial" font-size="20" fill="#E0F2FE" opacity="0.8">
+    Pulse Analytics Platform · Product Analytics Interface
+  </text>
+</svg>
+
+

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="ogBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#1E293B" />
+    </linearGradient>
+    <linearGradient id="ogAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7F5AF0" />
+      <stop offset="50%" stop-color="#2CB1BC" />
+      <stop offset="100%" stop-color="#38BDF8" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#ogBg)" rx="32" />
+  <circle cx="340" cy="310" r="220" fill="#1F2937" opacity="0.75" />
+  <circle cx="340" cy="290" r="150" fill="#F8FAFC" />
+  <path d="M200 480c12-110 100-180 140-180s128 70 140 180" fill="#E5E7EB" />
+  <path d="M200 480c0-64 80-110 140-110s140 46 140 110" fill="#CBD5F5" />
+  <path d="M140 508c28-84 124-136 200-136s172 52 200 136" stroke="url(#ogAccent)" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="16 40" opacity="0.8" />
+  <text x="620" y="240" font-family="\"Sora\", 'Segoe UI', sans-serif" font-size="96" font-weight="700" fill="#F8FAFC">
+    Nguyễn Mạnh Hùng
+  </text>
+  <text x="620" y="320" font-family="\"Inter\", 'Segoe UI', sans-serif" font-size="36" font-weight="500" fill="#BFDBFE">
+    Senior Frontend Engineer · Creative Technologist
+  </text>
+  <rect x="620" y="360" width="420" height="4" rx="2" fill="url(#ogAccent)" />
+  <text x="620" y="410" font-family="\"Inter\", 'Segoe UI', sans-serif" font-size="24" fill="#E2E8F0">
+    Crafting immersive, performance-first experiences for ambitious teams.
+  </text>
+  <text x="620" y="460" font-family="\"Inter\", 'Segoe UI', sans-serif" font-size="20" fill="#94A3B8">
+    Next.js · Motion Design · Design Systems · Creative Technology
+  </text>
+  <rect x="620" y="490" width="240" height="48" rx="24" fill="url(#ogAccent)" opacity="0.4" />
+  <text x="640" y="522" font-family="\"Inter\", 'Segoe UI', sans-serif" font-size="20" fill="#E2E8F0">
+    manhhung.design · hello@manhhung.design
+  </text>
+</svg>
+
+
