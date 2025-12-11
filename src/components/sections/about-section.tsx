@@ -43,7 +43,12 @@ export function AboutSection({
                 title={content.headline}
                 description={content.story}
             />
-            <div className="grid gap-8 sm:gap-10 md:gap-12 lg:grid-cols-[1.2fr_1fr]">
+            <div className={cn(
+                "grid gap-8 sm:gap-10 md:gap-12",
+                content.certifications && content.certifications.length > 0 
+                    ? "lg:grid-cols-[1.2fr_1fr]" 
+                    : "lg:grid-cols-1 lg:max-w-3xl lg:mx-auto"
+            )}>
                 <div className="space-y-8 sm:space-y-10">
                     <motion.div
                         className="group relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-background/90 via-background/80 to-background/90 p-6 shadow-[0_8px_32px_-8px_rgba(124,58,237,0.2),0_0_0_1px_rgba(124,58,237,0.1)] backdrop-blur-xl transition-all duration-500 hover:shadow-[0_12px_48px_-12px_rgba(124,58,237,0.3),0_0_0_1px_rgba(124,58,237,0.15)] sm:rounded-[28px] sm:p-7 md:rounded-[32px] md:p-8"
@@ -128,42 +133,44 @@ export function AboutSection({
                         </div>
                     </div>
                 </div>
-                <div className="space-y-5 sm:space-y-6">
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground sm:text-sm">
-                        {copy.certifications}
-                    </h3>
-                    <div className="space-y-3 sm:space-y-4">
-                        {content.certifications.map((cert, index) => (
-                            <motion.div
-                                key={cert.name}
-                                className={cn(
-                                    "group relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-background/90 via-background/80 to-background/90 p-5 shadow-[0_4px_24px_-4px_rgba(124,58,237,0.15)] backdrop-blur-xl transition-all duration-500 hover:border-primary/30 hover:shadow-[0_8px_32px_-8px_rgba(124,58,237,0.25)] sm:rounded-[28px] sm:p-6 md:rounded-[32px]",
-                                )}
-                                initial={{ opacity: 0, x: 24 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                transition={{
-                                    duration: 0.4,
-                                    delay: index * 0.05,
-                                    ease: [0.23, 1, 0.32, 1],
-                                }}
-                                viewport={{ once: true, amount: 0.2 }}
-                            >
-                                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                                <div className="relative">
-                                    <p className="text-[10px] font-bold uppercase tracking-wider text-primary sm:text-xs">
-                                        {cert.year}
-                                    </p>
-                                    <h4 className="mt-2 text-lg font-bold text-foreground sm:mt-3 sm:text-xl">
-                                        {cert.name}
-                                    </h4>
-                                    <p className="mt-1.5 text-xs font-medium text-muted-foreground sm:mt-2 sm:text-sm">
-                                        {cert.issuer}
-                                    </p>
-                                </div>
-                            </motion.div>
-                        ))}
+                {content.certifications && content.certifications.length > 0 && (
+                    <div className="space-y-5 sm:space-y-6">
+                        <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground sm:text-sm">
+                            {copy.certifications}
+                        </h3>
+                        <div className="space-y-3 sm:space-y-4">
+                            {content.certifications.map((cert, index) => (
+                                <motion.div
+                                    key={cert.name}
+                                    className={cn(
+                                        "group relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-background/90 via-background/80 to-background/90 p-5 shadow-[0_4px_24px_-4px_rgba(124,58,237,0.15)] backdrop-blur-xl transition-all duration-500 hover:border-primary/30 hover:shadow-[0_8px_32px_-8px_rgba(124,58,237,0.25)] sm:rounded-[28px] sm:p-6 md:rounded-[32px]",
+                                    )}
+                                    initial={{ opacity: 0, x: 24 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    transition={{
+                                        duration: 0.4,
+                                        delay: index * 0.05,
+                                        ease: [0.23, 1, 0.32, 1],
+                                    }}
+                                    viewport={{ once: true, amount: 0.2 }}
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                                    <div className="relative">
+                                        <p className="text-[10px] font-bold uppercase tracking-wider text-primary sm:text-xs">
+                                            {cert.year}
+                                        </p>
+                                        <h4 className="mt-2 text-lg font-bold text-foreground sm:mt-3 sm:text-xl">
+                                            {cert.name}
+                                        </h4>
+                                        <p className="mt-1.5 text-xs font-medium text-muted-foreground sm:mt-2 sm:text-sm">
+                                            {cert.issuer}
+                                        </p>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
         </AnimatedSection>
     );
