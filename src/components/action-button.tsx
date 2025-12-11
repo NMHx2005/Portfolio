@@ -45,13 +45,13 @@ export function ActionButton({
         target={isExternal ? "_blank" : undefined}
         rel={isExternal ? "noopener noreferrer" : undefined}
         className={cn(
-          "group inline-flex h-12 items-center justify-center gap-2 rounded-full px-7 text-sm font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 sm:h-14",
+          "group inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 sm:h-13 sm:gap-2.5 sm:px-7 sm:text-base md:px-8 md:h-14",
           variants[variant],
         )}
       >
         <span>{action.label}</span>
         {!action.download && (
-          <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+          <ArrowRight className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:translate-x-1 sm:h-4.5 sm:w-4.5 md:h-5 md:w-5" />
         )}
       </Link>
     </motion.div>

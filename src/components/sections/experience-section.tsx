@@ -54,11 +54,11 @@ export function ExperienceSection({
               initial={{ opacity: 0, x: -24 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{
-                duration: 0.7,
-                delay: index * 0.15,
+                duration: 0.4,
+                delay: index * 0.05,
                 ease: [0.23, 1, 0.32, 1],
               }}
-              viewport={{ once: true }}
+              viewport={{ once: true, amount: 0.2 }}
             >
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
               
@@ -97,10 +97,10 @@ export function ExperienceSection({
                         initial={{ opacity: 0, x: -8 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{
-                          duration: 0.4,
-                          delay: index * 0.15 + 0.2 + idx * 0.05,
+                          duration: 0.25,
+                          delay: index * 0.05 + 0.1 + idx * 0.02,
                         }}
-                        viewport={{ once: true }}
+                        viewport={{ once: true, amount: 0.2 }}
                       >
                         <span className="mt-1.5 inline-flex h-2 w-2 rounded-full bg-secondary shadow-[0_0_8px_rgba(20,184,166,0.4)]" />
                         <span>{achievement}</span>
@@ -121,10 +121,10 @@ export function ExperienceSection({
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         transition={{
-                          duration: 0.3,
-                          delay: index * 0.15 + 0.3 + techIdx * 0.03,
+                          duration: 0.2,
+                          delay: index * 0.05 + 0.15 + techIdx * 0.01,
                         }}
-                        viewport={{ once: true }}
+                        viewport={{ once: true, amount: 0.2 }}
                         whileHover={{ scale: 1.05 }}
                       >
                         {tech}
@@ -150,11 +150,11 @@ export function ExperienceSection({
                 initial={{ opacity: 0, x: 24 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{
-                  duration: 0.6,
-                  delay: index * 0.1,
+                  duration: 0.4,
+                  delay: index * 0.05,
                   ease: [0.23, 1, 0.32, 1],
                 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, amount: 0.2 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 <div className="relative space-y-3">

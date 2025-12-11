@@ -5,9 +5,6 @@ import { HeroSection } from "@/components/sections/hero-section";
 import { AboutSection } from "@/components/sections/about-section";
 import { ProjectsSection } from "@/components/sections/projects-section";
 import { ExperienceSection } from "@/components/sections/experience-section";
-import { BlogSection } from "@/components/sections/blog-section";
-import { TestimonialsSection } from "@/components/sections/testimonials-section";
-import { AwardsSection } from "@/components/sections/awards-section";
 import { ContactSection } from "@/components/sections/contact-section";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -19,10 +16,10 @@ export default function Home() {
   const content = siteContent[locale];
 
   return (
-    <div className="relative min-h-screen bg-background">
+    <div className="relative min-h-screen w-full overflow-x-hidden bg-background">
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <motion.div
-          className="absolute left-1/2 top-0 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-gradient-to-br from-primary/25 via-primary/15 to-transparent blur-[180px]"
+          className="absolute left-1/2 top-0 h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-gradient-to-br from-primary/25 via-primary/15 to-transparent blur-[120px] sm:h-[500px] sm:w-[500px] sm:blur-[150px] md:h-[600px] md:w-[600px] md:blur-[180px]"
           animate={{
             scale: [1, 1.1, 1],
             opacity: [0.3, 0.4, 0.3],
@@ -34,7 +31,7 @@ export default function Home() {
           }}
         />
         <motion.div
-          className="absolute left-[10%] top-[30%] h-96 w-96 rounded-full bg-gradient-to-br from-secondary/20 via-secondary/10 to-transparent blur-[140px]"
+          className="absolute left-[10%] top-[30%] h-64 w-64 rounded-full bg-gradient-to-br from-secondary/20 via-secondary/10 to-transparent blur-[100px] sm:h-80 sm:w-80 sm:blur-[120px] md:h-96 md:w-96 md:blur-[140px]"
           animate={{
             x: [0, 30, 0],
             y: [0, -20, 0],
@@ -47,7 +44,7 @@ export default function Home() {
           }}
         />
         <motion.div
-          className="absolute bottom-[-10%] right-[5%] h-[500px] w-[500px] rounded-full bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent blur-[180px]"
+          className="absolute bottom-[-10%] right-[5%] h-72 w-72 rounded-full bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent blur-[120px] sm:h-96 sm:w-96 sm:blur-[150px] md:h-[500px] md:w-[500px] md:blur-[180px]"
           animate={{
             x: [0, -20, 0],
             y: [0, 30, 0],
@@ -71,18 +68,6 @@ export default function Home() {
           projects={content.projects.items}
         />
         <ExperienceSection locale={locale} content={content.experience} />
-        <BlogSection locale={locale} content={content.blog} />
-        <TestimonialsSection
-          locale={locale}
-          headline={content.testimonials.headline}
-          testimonials={content.testimonials.items}
-        />
-        <AwardsSection
-          locale={locale}
-          headline={content.awards.headline}
-          description={content.awards.description}
-          items={content.awards.items}
-        />
         <ContactSection locale={locale} content={content.contact} />
       </main>
       <SiteFooter />

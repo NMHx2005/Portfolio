@@ -50,11 +50,12 @@
   }
 
   html {
-    @apply scroll-smooth;
+    @apply scroll-smooth overflow-x-hidden;
   }
 
   body {
     @apply bg-background font-sans text-foreground antialiased;
+    @apply w-full overflow-x-hidden;
   }
 
   ::selection {

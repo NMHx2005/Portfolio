@@ -20,8 +20,8 @@ export function AnimatedSection({
   const ref = useRef<HTMLElement | null>(null);
   const isInView = useInView(ref, {
     once: true,
-    amount: 0.25,
-    margin: "0px 0px -80px 0px",
+    amount: 0.1,
+    margin: "0px 0px -100px 0px",
   });
 
   return (
@@ -29,12 +29,12 @@ export function AnimatedSection({
       id={id}
       ref={ref}
       className={cn(
-        "relative mx-auto w-full max-w-6xl px-6 py-24 sm:px-10 lg:px-16",
+        "relative mx-auto w-full max-w-6xl min-w-0 px-4 py-16 sm:px-6 sm:py-20 md:px-8 md:py-24 lg:px-10 xl:px-16",
         className,
       )}
-      initial={{ opacity: 0, y: 48 }}
+      initial={{ opacity: 0, y: 32 }}
       animate={isInView ? { opacity: 1, y: 0 } : undefined}
-      transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1], delay }}
+      transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1], delay }}
     >
       {children}
     </motion.section>

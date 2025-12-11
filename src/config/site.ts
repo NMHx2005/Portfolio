@@ -1,21 +1,23 @@
 export const siteConfig = {
   name: "Nguyễn Mạnh Hùng · Portfolio",
   description:
-    "Senior Frontend Engineer and Creative Technologist crafting immersive, performant digital experiences for ambitious teams.",
-  url: "https://manhhung.design",
+    "Intern Web Developer passionate about building modern web applications with React, Next.js, and Node.js. Currently a 3rd-year IT student.",
+  url: "http://nmhx.info",
   ogImage: "/og-cover.svg",
   keywords: [
-    "frontend engineer",
-    "creative technologist",
+    "web developer",
+    "intern",
     "portfolio",
     "next.js",
-    "motion design",
-    "design systems",
-    "ux",
+    "react",
+    "node.js",
+    "full-stack",
+    "typescript",
+    "mongodb",
   ],
-  authors: [{ name: "Nguyễn Mạnh Hùng", url: "https://manhhung.design" }],
+  authors: [{ name: "Nguyễn Mạnh Hùng", url: "http://nmhx.info" }],
   creator: "Nguyễn Mạnh Hùng",
-  twitter: "@manhhung_design",
+  twitter: "@NMHx2005",
 };
 
 export type SiteConfig = typeof siteConfig;
