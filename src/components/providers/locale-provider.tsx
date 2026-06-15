@@ -3,6 +3,7 @@
 import {
   createContext,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type Dispatch,
@@ -10,7 +11,6 @@ import {
   type SetStateAction,
 } from "react";
 import type { Locale } from "@/content";
-import { supportedLocales } from "@/content";
 
 interface LocaleContextValue {
   locale: Locale;
@@ -19,8 +19,26 @@ interface LocaleContextValue {
 
 const LocaleContext = createContext<LocaleContextValue | undefined>(undefined);
 
+const STORAGE_KEY = "portfolio.locale";
+
+function detectInitialLocale(): Locale {
+  if (typeof window === "undefined") return "vi";
+  const stored = window.localStorage.getItem(STORAGE_KEY);
+  if (stored === "vi" || stored === "en") return stored;
+  return window.navigator.language?.toLowerCase().startsWith("en") ? "en" : "vi";
+}
+
 export function LocaleProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocale] = useState<Locale>(supportedLocales[0]?.code ?? "en");
+  const [locale, setLocale] = useState<Locale>("vi");
+
+  useEffect(() => {
+    setLocale(detectInitialLocale());
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem(STORAGE_KEY, locale);
+  }, [locale]);
 
   const value = useMemo(() => ({ locale, setLocale }), [locale]);
 
@@ -32,8 +50,5 @@ export function useLocale() {
   if (!context) {
     throw new Error("useLocale must be used within a LocaleProvider");
   }
-
   return context;
 }
-
-
