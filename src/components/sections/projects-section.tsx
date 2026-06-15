@@ -1,180 +1,167 @@
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { AnimatedSection } from "@/components/animated-section";
-import { SectionHeader } from "@/components/section-header";
-import type { Locale, Project } from "@/content";
-import { cn } from "@/lib/utils";
+import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
+import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { SplitText } from "@/components/effects/split-text";
+import { NumberCounter } from "@/components/effects/number-counter";
+import { useLocale } from "@/components/providers/locale-provider";
+import { siteContent, type Project } from "@/content";
 
-const categoryLabel: Record<Locale, string> = {
-  en: "Category",
-  vi: "Phân loại",
-};
+function ProjectCase({ project, index }: { project: Project; index: number }) {
+  const wrapRef = useRef<HTMLDivElement | null>(null);
 
-export function ProjectsSection({
-  locale,
-  headline,
-  description,
-  projects,
-}: {
-  locale: Locale;
-  headline: string;
-  description: string;
-  projects: Project[];
-}) {
+  useGSAP(
+    () => {
+      const wrap = wrapRef.current;
+      if (!wrap) return;
+      const image = wrap.querySelector<HTMLElement>("[data-image]");
+      if (!image) return;
+
+      gsap.fromTo(
+        image,
+        { y: 0, scale: 1.05 },
+        {
+          y: -60,
+          scale: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: wrap,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        },
+      );
+
+      return () => {
+        ScrollTrigger.getAll()
+          .filter((t) => t.trigger === wrap)
+          .forEach((t) => t.kill());
+      };
+    },
+    { scope: wrapRef },
+  );
+
   return (
-    <AnimatedSection id="projects">
-      <SectionHeader
-        eyebrow={locale === "en" ? "Projects" : "Dự án"}
-        title={headline}
-        description={description}
-      />
-      <div className="grid gap-8 lg:gap-10 lg:grid-cols-2">
-        {projects.map((project, index) => (
-          <motion.article
-            key={project.title}
-            className={cn(
-              "group relative overflow-hidden rounded-[40px] border border-border/50 bg-gradient-to-br from-background/90 via-background/80 to-background/90 shadow-[0_8px_32px_-8px_rgba(124,58,237,0.2),0_0_0_1px_rgba(124,58,237,0.1)] backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_16px_48px_-12px_rgba(124,58,237,0.35),0_0_0_1px_rgba(124,58,237,0.2)]",
-            )}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.4,
-              delay: index * 0.05,
-              ease: [0.23, 1, 0.32, 1],
-            }}
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-            <div className="relative h-72 overflow-hidden rounded-t-[40px]">
-              <Image
-                src={project.media.src}
-                alt={project.media.alt}
-                fill
-                className="object-cover object-center transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
-              <motion.span
-                className="absolute left-6 top-6 inline-flex items-center gap-2 rounded-full border border-border/50 bg-background/95 px-4 py-2 text-xs font-bold uppercase tracking-wider text-muted-foreground backdrop-blur-md shadow-sm"
-                initial={{ opacity: 0, y: -8 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 + 0.1, duration: 0.3 }}
-                viewport={{ once: true, amount: 0.2 }}
-              >
-                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                {categoryLabel[locale]} · {project.category}
-              </motion.span>
-            </div>
-            <div className="relative space-y-6 p-8 lg:p-10">
-              <div className="space-y-3">
-                <h3 className="text-3xl font-bold tracking-tight text-foreground lg:text-4xl">
-                  {project.title}
-                </h3>
-                <p className="text-base leading-relaxed text-muted-foreground lg:text-lg">
-                  {project.description}
-                </p>
-              </div>
-              <ul className="grid gap-3 text-sm leading-relaxed text-muted-foreground">
-                {project.highlights.map((highlight, idx) => (
-                  <motion.li
-                    key={highlight}
-                    className="flex items-start gap-3"
-                    initial={{ opacity: 0, x: -8 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{
-                      duration: 0.25,
-                      delay: index * 0.05 + 0.15 + idx * 0.02,
-                    }}
-                    viewport={{ once: true, amount: 0.2 }}
-                  >
-                    <span className="mt-1.5 inline-flex h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_rgba(124,58,237,0.4)]" />
-                    <span>{highlight}</span>
-                  </motion.li>
-                ))}
-              </ul>
-              <div className="flex flex-wrap gap-2.5">
-                {project.techStack.map((tech, techIdx) => (
-                  <motion.span
-                    key={tech}
-                    className="rounded-full border border-border/50 bg-background/90 px-3.5 py-1.5 text-xs font-bold text-muted-foreground backdrop-blur-sm transition-all duration-300 hover:border-primary/50 hover:bg-primary/10 hover:text-primary"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{
-                      duration: 0.2,
-                      delay: index * 0.05 + 0.2 + techIdx * 0.01,
-                    }}
-                    viewport={{ once: true, amount: 0.2 }}
-                    whileHover={{ scale: 1.05 }}
-                  >
-                    {tech}
-                  </motion.span>
-                ))}
-              </div>
-              <div className="flex flex-wrap gap-3">
-                {project.links && project.links.length > 0 ? (
-                  project.links.map((link, linkIdx) => (
-                    <motion.a
-                      key={linkIdx}
-                      href={link.href}
-                      className="group/link inline-flex items-center gap-2 text-sm font-bold text-primary transition-all duration-300 hover:gap-3"
-                      whileHover={{ x: 4 }}
-                      target={link.href.startsWith("http") ? "_blank" : undefined}
-                      rel={
-                        link.href.startsWith("http")
-                          ? "noopener noreferrer"
-                          : undefined
-                      }
-                    >
-                      <span>{link.label}</span>
-                      <svg
-                        className="h-4 w-4 transition-transform duration-300 group-hover/link:translate-x-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M13 7l5 5m0 0l-5 5m5-5H6"
-                        />
-                      </svg>
-                    </motion.a>
-                  ))
-                ) : (
-                  <motion.a
-                    href={project.link.href}
-                    className="group/link inline-flex items-center gap-2 text-sm font-bold text-primary transition-all duration-300 hover:gap-3"
-                    whileHover={{ x: 4 }}
-                    target={project.link.href.startsWith("http") ? "_blank" : undefined}
-                    rel={
-                      project.link.href.startsWith("http")
-                        ? "noopener noreferrer"
-                        : undefined
-                    }
-                  >
-                    <span>{project.link.label}</span>
-                    <svg
-                      className="h-4 w-4 transition-transform duration-300 group-hover/link:translate-x-1"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 7l5 5m0 0l-5 5m5-5H6"
-                      />
-                    </svg>
-                  </motion.a>
-                )}
-              </div>
-            </div>
-          </motion.article>
-        ))}
+    <div
+      ref={wrapRef}
+      className="grid items-start gap-8 lg:grid-cols-2 lg:gap-16"
+    >
+      <div className={index % 2 === 0 ? "" : "lg:order-2"}>
+        <div className="overflow-hidden rounded-3xl border border-border/60 bg-background-elevated/40 shadow-[0_20px_80px_-30px_hsl(var(--primary)/0.5)]">
+          <div data-image className="relative aspect-[4/3] w-full will-change-transform">
+            <Image
+              src={project.image.src}
+              alt={project.image.alt}
+              fill
+              className="object-cover"
+              sizes="(min-width: 1024px) 600px, 100vw"
+            />
+          </div>
+        </div>
       </div>
-    </AnimatedSection>
+
+      <motion.div
+        className={index % 2 === 0 ? "lg:sticky lg:top-28" : "lg:sticky lg:top-28 lg:order-1"}
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.7, ease: [0.23, 1, 0.32, 1] }}
+      >
+        <p className="mb-3 font-mono text-xs uppercase tracking-[0.2em] text-accent">
+          {project.category}
+        </p>
+        <h3 className="font-display text-3xl italic leading-tight sm:text-4xl md:text-5xl">
+          {project.title}
+        </h3>
+        <p className="mt-5 text-base leading-relaxed text-muted-foreground">{project.problem}</p>
+        <p className="mt-3 text-base leading-relaxed text-foreground/90">{project.solution}</p>
+
+        <ul className="mt-6 space-y-2 text-sm text-muted-foreground">
+          {project.highlights.map((h) => (
+            <li key={h} className="flex items-start gap-2">
+              <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-primary" />
+              <span>{h}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-7 grid grid-cols-3 gap-3 rounded-2xl border border-border/60 bg-background-elevated/40 p-4">
+          {project.metrics.map((m) => (
+            <div key={m.label} className="text-center">
+              <div className="font-display text-2xl italic text-primary sm:text-3xl">
+                <NumberCounter value={m.value} />
+              </div>
+              <div className="mt-1 text-[11px] uppercase tracking-wider text-muted-foreground">
+                {m.label}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-6 flex flex-wrap gap-2">
+          {project.techStack.map((t) => (
+            <span
+              key={t}
+              className="rounded-full border border-border/60 bg-background/50 px-3 py-1 font-mono text-xs text-muted-foreground"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+
+        <div className="mt-7 flex flex-wrap gap-3">
+          {project.links.map((link) => (
+            <Link
+              key={link.label}
+              href={link.href}
+              target={link.external ? "_blank" : undefined}
+              rel={link.external ? "noopener noreferrer" : undefined}
+              data-cursor="hover"
+              className={
+                link.variant === "primary"
+                  ? "inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:bg-primary hover:text-primary-foreground"
+                  : "inline-flex items-center gap-2 rounded-full border border-border bg-background-elevated/60 px-5 py-2.5 text-sm font-semibold transition hover:border-primary/40 hover:text-primary"
+              }
+            >
+              {link.label}
+              <ArrowUpRight className="h-4 w-4" />
+            </Link>
+          ))}
+        </div>
+      </motion.div>
+    </div>
   );
 }
 
+export function ProjectsSection() {
+  const { locale } = useLocale();
+  const content = siteContent[locale].projects;
 
+  return (
+    <section
+      id="projects"
+      className="relative mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-10 lg:py-40"
+    >
+      <header className="mb-16 max-w-3xl">
+        <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-accent">
+          {content.eyebrow}
+        </p>
+        <SplitText as="h2" className="font-display text-4xl italic leading-tight sm:text-5xl md:text-6xl">
+          {content.headline}
+        </SplitText>
+        <p className="mt-4 text-base text-muted-foreground sm:text-lg">{content.description}</p>
+      </header>
+
+      <div className="space-y-24 lg:space-y-40">
+        {content.items.map((project, i) => (
+          <ProjectCase key={project.title} project={project} index={i} />
+        ))}
+      </div>
+    </section>
+  );
+}
