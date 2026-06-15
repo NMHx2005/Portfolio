@@ -1,101 +1,132 @@
+"use client";
+
+import { useRef } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
+import { gsap, useGSAP } from "@/lib/gsap";
+import { splitWords } from "@/lib/animations";
 import { ActionButton } from "@/components/action-button";
-import { AnimatedSection } from "@/components/animated-section";
-import type { HeroContent } from "@/content";
-import { CoderProfileCard } from "@/components/hero/coder-profile-card";
+import { useLocale } from "@/components/providers/locale-provider";
+import { siteContent } from "@/content";
 
-export function HeroSection({ content }: { content: HeroContent }) {
+export function HeroSection() {
+  const { locale } = useLocale();
+  const content = siteContent[locale].hero;
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useGSAP(
+    () => {
+      const root = containerRef.current;
+      if (!root) return;
+      const nameEl = root.querySelector<HTMLElement>("[data-anim=name]");
+      const roleEl = root.querySelector<HTMLElement>("[data-anim=role]");
+      const valueEl = root.querySelector<HTMLElement>("[data-anim=value]");
+      const greetEl = root.querySelector<HTMLElement>("[data-anim=greet]");
+      const cardEl = root.querySelector<HTMLElement>("[data-anim=card]");
+
+      if (!nameEl || !roleEl || !valueEl || !greetEl || !cardEl) return;
+
+      const nameWords = splitWords(nameEl);
+      const roleWords = splitWords(roleEl);
+      const valueWords = splitWords(valueEl);
+
+      gsap.set([nameWords, roleWords, valueWords], { y: "110%" });
+      gsap.set(greetEl, { opacity: 0, y: 10 });
+      gsap.set(cardEl, { opacity: 0, y: 32, scale: 0.96 });
+
+      const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
+      tl.to(greetEl, { opacity: 1, y: 0, duration: 0.6 })
+        .to(nameWords, { y: "0%", duration: 0.9, stagger: 0.05 }, "-=0.25")
+        .to(roleWords, { y: "0%", duration: 0.8, stagger: 0.04 }, "-=0.6")
+        .to(valueWords, { y: "0%", duration: 0.7, stagger: 0.025 }, "-=0.55")
+        .to(cardEl, { opacity: 1, y: 0, scale: 1, duration: 1, ease: "expo.out" }, "-=0.7");
+    },
+    { dependencies: [locale], scope: containerRef },
+  );
+
   return (
-    <AnimatedSection id="hero" className="pt-16 sm:pt-20 md:pt-24 lg:pt-28">
-      <div className="relative overflow-hidden rounded-2xl border border-border/40 bg-gradient-to-br from-[#f8f9ff] via-white to-[#f0f4ff] p-5 shadow-[0_20px_60px_-15px_rgba(59,130,246,0.15),0_0_0_1px_rgba(255,255,255,0.5)] backdrop-blur-xl dark:border-white/5 dark:from-[#030112] dark:via-[#080b2e] dark:to-[#0d153d] dark:shadow-[0_20px_60px_-15px_rgba(124,58,237,0.4),inset_0_0_0_1px_rgba(255,255,255,0.05)] sm:rounded-3xl sm:p-6 md:p-8 lg:rounded-3xl lg:p-8 xl:p-10">
-        {/* Animated gradient orbs - Responsive sizes */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <motion.div
-            className="absolute -top-20 -left-20 h-64 w-64 rounded-full bg-gradient-to-br from-primary/20 via-primary/10 to-transparent blur-[100px] sm:-top-32 sm:-left-32 sm:h-80 sm:w-80 sm:blur-[120px] md:h-96 md:w-96 md:blur-[140px]"
-            animate={{
-              x: [0, 30, 0],
-              y: [0, 20, 0],
-              scale: [1, 1.1, 1],
-            }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-          <motion.div
-            className="absolute -bottom-20 -right-20 h-72 w-72 rounded-full bg-gradient-to-tr from-secondary/15 via-secondary/8 to-transparent blur-[120px] sm:-bottom-32 sm:-right-32 sm:h-96 sm:w-96 sm:blur-[140px] md:h-[500px] md:w-[500px] md:blur-[160px]"
-            animate={{
-              x: [0, -20, 0],
-              y: [0, -30, 0],
-              scale: [1, 1.15, 1],
-            }}
-            transition={{
-              duration: 25,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-transparent to-white/30 dark:from-white/5 dark:via-transparent dark:to-white/8" />
-          {/* Subtle grid pattern - Responsive size */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:16px_16px] sm:bg-[size:20px_20px] md:bg-[size:24px_24px] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)]" />
-        </div>
-
-        <div className="relative grid min-w-0 items-start gap-4 sm:gap-6 md:gap-8 lg:grid-cols-[1.3fr_minmax(0,0.7fr)] lg:items-center lg:gap-5 xl:gap-6">
-          <div className="flex min-w-0 flex-col gap-3 sm:gap-4 md:gap-5">
-            <div className="min-w-0 space-y-2 sm:space-y-3">
-              <motion.h1
-                className="min-w-0 text-balance text-2xl font-bold leading-tight tracking-tight sm:text-3xl md:text-4xl lg:text-3xl xl:text-4xl"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1, ease: [0.23, 1, 0.32, 1] }}
-              >
-                <span className="block break-words bg-gradient-to-br from-foreground via-foreground to-foreground/80 bg-clip-text text-transparent">
-                  {content.name}
-                </span>
-              </motion.h1>
-
-              <motion.p
-                className="min-w-0 break-words text-base font-semibold text-primary sm:text-lg md:text-xl lg:text-lg xl:text-xl"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.15, ease: [0.23, 1, 0.32, 1] }}
-              >
-                {content.role}
-              </motion.p>
-
-              <motion.p
-                className="min-w-0 max-w-xl break-words text-balance text-sm leading-relaxed text-muted-foreground sm:text-base md:text-lg lg:text-base"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2, ease: [0.23, 1, 0.32, 1] }}
-              >
-                {content.tagline}
-              </motion.p>
-            </div>
-
-            <motion.div
-              className="flex flex-wrap gap-2.5 pt-1 sm:gap-3 sm:pt-2"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.25, ease: [0.23, 1, 0.32, 1] }}
-            >
-              {content.actions.map((action, index) => (
-                <ActionButton key={action.label} action={action} index={index} />
-              ))}
-            </motion.div>
-          </div>
-
-          <motion.div
-            className="order-first min-w-0 w-full sm:mx-auto sm:max-w-[280px] lg:order-last lg:max-w-[280px] xl:max-w-[320px]"
-            initial={{ opacity: 0, y: 24, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: [0.23, 1, 0.32, 1] }}
+    <section
+      id="hero"
+      ref={containerRef}
+      className="relative mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col justify-center px-4 pt-28 pb-16 sm:px-6 sm:pt-32 lg:px-10"
+    >
+      <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:items-center">
+        <div className="flex flex-col gap-6">
+          <span
+            data-anim="greet"
+            className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background-elevated/40 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur w-fit"
           >
-            <CoderProfileCard hero={content} />
-          </motion.div>
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent/70 opacity-75" />
+              <span className="relative inline-flex h-full w-full rounded-full bg-accent" />
+            </span>
+            {content.greeting}
+          </span>
+
+          <h1
+            data-anim="name"
+            className="text-balance font-display text-5xl italic leading-[1.05] tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-[5.5rem]"
+          >
+            {content.name}
+          </h1>
+
+          <p
+            data-anim="role"
+            className="text-gradient-aurora text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl"
+          >
+            {content.role}
+          </p>
+
+          <p
+            data-anim="value"
+            className="max-w-xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg"
+          >
+            {content.valueProp}
+          </p>
+
+          <div className="mt-2 flex flex-wrap gap-3">
+            {content.actions.map((action, i) => (
+              <ActionButton key={action.label} action={action} index={i} />
+            ))}
+          </div>
         </div>
+
+        <motion.div
+          data-anim="card"
+          className="relative mx-auto w-full max-w-sm"
+        >
+          <div className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-primary/30 via-accent/20 to-secondary/30 blur-2xl" />
+          <div className="overflow-hidden rounded-3xl border border-border/60 bg-background-elevated/80 p-6 backdrop-blur-xl shadow-[0_24px_60px_-20px_hsl(var(--primary)/0.4)]">
+            <div className="mb-4 flex items-center justify-between">
+              <span className="font-mono text-xs text-muted-foreground">
+                {content.codeProfile.fileName}
+              </span>
+              <span className="rounded-full bg-accent/15 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-widest text-accent">
+                {content.codeProfile.seniority}
+              </span>
+            </div>
+            <div className="relative mx-auto mb-4 aspect-square w-32 overflow-hidden rounded-2xl border border-border/60 bg-background">
+              <Image
+                src="/portrait.svg"
+                alt="Portrait"
+                fill
+                className="object-cover"
+                sizes="128px"
+                priority
+              />
+            </div>
+            <ul className="font-mono text-[11px] leading-relaxed text-muted-foreground">
+              <li><span className="text-secondary">const</span> <span className="text-foreground">skills</span> = [</li>
+              {content.codeProfile.skills.map((s) => (
+                <li key={s} className="pl-4">
+                  <span className="text-accent">&quot;{s}&quot;</span>,
+                </li>
+              ))}
+              <li>];</li>
+            </ul>
+          </div>
+        </motion.div>
       </div>
-    </AnimatedSection>
+    </section>
   );
 }
