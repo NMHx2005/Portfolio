@@ -1,6 +1,6 @@
 "use client";
 
-import { createElement, useRef, type ElementType } from "react";
+import { useRef, type ElementType } from "react";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { splitWords, splitChars } from "@/lib/animations";
 import { cn } from "@/lib/utils";
@@ -54,10 +54,12 @@ export function SplitText({
     { dependencies: [splitBy, delay, start, once, children], scope: ref },
   );
 
-  // createElement sidesteps polymorphic JSX ref typing issues with ElementType.
-  return createElement(
-    Tag,
-    { ref, className: cn(className), key: children },
-    children,
+  // Cast Tag to a type that accepts our ref. The polymorphic-ref issue with ElementType
+  // is well-known and the React team's recommended workaround is a single cast at the boundary.
+  const Component = Tag as ElementType;
+  return (
+    <Component ref={ref} className={cn(className)} key={children}>
+      {children}
+    </Component>
   );
 }

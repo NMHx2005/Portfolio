@@ -32,6 +32,8 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
   const [locale, setLocale] = useState<Locale>("vi");
 
   useEffect(() => {
+    // Intentional: detect locale after mount to avoid hydration mismatch with localStorage.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLocale(detectInitialLocale());
   }, []);
 

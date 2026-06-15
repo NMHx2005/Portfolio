@@ -1,20 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
+
+const noopSubscribe = () => () => {};
 
 export function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+  const subscribe = (callback: () => void) => {
+    if (typeof window === "undefined") return noopSubscribe();
     const mql = window.matchMedia(query);
-    const onChange = (e: MediaQueryListEvent) => setMatches(e.matches);
-    setMatches(mql.matches);
-    mql.addEventListener("change", onChange);
-    return () => mql.removeEventListener("change", onChange);
-  }, [query]);
+    mql.addEventListener("change", callback);
+    return () => mql.removeEventListener("change", callback);
+  };
 
-  return matches;
+  const getSnapshot = () => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia(query).matches;
+  };
+
+  return useSyncExternalStore(subscribe, getSnapshot, () => false);
 }
 
 export const useIsDesktop = () => useMediaQuery("(min-width: 1024px) and (pointer: fine)");
