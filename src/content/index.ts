@@ -364,8 +364,8 @@ export const siteContent: Record<Locale, SiteContent> = {
         {
           type: "email",
           label: "Email",
-          value: "22092005nguyenhung@gmail.com",
-          href: "mailto:22092005nguyenhung@gmail.com",
+          value: "",
+          href: "mailto:",
         },
         {
           type: "zalo",
@@ -639,8 +639,8 @@ export const siteContent: Record<Locale, SiteContent> = {
         {
           type: "email",
           label: "Email",
-          value: "22092005nguyenhung@gmail.com",
-          href: "mailto:22092005nguyenhung@gmail.com",
+          value: "",
+          href: "mailto:",
         },
         {
           type: "zalo",

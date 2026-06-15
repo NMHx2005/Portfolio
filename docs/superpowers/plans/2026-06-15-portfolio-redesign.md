@@ -21,6 +21,7 @@
 ### Task A1: Install GSAP, remove pdf-parse
 
 **Files:**
+
 - Modify: `package.json`
 - Modify: `package-lock.json` (auto)
 
@@ -66,6 +67,7 @@ git commit -m "chore: add gsap + @gsap/react, drop unused pdf-parse"
 ### Task A2: Rewrite globals.css with Dark Aurora tokens
 
 **Files:**
+
 - Modify: `src/app/globals.css` (full replace)
 
 - [ ] **Step 1: Replace `src/app/globals.css` entirely with the following**
@@ -146,11 +148,21 @@ git commit -m "chore: add gsap + @gsap/react, drop unused pdf-parse"
 
   /* Aurora gradient used by hero + section accents */
   .gradient-aurora {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 50%, hsl(var(--secondary)) 100%);
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--accent)) 50%,
+      hsl(var(--secondary)) 100%
+    );
   }
 
   .text-gradient-aurora {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 50%, hsl(var(--secondary)) 100%);
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--accent)) 50%,
+      hsl(var(--secondary)) 100%
+    );
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -200,6 +212,7 @@ git commit -m "style: rewrite globals.css with Dark Aurora tokens + reduced moti
 ### Task A3: Update layout.tsx — add Instrument Serif, default dark theme
 
 **Files:**
+
 - Modify: `src/app/layout.tsx`
 
 - [ ] **Step 1: Replace `src/app/layout.tsx` with the following**
@@ -313,6 +326,7 @@ git commit -m "feat: add Instrument Serif display font, default dark theme + vi 
 ### Task A4: Create `src/lib/gsap.ts` — register plugins client-side
 
 **Files:**
+
 - Create: `src/lib/gsap.ts`
 
 - [ ] **Step 1: Create `src/lib/gsap.ts` with the following**
@@ -351,6 +365,7 @@ git commit -m "feat: register GSAP + ScrollTrigger + useGSAP plugins"
 ### Task A5: Create `src/lib/animations.ts` — split text + reusable timelines
 
 **Files:**
+
 - Create: `src/lib/animations.ts`
 
 - [ ] **Step 1: Create `src/lib/animations.ts` with the following**
@@ -413,7 +428,10 @@ export function splitChars(el: HTMLElement): HTMLSpanElement[] {
 /**
  * Fade + slide up an array of elements with stagger.
  */
-export function revealStagger(targets: gsap.TweenTarget, options: gsap.TweenVars = {}) {
+export function revealStagger(
+  targets: gsap.TweenTarget,
+  options: gsap.TweenVars = {},
+) {
   return gsap.fromTo(
     targets,
     { y: 32, opacity: 0 },
@@ -431,11 +449,16 @@ export function revealStagger(targets: gsap.TweenTarget, options: gsap.TweenVars
 /**
  * Standard scroll-trigger config for an element.
  */
-export function inViewTrigger(el: Element, onceOnly = true): ScrollTrigger.Vars {
+export function inViewTrigger(
+  el: Element,
+  onceOnly = true,
+): ScrollTrigger.Vars {
   return {
     trigger: el,
     start: "top 80%",
-    toggleActions: onceOnly ? "play none none none" : "play reverse play reverse",
+    toggleActions: onceOnly
+      ? "play none none none"
+      : "play reverse play reverse",
   };
 }
 ```
@@ -462,6 +485,7 @@ git commit -m "feat: add splitWords/splitChars + reusable GSAP timelines"
 ### Task B1: Delete dead sections, blog route, contact API, schemas
 
 **Files:**
+
 - Delete: `src/app/blog/`
 - Delete: `src/app/api/`
 - Delete: `src/components/sections/awards-section.tsx`
@@ -503,6 +527,7 @@ git commit -m "chore: remove unused blog route, contact API, dead sections"
 ### Task C1: Update `src/config/site.ts` — freelance positioning + SEO
 
 **Files:**
+
 - Modify: `src/config/site.ts`
 
 - [ ] **Step 1: Replace `src/config/site.ts` with the following**
@@ -554,6 +579,7 @@ git commit -m "feat: update siteConfig for freelance positioning + Vi SEO keywor
 ### Task C2: Rewrite `src/content/index.ts` — full freelance copy (VI + EN)
 
 **Files:**
+
 - Modify: `src/content/index.ts` (full replace)
 
 - [ ] **Step 1: Replace `src/content/index.ts` entirely with the following**
@@ -781,12 +807,32 @@ export const siteContent: Record<Locale, SiteContent> = {
             { label: "Học viên", value: "500+" },
             { label: "Uptime", value: "99.9%" },
           ],
-          techStack: ["React", "TypeScript", "Node.js", "Express", "MongoDB", "Material-UI"],
-          links: [
-            { label: "Xem website", href: "https://www.lms-vietnam.xyz/", variant: "primary", external: true },
-            { label: "GitHub", href: "https://github.com/NMHx2005/lms-frontend", variant: "secondary", external: true },
+          techStack: [
+            "React",
+            "TypeScript",
+            "Node.js",
+            "Express",
+            "MongoDB",
+            "Material-UI",
           ],
-          image: { src: sharedProjectImages.lms, alt: "Learning Management System preview" },
+          links: [
+            {
+              label: "Xem website",
+              href: "https://www.lms-vietnam.xyz/",
+              variant: "primary",
+              external: true,
+            },
+            {
+              label: "GitHub",
+              href: "https://github.com/NMHx2005/lms-frontend",
+              variant: "secondary",
+              external: true,
+            },
+          ],
+          image: {
+            src: sharedProjectImages.lms,
+            alt: "Learning Management System preview",
+          },
         },
         {
           title: "MinhLoc Group",
@@ -806,12 +852,32 @@ export const siteContent: Record<Locale, SiteContent> = {
             { label: "Sản phẩm", value: "200+" },
             { label: "SEO score", value: "9x" },
           ],
-          techStack: ["Next.js 14", "TypeScript", "Material-UI", "Node.js", "MongoDB", "Cloudinary"],
-          links: [
-            { label: "Xem website", href: "https://www.minhlocgroup.vn/", variant: "primary", external: true },
-            { label: "GitHub", href: "https://github.com/NMHx2005/MinhLoc_FE", variant: "secondary", external: true },
+          techStack: [
+            "Next.js 14",
+            "TypeScript",
+            "Material-UI",
+            "Node.js",
+            "MongoDB",
+            "Cloudinary",
           ],
-          image: { src: sharedProjectImages.minhloc, alt: "MinhLoc Group platform preview" },
+          links: [
+            {
+              label: "Xem website",
+              href: "https://www.minhlocgroup.vn/",
+              variant: "primary",
+              external: true,
+            },
+            {
+              label: "GitHub",
+              href: "https://github.com/NMHx2005/MinhLoc_FE",
+              variant: "secondary",
+              external: true,
+            },
+          ],
+          image: {
+            src: sharedProjectImages.minhloc,
+            alt: "MinhLoc Group platform preview",
+          },
         },
       ],
     },
@@ -823,11 +889,27 @@ export const siteContent: Record<Locale, SiteContent> = {
       groups: [
         {
           name: "Frontend",
-          items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "GSAP", "Material-UI"],
+          items: [
+            "React",
+            "Next.js",
+            "TypeScript",
+            "Tailwind CSS",
+            "Framer Motion",
+            "GSAP",
+            "Material-UI",
+          ],
         },
         {
           name: "Backend",
-          items: ["Node.js", "Express", "MongoDB", "MySQL", "Socket.io", "JWT", "Cloudinary"],
+          items: [
+            "Node.js",
+            "Express",
+            "MongoDB",
+            "MySQL",
+            "Socket.io",
+            "JWT",
+            "Cloudinary",
+          ],
         },
         {
           name: "Tools",
@@ -844,27 +926,32 @@ export const siteContent: Record<Locale, SiteContent> = {
         {
           title: "Discovery",
           duration: "1–2 ngày",
-          description: "Nghe yêu cầu, xác định scope, deliverable, báo giá. Không tính phí.",
+          description:
+            "Nghe yêu cầu, xác định scope, deliverable, báo giá. Không tính phí.",
         },
         {
           title: "Design & Plan",
           duration: "3–5 ngày",
-          description: "Wireframe, design mockup, tech plan. Bạn duyệt rồi mới code.",
+          description:
+            "Wireframe, design mockup, tech plan. Bạn duyệt rồi mới code.",
         },
         {
           title: "Build",
           duration: "Theo scope",
-          description: "Code, demo từng tuần, feedback loop. Không bao giờ biến mất.",
+          description:
+            "Code, demo từng tuần, feedback loop. Không bao giờ biến mất.",
         },
         {
           title: "Launch",
           duration: "1–2 ngày",
-          description: "Deploy, domain, SEO basics, hướng dẫn admin. Sẵn sàng đón khách.",
+          description:
+            "Deploy, domain, SEO basics, hướng dẫn admin. Sẵn sàng đón khách.",
         },
         {
           title: "Support",
           duration: "30 ngày miễn phí",
-          description: "Fix bug, hướng dẫn. Sau đó option bảo trì hàng tháng nếu cần.",
+          description:
+            "Fix bug, hướng dẫn. Sau đó option bảo trì hàng tháng nếu cần.",
         },
       ],
     },
@@ -925,8 +1012,8 @@ export const siteContent: Record<Locale, SiteContent> = {
         {
           type: "email",
           label: "Email",
-          value: "22092005nguyenhung@gmail.com",
-          href: "mailto:22092005nguyenhung@gmail.com",
+          value: "",
+          href: "mailto:",
         },
         {
           type: "zalo",
@@ -1039,7 +1126,8 @@ export const siteContent: Record<Locale, SiteContent> = {
     projects: {
       eyebrow: "Work",
       headline: "What I've shipped",
-      description: "Two flagship case studies. Both running in production today.",
+      description:
+        "Two flagship case studies. Both running in production today.",
       items: [
         {
           title: "Learning Management System",
@@ -1059,12 +1147,32 @@ export const siteContent: Record<Locale, SiteContent> = {
             { label: "Students", value: "500+" },
             { label: "Uptime", value: "99.9%" },
           ],
-          techStack: ["React", "TypeScript", "Node.js", "Express", "MongoDB", "Material-UI"],
-          links: [
-            { label: "Live site", href: "https://www.lms-vietnam.xyz/", variant: "primary", external: true },
-            { label: "GitHub", href: "https://github.com/NMHx2005/lms-frontend", variant: "secondary", external: true },
+          techStack: [
+            "React",
+            "TypeScript",
+            "Node.js",
+            "Express",
+            "MongoDB",
+            "Material-UI",
           ],
-          image: { src: sharedProjectImages.lms, alt: "Learning Management System preview" },
+          links: [
+            {
+              label: "Live site",
+              href: "https://www.lms-vietnam.xyz/",
+              variant: "primary",
+              external: true,
+            },
+            {
+              label: "GitHub",
+              href: "https://github.com/NMHx2005/lms-frontend",
+              variant: "secondary",
+              external: true,
+            },
+          ],
+          image: {
+            src: sharedProjectImages.lms,
+            alt: "Learning Management System preview",
+          },
         },
         {
           title: "MinhLoc Group",
@@ -1084,27 +1192,64 @@ export const siteContent: Record<Locale, SiteContent> = {
             { label: "Products", value: "200+" },
             { label: "SEO score", value: "9x" },
           ],
-          techStack: ["Next.js 14", "TypeScript", "Material-UI", "Node.js", "MongoDB", "Cloudinary"],
-          links: [
-            { label: "Live site", href: "https://www.minhlocgroup.vn/", variant: "primary", external: true },
-            { label: "GitHub", href: "https://github.com/NMHx2005/MinhLoc_FE", variant: "secondary", external: true },
+          techStack: [
+            "Next.js 14",
+            "TypeScript",
+            "Material-UI",
+            "Node.js",
+            "MongoDB",
+            "Cloudinary",
           ],
-          image: { src: sharedProjectImages.minhloc, alt: "MinhLoc Group platform preview" },
+          links: [
+            {
+              label: "Live site",
+              href: "https://www.minhlocgroup.vn/",
+              variant: "primary",
+              external: true,
+            },
+            {
+              label: "GitHub",
+              href: "https://github.com/NMHx2005/MinhLoc_FE",
+              variant: "secondary",
+              external: true,
+            },
+          ],
+          image: {
+            src: sharedProjectImages.minhloc,
+            alt: "MinhLoc Group platform preview",
+          },
         },
       ],
     },
     stack: {
       eyebrow: "Tech Stack",
       headline: "Tools I use daily",
-      description: "I'm not tied to one framework. I pick the right tool for each project.",
+      description:
+        "I'm not tied to one framework. I pick the right tool for each project.",
       groups: [
         {
           name: "Frontend",
-          items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "GSAP", "Material-UI"],
+          items: [
+            "React",
+            "Next.js",
+            "TypeScript",
+            "Tailwind CSS",
+            "Framer Motion",
+            "GSAP",
+            "Material-UI",
+          ],
         },
         {
           name: "Backend",
-          items: ["Node.js", "Express", "MongoDB", "MySQL", "Socket.io", "JWT", "Cloudinary"],
+          items: [
+            "Node.js",
+            "Express",
+            "MongoDB",
+            "MySQL",
+            "Socket.io",
+            "JWT",
+            "Cloudinary",
+          ],
         },
         {
           name: "Tools",
@@ -1115,17 +1260,20 @@ export const siteContent: Record<Locale, SiteContent> = {
     process: {
       eyebrow: "Process",
       headline: "How I work",
-      description: "A clear 5-step process. You always know where we are and what's next.",
+      description:
+        "A clear 5-step process. You always know where we are and what's next.",
       steps: [
         {
           title: "Discovery",
           duration: "1–2 days",
-          description: "Listen to requirements, define scope, deliverables, quote. Free of charge.",
+          description:
+            "Listen to requirements, define scope, deliverables, quote. Free of charge.",
         },
         {
           title: "Design & Plan",
           duration: "3–5 days",
-          description: "Wireframe, design mockup, tech plan. You approve before code starts.",
+          description:
+            "Wireframe, design mockup, tech plan. You approve before code starts.",
         },
         {
           title: "Build",
@@ -1135,12 +1283,14 @@ export const siteContent: Record<Locale, SiteContent> = {
         {
           title: "Launch",
           duration: "1–2 days",
-          description: "Deploy, domain, SEO basics, admin handover. Ready for customers.",
+          description:
+            "Deploy, domain, SEO basics, admin handover. Ready for customers.",
         },
         {
           title: "Support",
           duration: "30 days free",
-          description: "Bug fixes, guidance. Optional monthly maintenance after that.",
+          description:
+            "Bug fixes, guidance. Optional monthly maintenance after that.",
         },
       ],
     },
@@ -1195,13 +1345,14 @@ export const siteContent: Record<Locale, SiteContent> = {
     contact: {
       eyebrow: "Contact",
       headline: "Let's talk",
-      description: "Available for new projects. Pick your favorite channel — I respond within 24 hours.",
+      description:
+        "Available for new projects. Pick your favorite channel — I respond within 24 hours.",
       channels: [
         {
           type: "email",
           label: "Email",
-          value: "22092005nguyenhung@gmail.com",
-          href: "mailto:22092005nguyenhung@gmail.com",
+          value: "",
+          href: "mailto:",
         },
         {
           type: "zalo",
@@ -1265,6 +1416,7 @@ git commit -m "feat: rewrite content for freelance positioning + new section sch
 ### Task C3: Update `LocaleProvider` — VI default + browser detect
 
 **Files:**
+
 - Modify: `src/components/providers/locale-provider.tsx` (full replace)
 
 - [ ] **Step 1: Replace `src/components/providers/locale-provider.tsx` with the following**
@@ -1297,7 +1449,9 @@ function detectInitialLocale(): Locale {
   if (typeof window === "undefined") return "vi";
   const stored = window.localStorage.getItem(STORAGE_KEY);
   if (stored === "vi" || stored === "en") return stored;
-  return window.navigator.language?.toLowerCase().startsWith("en") ? "en" : "vi";
+  return window.navigator.language?.toLowerCase().startsWith("en")
+    ? "en"
+    : "vi";
 }
 
 export function LocaleProvider({ children }: { children: ReactNode }) {
@@ -1314,7 +1468,9 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo(() => ({ locale, setLocale }), [locale]);
 
-  return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;
+  return (
+    <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>
+  );
 }
 
 export function useLocale() {
@@ -1348,6 +1504,7 @@ git commit -m "feat: locale provider with vi default, browser detect, localStora
 ### Task D1: `useMediaQuery` hook
 
 **Files:**
+
 - Create: `src/hooks/use-media-query.ts`
 
 - [ ] **Step 1: Create `src/hooks/use-media-query.ts` with the following**
@@ -1372,8 +1529,10 @@ export function useMediaQuery(query: string): boolean {
   return matches;
 }
 
-export const useIsDesktop = () => useMediaQuery("(min-width: 1024px) and (pointer: fine)");
-export const useReducedMotion = () => useMediaQuery("(prefers-reduced-motion: reduce)");
+export const useIsDesktop = () =>
+  useMediaQuery("(min-width: 1024px) and (pointer: fine)");
+export const useReducedMotion = () =>
+  useMediaQuery("(prefers-reduced-motion: reduce)");
 ```
 
 - [ ] **Step 2: Lint + commit**
@@ -1389,6 +1548,7 @@ git commit -m "feat: useMediaQuery + useIsDesktop + useReducedMotion hooks"
 ### Task D2: `useMagnetic` hook
 
 **Files:**
+
 - Create: `src/hooks/use-magnetic.ts`
 
 - [ ] **Step 1: Create `src/hooks/use-magnetic.ts` with the following**
@@ -1404,7 +1564,9 @@ interface MagneticOptions {
   strength?: number;
 }
 
-export function useMagnetic<T extends HTMLElement>({ strength = 0.4 }: MagneticOptions = {}) {
+export function useMagnetic<T extends HTMLElement>({
+  strength = 0.4,
+}: MagneticOptions = {}) {
   const ref = useRef<T | null>(null);
   const isDesktop = useIsDesktop();
   const reducedMotion = useReducedMotion();
@@ -1413,8 +1575,14 @@ export function useMagnetic<T extends HTMLElement>({ strength = 0.4 }: MagneticO
     const el = ref.current;
     if (!el || !isDesktop || reducedMotion) return;
 
-    const xTo = gsap.quickTo(el, "x", { duration: 0.6, ease: "elastic.out(1, 0.4)" });
-    const yTo = gsap.quickTo(el, "y", { duration: 0.6, ease: "elastic.out(1, 0.4)" });
+    const xTo = gsap.quickTo(el, "x", {
+      duration: 0.6,
+      ease: "elastic.out(1, 0.4)",
+    });
+    const yTo = gsap.quickTo(el, "y", {
+      duration: 0.6,
+      ease: "elastic.out(1, 0.4)",
+    });
 
     const onMove = (e: MouseEvent) => {
       const rect = el.getBoundingClientRect();
@@ -1455,6 +1623,7 @@ git commit -m "feat: useMagnetic hook with GSAP quickTo + reduced-motion respect
 ### Task D3: `useTilt` hook
 
 **Files:**
+
 - Create: `src/hooks/use-tilt.ts`
 
 - [ ] **Step 1: Create `src/hooks/use-tilt.ts` with the following**
@@ -1471,7 +1640,10 @@ interface TiltOptions {
   scale?: number;
 }
 
-export function useTilt<T extends HTMLElement>({ max = 8, scale = 1.02 }: TiltOptions = {}) {
+export function useTilt<T extends HTMLElement>({
+  max = 8,
+  scale = 1.02,
+}: TiltOptions = {}) {
   const ref = useRef<T | null>(null);
   const isDesktop = useIsDesktop();
   const reducedMotion = useReducedMotion();
@@ -1480,9 +1652,18 @@ export function useTilt<T extends HTMLElement>({ max = 8, scale = 1.02 }: TiltOp
     const el = ref.current;
     if (!el || !isDesktop || reducedMotion) return;
 
-    const rxTo = gsap.quickTo(el, "rotateX", { duration: 0.5, ease: "power3.out" });
-    const ryTo = gsap.quickTo(el, "rotateY", { duration: 0.5, ease: "power3.out" });
-    const scaleTo = gsap.quickTo(el, "scale", { duration: 0.5, ease: "power3.out" });
+    const rxTo = gsap.quickTo(el, "rotateX", {
+      duration: 0.5,
+      ease: "power3.out",
+    });
+    const ryTo = gsap.quickTo(el, "rotateY", {
+      duration: 0.5,
+      ease: "power3.out",
+    });
+    const scaleTo = gsap.quickTo(el, "scale", {
+      duration: 0.5,
+      ease: "power3.out",
+    });
 
     const onMove = (e: MouseEvent) => {
       const rect = el.getBoundingClientRect();
@@ -1528,6 +1709,7 @@ git commit -m "feat: useTilt hook for 3D card rotation on cursor move"
 ### Task E1: `Magnetic` wrapper component
 
 **Files:**
+
 - Create: `src/components/effects/magnetic.tsx`
 
 - [ ] **Step 1: Create `src/components/effects/magnetic.tsx` with the following**
@@ -1550,10 +1732,17 @@ interface MagneticProps {
  * The extra wrapper div is intentional — it sidesteps ref-forwarding/type variance
  * issues with cloneElement when children is a Link or polymorphic component.
  */
-export function Magnetic({ strength = 0.4, className, children }: MagneticProps) {
+export function Magnetic({
+  strength = 0.4,
+  className,
+  children,
+}: MagneticProps) {
   const ref = useMagnetic<HTMLDivElement>({ strength });
   return (
-    <div ref={ref} className={cn("inline-block will-change-transform", className)}>
+    <div
+      ref={ref}
+      className={cn("inline-block will-change-transform", className)}
+    >
       {children}
     </div>
   );
@@ -1573,6 +1762,7 @@ git commit -m "feat: Magnetic wrapper component"
 ### Task E2: `TiltCard` component
 
 **Files:**
+
 - Create: `src/components/effects/tilt-card.tsx`
 
 - [ ] **Step 1: Create `src/components/effects/tilt-card.tsx` with the following**
@@ -1590,7 +1780,13 @@ interface TiltCardProps extends HTMLAttributes<HTMLDivElement> {
   scale?: number;
 }
 
-export function TiltCard({ children, className, max, scale, ...rest }: TiltCardProps) {
+export function TiltCard({
+  children,
+  className,
+  max,
+  scale,
+  ...rest
+}: TiltCardProps) {
   const ref = useTilt<HTMLDivElement>({ max, scale });
   return (
     <div ref={ref} className={cn("will-change-transform", className)} {...rest}>
@@ -1613,6 +1809,7 @@ git commit -m "feat: TiltCard component using useTilt hook"
 ### Task E3: `SplitText` component (GSAP scroll-triggered word reveal)
 
 **Files:**
+
 - Create: `src/components/effects/split-text.tsx`
 
 - [ ] **Step 1: Create `src/components/effects/split-text.tsx` with the following**
@@ -1663,7 +1860,9 @@ export function SplitText({
         scrollTrigger: {
           trigger: el,
           start,
-          toggleActions: once ? "play none none none" : "play reverse play reverse",
+          toggleActions: once
+            ? "play none none none"
+            : "play reverse play reverse",
         },
       });
       return () => {
@@ -1698,6 +1897,7 @@ git commit -m "feat: SplitText component with GSAP scroll-triggered word reveal"
 ### Task E4: `AuroraBackground` component
 
 **Files:**
+
 - Create: `src/components/effects/aurora-background.tsx`
 
 - [ ] **Step 1: Create `src/components/effects/aurora-background.tsx` with the following**
@@ -1716,7 +1916,8 @@ export function AuroraBackground() {
   useGSAP(
     () => {
       if (reducedMotion) return;
-      const blobs = containerRef.current?.querySelectorAll<HTMLElement>("[data-blob]");
+      const blobs =
+        containerRef.current?.querySelectorAll<HTMLElement>("[data-blob]");
       if (!blobs) return;
 
       blobs.forEach((blob, i) => {
@@ -1743,17 +1944,26 @@ export function AuroraBackground() {
       <div
         data-blob
         className="absolute -top-32 left-1/2 h-[60vw] w-[60vw] max-h-[800px] max-w-[800px] -translate-x-1/2 rounded-full opacity-50 blur-[140px]"
-        style={{ background: "radial-gradient(circle at 30% 30%, hsl(var(--primary) / 0.8), transparent 60%)" }}
+        style={{
+          background:
+            "radial-gradient(circle at 30% 30%, hsl(var(--primary) / 0.8), transparent 60%)",
+        }}
       />
       <div
         data-blob
         className="absolute left-[5%] top-[40%] h-[40vw] w-[40vw] max-h-[600px] max-w-[600px] rounded-full opacity-40 blur-[120px]"
-        style={{ background: "radial-gradient(circle at 50% 50%, hsl(var(--accent) / 0.7), transparent 60%)" }}
+        style={{
+          background:
+            "radial-gradient(circle at 50% 50%, hsl(var(--accent) / 0.7), transparent 60%)",
+        }}
       />
       <div
         data-blob
         className="absolute right-[-10%] bottom-[-10%] h-[50vw] w-[50vw] max-h-[700px] max-w-[700px] rounded-full opacity-40 blur-[140px]"
-        style={{ background: "radial-gradient(circle at 50% 50%, hsl(var(--secondary) / 0.7), transparent 60%)" }}
+        style={{
+          background:
+            "radial-gradient(circle at 50% 50%, hsl(var(--secondary) / 0.7), transparent 60%)",
+        }}
       />
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:48px_48px]" />
     </div>
@@ -1774,6 +1984,7 @@ git commit -m "feat: AuroraBackground with GSAP-animated radial gradient blobs"
 ### Task E5: `CustomCursor` component
 
 **Files:**
+
 - Create: `src/components/effects/custom-cursor.tsx`
 
 - [ ] **Step 1: Create `src/components/effects/custom-cursor.tsx` with the following**
@@ -1802,8 +2013,14 @@ export function CustomCursor() {
 
     const dotX = gsap.quickTo(dot, "x", { duration: 0.18, ease: "power3.out" });
     const dotY = gsap.quickTo(dot, "y", { duration: 0.18, ease: "power3.out" });
-    const ringX = gsap.quickTo(ring, "x", { duration: 0.5, ease: "power3.out" });
-    const ringY = gsap.quickTo(ring, "y", { duration: 0.5, ease: "power3.out" });
+    const ringX = gsap.quickTo(ring, "x", {
+      duration: 0.5,
+      ease: "power3.out",
+    });
+    const ringY = gsap.quickTo(ring, "y", {
+      duration: 0.5,
+      ease: "power3.out",
+    });
 
     const onMove = (e: MouseEvent) => {
       dotX(e.clientX);
@@ -1868,6 +2085,7 @@ git commit -m "feat: CustomCursor with dual dot+ring + interactive scale"
 ### Task E6: `NumberCounter` component
 
 **Files:**
+
 - Create: `src/components/effects/number-counter.tsx`
 
 - [ ] **Step 1: Create `src/components/effects/number-counter.tsx` with the following**
@@ -1910,13 +2128,21 @@ export function NumberCounter({ value, className }: NumberCounterProps) {
         onUpdate: () => {
           el.textContent = obj.n.toFixed(decimals) + suffix;
         },
-        scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" },
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
       });
     },
     { dependencies: [value], scope: ref },
   );
 
-  return <span ref={ref} className={className}>0</span>;
+  return (
+    <span ref={ref} className={className}>
+      0
+    </span>
+  );
 }
 ```
 
@@ -1935,6 +2161,7 @@ git commit -m "feat: NumberCounter component with GSAP scroll-trigger animation"
 ### Task F1: Rewrite `ActionButton` with Magnetic wrapper + new variants
 
 **Files:**
+
 - Modify: `src/components/action-button.tsx` (full replace)
 
 - [ ] **Step 1: Replace `src/components/action-button.tsx` with the following**
@@ -1954,8 +2181,7 @@ const variants: Record<NonNullable<ActionLink["variant"]>, string> = {
     "bg-gradient-to-r from-primary via-primary to-secondary text-primary-foreground shadow-[0_8px_32px_-8px_hsl(var(--primary)/0.6)] hover:shadow-[0_16px_48px_-12px_hsl(var(--primary)/0.7)]",
   secondary:
     "bg-background-elevated/80 text-foreground border border-border backdrop-blur hover:border-primary/40 hover:text-primary",
-  ghost:
-    "text-foreground hover:bg-foreground/5",
+  ghost: "text-foreground hover:bg-foreground/5",
 };
 
 interface ActionButtonProps {
@@ -1974,7 +2200,11 @@ export function ActionButton({ action, index = 0 }: ActionButtonProps) {
     <motion.div
       initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.05 * index, ease: [0.23, 1, 0.32, 1] }}
+      transition={{
+        duration: 0.6,
+        delay: 0.05 * index,
+        ease: [0.23, 1, 0.32, 1],
+      }}
       viewport={{ once: true }}
       className="inline-block"
     >
@@ -2008,6 +2238,7 @@ git commit -m "feat: ActionButton with Magnetic wrapper + aurora gradient primar
 ### Task F2: Rewrite `SiteHeader` with new nav from content.nav
 
 **Files:**
+
 - Modify: `src/components/site-header.tsx` (full replace)
 
 - [ ] **Step 1: Replace `src/components/site-header.tsx` with the following**
@@ -2058,7 +2289,11 @@ export function SiteHeader() {
               )}
               initial={{ opacity: 0, y: -6 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.05 * i, ease: [0.23, 1, 0.32, 1] }}
+              transition={{
+                duration: 0.5,
+                delay: 0.05 * i,
+                ease: [0.23, 1, 0.32, 1],
+              }}
               data-cursor="hover"
             >
               <span className="relative z-10">{item.label}</span>
@@ -2090,6 +2325,7 @@ git commit -m "feat: SiteHeader fixed, glass, driven by content.nav"
 ### Task F3: Tighten `SiteFooter`
 
 **Files:**
+
 - Modify: `src/components/site-footer.tsx` (full replace)
 
 - [ ] **Step 1: Replace `src/components/site-footer.tsx` with the following**
@@ -2145,6 +2381,7 @@ git commit -m "refactor: simplify footer for new content schema"
 ### Task F4: Tighten `LanguageSwitcher` (size)
 
 **Files:**
+
 - Modify: `src/components/language-switcher.tsx` (small tweak)
 
 - [ ] **Step 1: Replace `min-w-[92px]` → `min-w-[64px]` and `text-sm` defaults adjusted**
@@ -2173,7 +2410,9 @@ export function LanguageSwitcher() {
             onClick={() => setLocale(item.code)}
             className={cn(
               "relative flex min-w-[56px] items-center justify-center rounded-full px-3 py-1.5 font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
-              isActive ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground",
+              isActive
+                ? "text-primary-foreground"
+                : "text-muted-foreground hover:text-foreground",
             )}
             data-cursor="hover"
             aria-label={`Switch to ${item.label}`}
@@ -2211,6 +2450,7 @@ git commit -m "refactor: LanguageSwitcher compact + aurora pill"
 ### Task G1: Hero section
 
 **Files:**
+
 - Modify: `src/components/sections/hero-section.tsx` (full replace)
 - Delete: `src/components/hero/coder-profile-card.tsx` (no longer used after this task)
 
@@ -2258,7 +2498,11 @@ export function HeroSection() {
         .to(nameWords, { y: "0%", duration: 0.9, stagger: 0.05 }, "-=0.25")
         .to(roleWords, { y: "0%", duration: 0.8, stagger: 0.04 }, "-=0.6")
         .to(valueWords, { y: "0%", duration: 0.7, stagger: 0.025 }, "-=0.55")
-        .to(cardEl, { opacity: 1, y: 0, scale: 1, duration: 1, ease: "expo.out" }, "-=0.7");
+        .to(
+          cardEl,
+          { opacity: 1, y: 0, scale: 1, duration: 1, ease: "expo.out" },
+          "-=0.7",
+        );
     },
     // locale included so timeline re-runs when text content changes
     { dependencies: [locale], scope: containerRef },
@@ -2336,7 +2580,10 @@ export function HeroSection() {
               />
             </div>
             <ul className="font-mono text-[11px] leading-relaxed text-muted-foreground">
-              <li><span className="text-secondary">const</span> <span className="text-foreground">skills</span> = [</li>
+              <li>
+                <span className="text-secondary">const</span>{" "}
+                <span className="text-foreground">skills</span> = [
+              </li>
               {content.codeProfile.skills.map((s) => (
                 <li key={s} className="pl-4">
                   <span className="text-accent">&quot;{s}&quot;</span>,
@@ -2372,6 +2619,7 @@ git commit -m "feat: Hero section with GSAP split-word timeline + glass code car
 ### Task G2: Services section (NEW)
 
 **Files:**
+
 - Create: `src/components/sections/services-section.tsx`
 
 - [ ] **Step 1: Create `src/components/sections/services-section.tsx` with the following**
@@ -2379,7 +2627,13 @@ git commit -m "feat: Hero section with GSAP split-word timeline + glass code car
 ```tsx
 "use client";
 
-import { Code2, Layout, ShoppingBag, Wrench, type LucideIcon } from "lucide-react";
+import {
+  Code2,
+  Layout,
+  ShoppingBag,
+  Wrench,
+  type LucideIcon,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import { TiltCard } from "@/components/effects/tilt-card";
 import { SplitText } from "@/components/effects/split-text";
@@ -2406,10 +2660,15 @@ export function ServicesSection() {
         <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-accent">
           {content.eyebrow}
         </p>
-        <SplitText as="h2" className="font-display text-4xl italic leading-tight sm:text-5xl md:text-6xl">
+        <SplitText
+          as="h2"
+          className="font-display text-4xl italic leading-tight sm:text-5xl md:text-6xl"
+        >
           {content.headline}
         </SplitText>
-        <p className="mt-4 text-base text-muted-foreground sm:text-lg">{content.description}</p>
+        <p className="mt-4 text-base text-muted-foreground sm:text-lg">
+          {content.description}
+        </p>
       </header>
 
       <div className="grid gap-5 sm:grid-cols-2">
@@ -2421,7 +2680,11 @@ export function ServicesSection() {
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.6, delay: i * 0.08, ease: [0.23, 1, 0.32, 1] }}
+              transition={{
+                duration: 0.6,
+                delay: i * 0.08,
+                ease: [0.23, 1, 0.32, 1],
+              }}
             >
               <TiltCard
                 className="group relative h-full overflow-hidden rounded-3xl border border-border/60 bg-background-elevated/60 p-7 backdrop-blur-xl transition-colors hover:border-primary/40"
@@ -2436,7 +2699,9 @@ export function ServicesSection() {
                     <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">
                       {item.title}
                     </h3>
-                    <p className="mt-1 text-xs text-muted-foreground">{item.forWho}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {item.forWho}
+                    </p>
                   </div>
                   <ul className="mt-2 space-y-2 text-sm text-muted-foreground">
                     {item.bullets.map((b) => (
@@ -2470,6 +2735,7 @@ git commit -m "feat: Services section with tilt cards + 4 service types"
 ### Task G3: Projects section (sticky scroll case study)
 
 **Files:**
+
 - Modify: `src/components/sections/projects-section.tsx` (full replace)
 
 - [ ] **Step 1: Replace `src/components/sections/projects-section.tsx` with the following**
@@ -2530,7 +2796,10 @@ function ProjectCase({ project, index }: { project: Project; index: number }) {
     >
       <div className={index % 2 === 0 ? "" : "lg:order-2"}>
         <div className="overflow-hidden rounded-3xl border border-border/60 bg-background-elevated/40 shadow-[0_20px_80px_-30px_hsl(var(--primary)/0.5)]">
-          <div data-image className="relative aspect-[4/3] w-full will-change-transform">
+          <div
+            data-image
+            className="relative aspect-[4/3] w-full will-change-transform"
+          >
             <Image
               src={project.image.src}
               alt={project.image.alt}
@@ -2543,7 +2812,11 @@ function ProjectCase({ project, index }: { project: Project; index: number }) {
       </div>
 
       <motion.div
-        className={index % 2 === 0 ? "lg:sticky lg:top-28" : "lg:sticky lg:top-28 lg:order-1"}
+        className={
+          index % 2 === 0
+            ? "lg:sticky lg:top-28"
+            : "lg:sticky lg:top-28 lg:order-1"
+        }
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
@@ -2555,8 +2828,12 @@ function ProjectCase({ project, index }: { project: Project; index: number }) {
         <h3 className="font-display text-3xl italic leading-tight sm:text-4xl md:text-5xl">
           {project.title}
         </h3>
-        <p className="mt-5 text-base leading-relaxed text-muted-foreground">{project.problem}</p>
-        <p className="mt-3 text-base leading-relaxed text-foreground/90">{project.solution}</p>
+        <p className="mt-5 text-base leading-relaxed text-muted-foreground">
+          {project.problem}
+        </p>
+        <p className="mt-3 text-base leading-relaxed text-foreground/90">
+          {project.solution}
+        </p>
 
         <ul className="mt-6 space-y-2 text-sm text-muted-foreground">
           {project.highlights.map((h) => (
@@ -2628,10 +2905,15 @@ export function ProjectsSection() {
         <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-accent">
           {content.eyebrow}
         </p>
-        <SplitText as="h2" className="font-display text-4xl italic leading-tight sm:text-5xl md:text-6xl">
+        <SplitText
+          as="h2"
+          className="font-display text-4xl italic leading-tight sm:text-5xl md:text-6xl"
+        >
           {content.headline}
         </SplitText>
-        <p className="mt-4 text-base text-muted-foreground sm:text-lg">{content.description}</p>
+        <p className="mt-4 text-base text-muted-foreground sm:text-lg">
+          {content.description}
+        </p>
       </header>
 
       <div className="space-y-24 lg:space-y-40">
@@ -2657,6 +2939,7 @@ git commit -m "feat: Projects section sticky case-study + metric counters + para
 ### Task G4: Tech Stack section with marquee (NEW)
 
 **Files:**
+
 - Create: `src/components/sections/stack-section.tsx`
 
 - [ ] **Step 1: Create `src/components/sections/stack-section.tsx` with the following**
@@ -2670,7 +2953,13 @@ import { SplitText } from "@/components/effects/split-text";
 import { useLocale } from "@/components/providers/locale-provider";
 import { siteContent } from "@/content";
 
-function MarqueeRow({ items, direction = 1 }: { items: string[]; direction?: 1 | -1 }) {
+function MarqueeRow({
+  items,
+  direction = 1,
+}: {
+  items: string[];
+  direction?: 1 | -1;
+}) {
   const trackRef = useRef<HTMLDivElement | null>(null);
 
   useGSAP(
@@ -2723,10 +3012,15 @@ export function StackSection() {
         <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-accent">
           {content.eyebrow}
         </p>
-        <SplitText as="h2" className="font-display text-4xl italic leading-tight sm:text-5xl md:text-6xl">
+        <SplitText
+          as="h2"
+          className="font-display text-4xl italic leading-tight sm:text-5xl md:text-6xl"
+        >
           {content.headline}
         </SplitText>
-        <p className="mt-4 text-base text-muted-foreground sm:text-lg">{content.description}</p>
+        <p className="mt-4 text-base text-muted-foreground sm:text-lg">
+          {content.description}
+        </p>
       </header>
 
       <div className="space-y-2">
@@ -2745,7 +3039,10 @@ export function StackSection() {
             </h3>
             <ul className="flex flex-wrap gap-1.5 text-sm text-muted-foreground">
               {g.items.map((item) => (
-                <li key={item} className="rounded-md border border-border/50 px-2 py-0.5">
+                <li
+                  key={item}
+                  className="rounded-md border border-border/50 px-2 py-0.5"
+                >
                   {item}
                 </li>
               ))}
@@ -2771,6 +3068,7 @@ git commit -m "feat: Stack section with dual GSAP marquee + grouped list"
 ### Task G5: Process section (NEW)
 
 **Files:**
+
 - Create: `src/components/sections/process-section.tsx`
 
 - [ ] **Step 1: Create `src/components/sections/process-section.tsx` with the following**
@@ -2796,10 +3094,15 @@ export function ProcessSection() {
         <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-accent">
           {content.eyebrow}
         </p>
-        <SplitText as="h2" className="font-display text-4xl italic leading-tight sm:text-5xl md:text-6xl">
+        <SplitText
+          as="h2"
+          className="font-display text-4xl italic leading-tight sm:text-5xl md:text-6xl"
+        >
           {content.headline}
         </SplitText>
-        <p className="mt-4 text-base text-muted-foreground sm:text-lg">{content.description}</p>
+        <p className="mt-4 text-base text-muted-foreground sm:text-lg">
+          {content.description}
+        </p>
       </header>
 
       <div className="relative">
@@ -2813,7 +3116,11 @@ export function ProcessSection() {
               initial={{ opacity: 0, x: -16 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, delay: i * 0.06, ease: [0.23, 1, 0.32, 1] }}
+              transition={{
+                duration: 0.6,
+                delay: i * 0.06,
+                ease: [0.23, 1, 0.32, 1],
+              }}
             >
               <div className="flex items-center sm:items-start sm:justify-center">
                 <div className="relative flex h-[68px] w-[68px] items-center justify-center rounded-full border border-border/60 bg-background-elevated/80 backdrop-blur">
@@ -2824,7 +3131,9 @@ export function ProcessSection() {
               </div>
               <div className="rounded-3xl border border-border/60 bg-background-elevated/40 p-6 backdrop-blur sm:p-7">
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <h3 className="font-display text-2xl italic sm:text-3xl">{step.title}</h3>
+                  <h3 className="font-display text-2xl italic sm:text-3xl">
+                    {step.title}
+                  </h3>
                   <span className="font-mono text-xs uppercase tracking-widest text-accent">
                     {step.duration}
                   </span>
@@ -2855,6 +3164,7 @@ git commit -m "feat: Process section with vertical timeline + numbered steps"
 ### Task G6: About section
 
 **Files:**
+
 - Modify: `src/components/sections/about-section.tsx` (full replace)
 
 - [ ] **Step 1: Replace `src/components/sections/about-section.tsx` with the following**
@@ -2911,7 +3221,10 @@ export function AboutSection() {
           <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-accent">
             {content.eyebrow}
           </p>
-          <SplitText as="h2" className="font-display text-4xl italic leading-tight sm:text-5xl md:text-6xl">
+          <SplitText
+            as="h2"
+            className="font-display text-4xl italic leading-tight sm:text-5xl md:text-6xl"
+          >
             {content.headline}
           </SplitText>
           <div className="mt-6 space-y-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
@@ -2921,7 +3234,11 @@ export function AboutSection() {
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.6, delay: 0.1 + i * 0.08, ease: [0.23, 1, 0.32, 1] }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.1 + i * 0.08,
+                  ease: [0.23, 1, 0.32, 1],
+                }}
               >
                 {p}
               </motion.p>
@@ -2947,6 +3264,7 @@ git commit -m "feat: About section refactor with portrait + values + freelance c
 ### Task G7: FAQ section (NEW)
 
 **Files:**
+
 - Create: `src/components/sections/faq-section.tsx`
 
 - [ ] **Step 1: Create `src/components/sections/faq-section.tsx` with the following**
@@ -2976,10 +3294,15 @@ export function FaqSection() {
         <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-accent">
           {content.eyebrow}
         </p>
-        <SplitText as="h2" className="font-display text-4xl italic leading-tight sm:text-5xl md:text-6xl">
+        <SplitText
+          as="h2"
+          className="font-display text-4xl italic leading-tight sm:text-5xl md:text-6xl"
+        >
           {content.headline}
         </SplitText>
-        <p className="mt-4 text-base text-muted-foreground sm:text-lg">{content.description}</p>
+        <p className="mt-4 text-base text-muted-foreground sm:text-lg">
+          {content.description}
+        </p>
       </header>
 
       <div className="space-y-3">
@@ -2994,7 +3317,9 @@ export function FaqSection() {
               transition={{ duration: 0.5, delay: i * 0.04 }}
               className={cn(
                 "overflow-hidden rounded-2xl border bg-background-elevated/40 backdrop-blur transition-colors",
-                isOpen ? "border-primary/40" : "border-border/60 hover:border-border",
+                isOpen
+                  ? "border-primary/40"
+                  : "border-border/60 hover:border-border",
               )}
             >
               <button
@@ -3004,7 +3329,9 @@ export function FaqSection() {
                 aria-expanded={isOpen}
                 data-cursor="hover"
               >
-                <span className="text-base font-semibold sm:text-lg">{item.q}</span>
+                <span className="text-base font-semibold sm:text-lg">
+                  {item.q}
+                </span>
                 <motion.span
                   animate={{ rotate: isOpen ? 45 : 0 }}
                   transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
@@ -3050,6 +3377,7 @@ git commit -m "feat: FAQ section with accordion (Motion AnimatePresence)"
 ### Task G8: Contact section (CTA tiles)
 
 **Files:**
+
 - Modify: `src/components/sections/contact-section.tsx` (full replace)
 
 - [ ] **Step 1: Replace `src/components/sections/contact-section.tsx` with the following**
@@ -3059,7 +3387,15 @@ git commit -m "feat: FAQ section with accordion (Motion AnimatePresence)"
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Github, Linkedin, Mail, MessageCircle, Phone, type LucideIcon } from "lucide-react";
+import {
+  ArrowUpRight,
+  Github,
+  Linkedin,
+  Mail,
+  MessageCircle,
+  Phone,
+  type LucideIcon,
+} from "lucide-react";
 import { SplitText } from "@/components/effects/split-text";
 import { TiltCard } from "@/components/effects/tilt-card";
 import { useLocale } from "@/components/providers/locale-provider";
@@ -3086,10 +3422,15 @@ export function ContactSection() {
         <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-accent">
           {content.eyebrow}
         </p>
-        <SplitText as="h2" className="font-display text-4xl italic leading-tight sm:text-5xl md:text-6xl">
+        <SplitText
+          as="h2"
+          className="font-display text-4xl italic leading-tight sm:text-5xl md:text-6xl"
+        >
           {content.headline}
         </SplitText>
-        <p className="mt-4 text-base text-muted-foreground sm:text-lg">{content.description}</p>
+        <p className="mt-4 text-base text-muted-foreground sm:text-lg">
+          {content.description}
+        </p>
       </header>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -3102,7 +3443,11 @@ export function ContactSection() {
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, delay: i * 0.06, ease: [0.23, 1, 0.32, 1] }}
+              transition={{
+                duration: 0.6,
+                delay: i * 0.06,
+                ease: [0.23, 1, 0.32, 1],
+              }}
             >
               <TiltCard
                 max={6}
@@ -3156,6 +3501,7 @@ git commit -m "feat: Contact section with 5 channel tiles + tilt effect"
 ### Task H1: Rewrite `src/app/page.tsx` — mount sections + global effects
 
 **Files:**
+
 - Modify: `src/app/page.tsx` (full replace)
 
 - [ ] **Step 1: Replace `src/app/page.tsx` with the following**
@@ -3294,6 +3640,7 @@ npm run build
 ```
 
 Expected:
+
 - Build succeeds
 - No TypeScript errors
 - No "module not found" errors
@@ -3302,6 +3649,7 @@ Expected:
 - [ ] **Step 3: If build fails**
 
 Read the error. Most likely causes:
+
 - Missing import → add it
 - Type mismatch with new content schemas → align the consumer with `src/content/index.ts` types
 - Server/client component boundary → ensure files using GSAP / hooks / Motion start with `"use client"`
@@ -3352,6 +3700,7 @@ git commit -m "polish: final adjustments after acceptance pass"
 - [ ] **Step 3: Inform user of completion**
 
 Tell the user:
+
 - Implementation complete
 - Mention any items deferred (e.g., Lighthouse, real Zalo/LinkedIn link, real images)
 - Suggest reviewing section 14 of spec for the 5 production-blocking open questions
@@ -3362,6 +3711,7 @@ Tell the user:
 ## Summary
 
 **Total tasks:** 25
+
 - Phase A (Foundation): 5
 - Phase B (Cleanup): 1
 - Phase C (Content): 3
