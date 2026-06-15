@@ -1,35 +1,42 @@
 @import "tailwindcss";
 
 :root {
-  --background: 218 33% 98%;
-  --foreground: 222 47% 11%;
-  --muted: 216 12% 90%;
-  --muted-foreground: 215 20% 35%;
-  --border: 214 32% 92%;
-  --primary: 263 74% 58%;
+  /* Light mode tokens */
+  --background: 0 0% 98%;
+  --background-elevated: 0 0% 100%;
+  --foreground: 240 60% 8%;
+  --muted: 240 10% 92%;
+  --muted-foreground: 240 12% 38%;
+  --border: 240 14% 88%;
+  --primary: 262 83% 60%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 170 74% 45%;
-  --secondary-foreground: 167 100% 9%;
-  --accent: 221 90% 63%;
-  --ring: 263 74% 58%;
+  --secondary: 328 86% 60%;
+  --secondary-foreground: 0 0% 100%;
+  --accent: 188 95% 45%;
+  --accent-foreground: 0 0% 100%;
+  --ring: 262 83% 60%;
 }
 
 .dark {
-  --background: 222 47% 6%;
-  --foreground: 218 33% 96%;
-  --muted: 223 47% 11%;
-  --muted-foreground: 222 20% 74%;
-  --border: 223 15% 20%;
-  --primary: 263 82% 72%;
-  --primary-foreground: 262 83% 14%;
-  --secondary: 172 69% 40%;
-  --secondary-foreground: 168 85% 12%;
-  --accent: 221 90% 63%;
-  --ring: 263 82% 72%;
+  /* Dark mode tokens — Aurora studio */
+  --background: 240 56% 6%;
+  --background-elevated: 240 36% 10%;
+  --foreground: 240 20% 96%;
+  --muted: 240 32% 14%;
+  --muted-foreground: 240 12% 70%;
+  --border: 240 20% 18%;
+  --primary: 262 88% 68%;
+  --primary-foreground: 240 60% 8%;
+  --secondary: 328 86% 68%;
+  --secondary-foreground: 240 60% 8%;
+  --accent: 188 95% 60%;
+  --accent-foreground: 240 60% 8%;
+  --ring: 262 88% 68%;
 }
 
 @theme inline {
   --color-background: hsl(var(--background));
+  --color-background-elevated: hsl(var(--background-elevated));
   --color-foreground: hsl(var(--foreground));
   --color-muted: hsl(var(--muted));
   --color-muted-foreground: hsl(var(--muted-foreground));
@@ -39,9 +46,11 @@
   --color-secondary-foreground: hsl(var(--secondary-foreground));
   --color-border: hsl(var(--border));
   --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
   --color-ring: hsl(var(--ring));
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-instrument-serif);
 }
 
 @layer base {
@@ -50,7 +59,7 @@
   }
 
   html {
-    @apply scroll-smooth overflow-x-hidden;
+    @apply overflow-x-hidden;
   }
 
   body {
@@ -59,36 +68,40 @@
   }
 
   ::selection {
-    @apply bg-primary/30 text-foreground;
+    @apply bg-primary/40 text-foreground;
   }
 
-  .field-input {
-    @apply w-full rounded-2xl border border-border/60 bg-background/80 px-4 py-3.5 text-sm text-foreground shadow-inner shadow-black/5 outline-none transition-all duration-200 placeholder:text-muted-foreground/60 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 focus:shadow-md;
+  /* Aurora gradient used by hero + section accents */
+  .gradient-aurora {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 50%, hsl(var(--secondary)) 100%);
   }
 
-  /* Smooth gradient animations */
-  @keyframes gradient-shift {
-    0%, 100% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
+  .text-gradient-aurora {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 50%, hsl(var(--secondary)) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
-  .gradient-animate {
-    background-size: 200% 200%;
-    animation: gradient-shift 8s ease infinite;
-  }
-
-  /* Hide scrollbar but keep functionality */
+  /* Hide scrollbar */
   .hide-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
   .hide-scrollbar::-webkit-scrollbar {
-    display: none;  /* Chrome, Safari, Opera */
+    display: none;
+  }
+
+  /* Respect reduced motion globally */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
-
