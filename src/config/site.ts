@@ -1,19 +1,20 @@
 export const siteConfig = {
-  name: "Nguyễn Mạnh Hùng · Portfolio",
+  name: "Nguyễn Mạnh Hùng — Freelance Web Developer",
   description:
-    "Intern Web Developer passionate about building modern web applications with React, Next.js, and Node.js. Currently a 3rd-year IT student.",
+    "Tôi xây website nhanh, đẹp, chạy mượt — từ landing page đến web app full-stack. Freelance Web Developer tại Hà Nội, làm việc với React, Next.js, Node.js.",
   url: "http://nmhx.info",
   ogImage: "/og-cover.svg",
   keywords: [
-    "web developer",
-    "intern",
+    "freelance web developer",
+    "thuê làm website",
+    "web developer hanoi",
+    "next.js developer",
+    "react developer",
+    "node.js developer",
+    "full-stack developer vietnam",
     "portfolio",
-    "next.js",
-    "react",
-    "node.js",
-    "full-stack",
-    "typescript",
-    "mongodb",
+    "nmhx",
+    "nguyen manh hung",
   ],
   authors: [{ name: "Nguyễn Mạnh Hùng", url: "http://nmhx.info" }],
   creator: "Nguyễn Mạnh Hùng",
@@ -21,5 +22,3 @@ export const siteConfig = {
 };
 
 export type SiteConfig = typeof siteConfig;
-
-
