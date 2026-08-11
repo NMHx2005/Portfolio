@@ -43,7 +43,7 @@ export interface FaqItem {
 }
 
 export interface ContactChannel {
-  type: "email" | "zalo" | "phone" | "github" | "linkedin";
+  type: "email" | "zalo" | "phone" | "github" | "linkedin" | "telegram";
   label: string;
   value: string;
   href: string;
@@ -122,8 +122,8 @@ const sharedSkills = [
 ];
 
 const sharedProjectImages = {
-  lms: "/projects/aurora-cover.svg",
-  minhloc: "/projects/pulse-dashboard.svg",
+  hnwedding: "/projects/hnwedding-cover.svg",
+  hadi: "/projects/hadi-cover.svg",
 };
 
 export const siteContent: Record<Locale, SiteContent> = {
@@ -203,54 +203,48 @@ export const siteContent: Record<Locale, SiteContent> = {
         "Hai case study tiêu biểu. Cả hai đều đang chạy thật ngoài production.",
       items: [
         {
-          title: "Learning Management System",
-          category: "E-Learning · Full-stack",
+          title: "HNWedding",
+          category: "Thiệp cưới điện tử · Agency Platform",
           problem:
-            "Một startup giáo dục cần nền tảng quản lý khóa học, học viên, nội dung — không muốn dùng WordPress vì khó tùy biến.",
+            "Các cặp đôi muốn thiệp cưới online đẹp, cá nhân hóa theo câu chuyện riêng — công cụ kéo-thả có sẵn không đủ tinh tế, còn thuê dev riêng cho từng thiệp thì không mở rộng được.",
           solution:
-            "Hệ thống full-stack riêng: React + TypeScript + Material-UI frontend, Node.js + Express + MongoDB backend, RESTful API.",
+            "Xây nền tảng vận hành kiểu agency: khách đặt đơn công khai, đội ngũ dựng thiệp qua block editor riêng rồi xuất bản tại URL /thiep/[slug]. Next.js 16 + Prisma 7 trên Supabase PostgreSQL, thanh toán VietQR/PayOS, ảnh lưu Cloudflare R2.",
           highlights: [
-            "Backend Node.js + Express + MongoDB với TypeScript",
-            "Frontend React + TypeScript + Material-UI",
-            "Quản lý khóa học, học viên, payment, role",
-            "Đang chạy production tại lms-vietnam.xyz",
+            "Luồng đặt đơn công khai → admin dựng & xuất bản thiệp qua block editor riêng",
+            "Next.js 16 App Router + Prisma 7 + Supabase PostgreSQL, TypeScript strict",
+            "Thanh toán VietQR/PayOS, email tự động qua Resend",
+            "4+ theme thiệp dựng sẵn (Gold Philosopher, Sage Classic, Wing Door...)",
           ],
           metrics: [
-            { label: "Khóa học", value: "50+" },
-            { label: "Học viên", value: "500+" },
-            { label: "Uptime", value: "99.9%" },
+            { label: "Theme thiệp", value: "4+" },
+            { label: "DB migrations", value: "16" },
+            { label: "Commits", value: "159+" },
           ],
-          techStack: ["React", "TypeScript", "Node.js", "Express", "MongoDB", "Material-UI"],
-          links: [
-            { label: "Xem website", href: "https://www.lms-vietnam.xyz/", variant: "primary", external: true },
-            { label: "GitHub", href: "https://github.com/NMHx2005/lms-frontend", variant: "secondary", external: true },
-          ],
-          image: { src: sharedProjectImages.lms, alt: "Learning Management System preview" },
+          techStack: ["Next.js 16", "TypeScript", "Prisma 7", "PostgreSQL", "Auth.js", "PayOS"],
+          links: [],
+          image: { src: sharedProjectImages.hnwedding, alt: "HNWedding invitation platform preview" },
         },
         {
-          title: "MinhLoc Group",
-          category: "Real Estate + E-Commerce",
+          title: "Hadi",
+          category: "Ứng dụng di động · React Native",
           problem:
-            "MinhLoc Group bán cả bất động sản và sản phẩm nhân sâm, cần 1 nền tảng thống nhất, SEO tốt, tốc độ cao.",
+            "Người học tiếng Hàn, Nhật cần phụ đề dịch theo thời gian thực trong buổi giảng kèm ghi chú có mốc thời gian — đa số app dịch giọng nói chỉ hỗ trợ 1 chiều, độ trễ cao, hoặc không lưu lại được bài học.",
           solution:
-            "Next.js 14 SSR + Material-UI cho SEO, backend Node.js + Express + MongoDB, tích hợp Cloudinary, JWT auth, email service.",
+            "App Expo/React Native dùng Soniox stt-rt-v5 stream 2 chiều Hàn/Nhật ↔ Việt trên cùng 1 socket, dịch hybrid Gemini → Claude fallback qua Cloud Functions, lưu offline-first bằng SQLite rồi đồng bộ Firestore sau buổi học.",
           highlights: [
-            "Next.js 14 SSR cho SEO",
-            "Backend Node.js + TypeScript + MongoDB",
-            "Cloudinary media, JWT auth, email service",
-            "Đạt PageSpeed Insights 9x",
+            "Phụ đề song ngữ realtime qua Soniox stt-rt-v5 (WebSocket thô, không SDK)",
+            "Dịch hybrid: Gemini 3.5 Flash-Lite → Gemini 3.6 Flash → Claude fallback",
+            "Offline-first với expo-sqlite, đồng bộ Firestore đa thiết bị",
+            "Đăng nhập Apple/Email qua Firebase Auth, tuân thủ Apple HIG",
           ],
           metrics: [
-            { label: "PageSpeed", value: "94" },
-            { label: "Sản phẩm", value: "200+" },
-            { label: "SEO score", value: "9x" },
+            { label: "Ngôn ngữ", value: "3" },
+            { label: "Phiên bản", value: "V6" },
+            { label: "Commits", value: "332+" },
           ],
-          techStack: ["Next.js 14", "TypeScript", "Material-UI", "Node.js", "MongoDB", "Cloudinary"],
-          links: [
-            { label: "Xem website", href: "https://www.minhlocgroup.vn/", variant: "primary", external: true },
-            { label: "GitHub", href: "https://github.com/NMHx2005/MinhLoc_FE", variant: "secondary", external: true },
-          ],
-          image: { src: sharedProjectImages.minhloc, alt: "MinhLoc Group platform preview" },
+          techStack: ["React Native", "Expo", "TypeScript", "Firebase", "Soniox", "Gemini"],
+          links: [],
+          image: { src: sharedProjectImages.hadi, alt: "Hadi lecture translation app preview" },
         },
       ],
     },
@@ -362,34 +356,16 @@ export const siteContent: Record<Locale, SiteContent> = {
         "Sẵn sàng nhận dự án mới. Chọn kênh tiện nhất với bạn, mình sẽ trả lời trong vòng 24 giờ.",
       channels: [
         {
-          type: "email",
-          label: "Email",
-          value: "",
-          href: "mailto:",
-        },
-        {
-          type: "zalo",
-          label: "Zalo",
-          value: "+84 971 084 430",
-          href: "https://zalo.me/0971084430",
-        },
-        {
           type: "phone",
           label: "Phone",
           value: "+84 971 084 430",
           href: "tel:+84971084430",
         },
         {
-          type: "github",
-          label: "GitHub",
-          value: "@NMHx2005",
-          href: "https://github.com/NMHx2005",
-        },
-        {
-          type: "linkedin",
-          label: "LinkedIn",
-          value: "Chưa có",
-          href: "https://www.linkedin.com/",
+          type: "telegram",
+          label: "Telegram",
+          value: "@nmhx_white",
+          href: "https://t.me/nmhx_white",
         },
       ],
     },
@@ -481,54 +457,48 @@ export const siteContent: Record<Locale, SiteContent> = {
       description: "Two flagship case studies. Both running in production today.",
       items: [
         {
-          title: "Learning Management System",
-          category: "E-Learning · Full-stack",
+          title: "HNWedding",
+          category: "Wedding Invitation Platform · Agency SaaS",
           problem:
-            "An education startup needed a custom platform for courses, students, and content — WordPress couldn't be customized enough.",
+            "Couples want a beautiful, personalized online wedding invitation — off-the-shelf drag-and-drop builders aren't refined enough, and hiring a developer per couple doesn't scale.",
           solution:
-            "Custom full-stack: React + TypeScript + Material-UI frontend, Node.js + Express + MongoDB backend, RESTful API.",
+            "Built an agency-operated platform: customers submit an order publicly, the team assembles the invitation with a custom block editor, then publishes it at /thiep/[slug]. Next.js 16 + Prisma 7 on Supabase PostgreSQL, VietQR/PayOS payments, images on Cloudflare R2.",
           highlights: [
-            "Node.js + Express + MongoDB backend in TypeScript",
-            "React + TypeScript + Material-UI frontend",
-            "Course, student, payment, role management",
-            "Live in production at lms-vietnam.xyz",
+            "Public order intake → admin builds & publishes invitations via a custom block editor",
+            "Next.js 16 App Router + Prisma 7 + Supabase PostgreSQL, strict TypeScript",
+            "VietQR/PayOS payments, automated email via Resend",
+            "4+ ready-made invitation themes (Gold Philosopher, Sage Classic, Wing Door...)",
           ],
           metrics: [
-            { label: "Courses", value: "50+" },
-            { label: "Students", value: "500+" },
-            { label: "Uptime", value: "99.9%" },
+            { label: "Card themes", value: "4+" },
+            { label: "DB migrations", value: "16" },
+            { label: "Commits", value: "159+" },
           ],
-          techStack: ["React", "TypeScript", "Node.js", "Express", "MongoDB", "Material-UI"],
-          links: [
-            { label: "Live site", href: "https://www.lms-vietnam.xyz/", variant: "primary", external: true },
-            { label: "GitHub", href: "https://github.com/NMHx2005/lms-frontend", variant: "secondary", external: true },
-          ],
-          image: { src: sharedProjectImages.lms, alt: "Learning Management System preview" },
+          techStack: ["Next.js 16", "TypeScript", "Prisma 7", "PostgreSQL", "Auth.js", "PayOS"],
+          links: [],
+          image: { src: sharedProjectImages.hnwedding, alt: "HNWedding invitation platform preview" },
         },
         {
-          title: "MinhLoc Group",
-          category: "Real Estate + E-Commerce",
+          title: "Hadi",
+          category: "Mobile App · React Native",
           problem:
-            "MinhLoc Group sells both real estate and ginseng products — needed one unified platform with great SEO and fast load times.",
+            "Students learning Korean/Japanese need real-time translated subtitles during lectures with timestamped notes — most speech-translation apps are one-directional, laggy, or don't save the session.",
           solution:
-            "Next.js 14 SSR + Material-UI for SEO, Node.js + Express + MongoDB backend, Cloudinary, JWT auth, email service.",
+            "Expo/React Native app streaming bidirectional Korean/Japanese ↔ Vietnamese through Soniox stt-rt-v5 on a single socket, hybrid Gemini → Claude fallback translation via Cloud Functions, offline-first SQLite storage synced to Firestore after each session.",
           highlights: [
-            "Next.js 14 SSR for SEO",
-            "Node.js + TypeScript + MongoDB backend",
-            "Cloudinary media, JWT auth, email service",
-            "PageSpeed Insights 9x",
+            "Realtime bilingual subtitles via Soniox stt-rt-v5 (raw WebSocket, no SDK)",
+            "Hybrid translation: Gemini 3.5 Flash-Lite → Gemini 3.6 Flash → Claude fallback",
+            "Offline-first with expo-sqlite, multi-device sync via Firestore",
+            "Apple/Email sign-in via Firebase Auth, Apple HIG compliant",
           ],
           metrics: [
-            { label: "PageSpeed", value: "94" },
-            { label: "Products", value: "200+" },
-            { label: "SEO score", value: "9x" },
+            { label: "Languages", value: "3" },
+            { label: "Version", value: "V6" },
+            { label: "Commits", value: "332+" },
           ],
-          techStack: ["Next.js 14", "TypeScript", "Material-UI", "Node.js", "MongoDB", "Cloudinary"],
-          links: [
-            { label: "Live site", href: "https://www.minhlocgroup.vn/", variant: "primary", external: true },
-            { label: "GitHub", href: "https://github.com/NMHx2005/MinhLoc_FE", variant: "secondary", external: true },
-          ],
-          image: { src: sharedProjectImages.minhloc, alt: "MinhLoc Group platform preview" },
+          techStack: ["React Native", "Expo", "TypeScript", "Firebase", "Soniox", "Gemini"],
+          links: [],
+          image: { src: sharedProjectImages.hadi, alt: "Hadi lecture translation app preview" },
         },
       ],
     },
@@ -637,34 +607,16 @@ export const siteContent: Record<Locale, SiteContent> = {
       description: "Available for new projects. Pick your favorite channel — I respond within 24 hours.",
       channels: [
         {
-          type: "email",
-          label: "Email",
-          value: "",
-          href: "mailto:",
-        },
-        {
-          type: "zalo",
-          label: "Zalo",
-          value: "+84 971 084 430",
-          href: "https://zalo.me/0971084430",
-        },
-        {
           type: "phone",
           label: "Phone",
           value: "+84 971 084 430",
           href: "tel:+84971084430",
         },
         {
-          type: "github",
-          label: "GitHub",
-          value: "@NMHx2005",
-          href: "https://github.com/NMHx2005",
-        },
-        {
-          type: "linkedin",
-          label: "LinkedIn",
-          value: "Not yet",
-          href: "https://www.linkedin.com/",
+          type: "telegram",
+          label: "Telegram",
+          value: "@nmhx_white",
+          href: "https://t.me/nmhx_white",
         },
       ],
     },

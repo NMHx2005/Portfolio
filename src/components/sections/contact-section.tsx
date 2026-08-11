@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Github, Linkedin, Mail, MessageCircle, Phone, type LucideIcon } from "lucide-react";
+import { ArrowUpRight, Github, Linkedin, Mail, MessageCircle, Phone, Send, type LucideIcon } from "lucide-react";
 import { SplitText } from "@/components/effects/split-text";
 import { TiltCard } from "@/components/effects/tilt-card";
 import { useLocale } from "@/components/providers/locale-provider";
@@ -14,6 +14,7 @@ const iconMap: Record<ContactChannel["type"], LucideIcon> = {
   phone: Phone,
   github: Github,
   linkedin: Linkedin,
+  telegram: Send,
 };
 
 export function ContactSection() {

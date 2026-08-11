@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400">
+  <defs>
+    <linearGradient id="bgHadi" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B1226" />
+      <stop offset="100%" stop-color="#111C3A" />
+    </linearGradient>
+    <linearGradient id="waveHadi" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#22D3EE" />
+      <stop offset="100%" stop-color="#818CF8" />
+    </linearGradient>
+  </defs>
+  <rect width="640" height="400" fill="url(#bgHadi)" rx="32" />
+  <rect x="216" y="44" width="208" height="312" rx="36" fill="#0F1730" stroke="#2A3B66" stroke-width="4" />
+  <rect x="234" y="76" width="172" height="248" rx="16" fill="#182448" />
+  <rect x="250" y="100" width="140" height="10" rx="5" fill="#22D3EE" opacity="0.85" />
+  <rect x="250" y="122" width="110" height="8" rx="4" fill="#94A3D8" opacity="0.5" />
+  <rect x="250" y="150" width="140" height="10" rx="5" fill="#818CF8" opacity="0.85" />
+  <rect x="250" y="172" width="96" height="8" rx="4" fill="#94A3D8" opacity="0.5" />
+  <rect x="250" y="200" width="140" height="10" rx="5" fill="#22D3EE" opacity="0.6" />
+  <rect x="250" y="222" width="120" height="8" rx="4" fill="#94A3D8" opacity="0.4" />
+  <polyline points="250,270 262,254 274,278 286,246 298,266 310,238 322,262 334,250 346,274 358,244 370,264 382,256"
+    fill="none" stroke="url(#waveHadi)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="320" cy="308" r="14" fill="url(#waveHadi)" opacity="0.9" />
+  <text x="56" y="378" font-family="Inter, Arial" font-size="20" fill="#C7D2FE" opacity="0.85">
+    Hadi · Realtime Lecture Translation App
+  </text>
+</svg>
