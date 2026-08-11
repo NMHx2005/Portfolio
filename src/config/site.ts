@@ -2,8 +2,8 @@ export const siteConfig = {
   name: "Nguyễn Mạnh Hùng — Freelance Web Developer",
   description:
     "Tôi xây website nhanh, đẹp, chạy mượt — từ landing page đến web app full-stack. Freelance Web Developer tại Hà Nội, làm việc với React, Next.js, Node.js.",
-  url: "http://nmhx.info",
-  ogImage: "/og-cover.svg",
+  url: "https://www.nmhx.info",
+  ogImage: "/og-cover.png",
   keywords: [
     "freelance web developer",
     "thuê làm website",
@@ -16,7 +16,7 @@ export const siteConfig = {
     "nmhx",
     "nguyen manh hung",
   ],
-  authors: [{ name: "Nguyễn Mạnh Hùng", url: "http://nmhx.info" }],
+  authors: [{ name: "Nguyễn Mạnh Hùng", url: "https://www.nmhx.info" }],
   creator: "Nguyễn Mạnh Hùng",
   twitter: "@NMHx2005",
 };

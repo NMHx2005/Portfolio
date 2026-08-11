@@ -64,6 +64,23 @@ export const metadata: Metadata = {
   },
 };
 
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Nguyễn Mạnh Hùng",
+  jobTitle: "Freelance Web Developer",
+  url: siteUrl,
+  image: `${siteUrl}${siteConfig.ogImage}`,
+  description: siteConfig.description,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Hà Nội",
+    addressCountry: "VN",
+  },
+  sameAs: ["https://t.me/nmhx_white", "https://github.com/NMHx2005"],
+  knowsAbout: ["React", "Next.js", "TypeScript", "Node.js", "Express", "MongoDB"],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -71,6 +88,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} min-h-screen w-full overflow-x-hidden bg-background font-sans text-foreground antialiased`}
       >
