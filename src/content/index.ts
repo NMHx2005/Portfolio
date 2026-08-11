@@ -122,8 +122,8 @@ const sharedSkills = [
 ];
 
 const sharedProjectImages = {
-  hnwedding: "/projects/hnwedding-cover.svg",
-  hadi: "/projects/hadi-cover.svg",
+  hnwedding: "/projects/hnwedding-cover.png",
+  hadi: "/projects/hadi-cover.png",
 };
 
 export const siteContent: Record<Locale, SiteContent> = {
