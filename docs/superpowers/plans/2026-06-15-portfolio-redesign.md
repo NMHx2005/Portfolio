@@ -1,5 +1,7 @@
 # Portfolio Redesign Implementation Plan
 
+> **Superseded** by the 2026-10-10 Product Engineer redesign (`docs/superpowers/specs/2026-10-10-product-engineer-redesign-design.md`). Kept for history.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Rebuild the Next.js portfolio into a "Dark Aurora Studio" freelance-positioning site with heavy GSAP + Framer Motion effects, 8 redesigned sections, and a multi-channel contact block.

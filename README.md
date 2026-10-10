@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nguyễn Mạnh Hùng — Portfolio
 
-## Getting Started
+Bilingual (vi/en) portfolio for a product engineer working on web and mobile. Next.js 16 App Router; content pages are prerendered per locale and a proxy negotiates the locale per request.
 
-First, run the development server:
+## Scripts
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+| Command | What it does |
+|---|---|
+| `npm run dev` | Dev server (webpack) |
+| `npm run build` / `npm start` | Production build / serve |
+| `npm run lint` · `npm run typecheck` | ESLint · TypeScript |
+| `npm test` | Vitest unit tests |
+| `npm run e2e` | Playwright against the dev server on port 3100 |
+| `npm run e2e:prod` | Builds, then runs Playwright against `next start` on port 3101 (stop any dev server first — both use `.next`) |
+| `npm run check:content` | Lists optional owner inputs still missing (email, portrait, CV, project links, roles) |
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `src/app/[locale]/…` — pages (`/vi`, `/en`, `/{locale}/projects/{slug}`), OG images
+- `src/proxy.ts` — redirects un-prefixed URLs to a locale (cookie → Accept-Language → vi)
+- `src/content/` — `projects.ts` (language-neutral facts), `vi.ts` / `en.ts` (typed dictionaries)
+- `src/components/` — server sections + a few client islands (theme, language, mobile nav, command palette, reveal, copy-email)
+- `src/app/globals.css` — design tokens (light/dark) and motion primitives
+- `e2e/` — Playwright specs · `scripts/` — content readiness check
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Content rules
 
-## Learn More
+Dictionaries hold only facts. Roles, rationale/trade-offs and the public email are optional fields: leave them out until they are confirmed, and components render nothing for them.
 
-To learn more about Next.js, take a look at the following resources:
+## Adding a project
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Add the slug to `ProjectSlug` (`content/types.ts`) and `projectSlugs`; add its data to `projectsData`.
+2. Add a `ProjectCopy` for it in **both** `vi.ts` and `en.ts` (the type checker and `content.test.ts` enforce parity).
+3. Drop a 4:3 cover in `public/projects/`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Configuration
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `NEXT_PUBLIC_SITE_URL` — canonical origin for metadata, sitemap, robots and JSON-LD (defaults to `siteConfig.url`).
+- `src/config/site.ts` — contact channels, portrait, CV, hero stack, `contentUpdated` (bump when content changes; it feeds the sitemap and the hero's "Updated" date).

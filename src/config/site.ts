@@ -1,14 +1,7 @@
 export interface SiteConfig {
-  // Legacy fields — still read by the old layout/sitemap/robots until Task 18.
   name: string;
-  description: string;
   url: string;
-  ogImage: string;
-  keywords: string[];
-  authors: { name: string; url: string }[];
-  creator: string;
   twitter: string;
-  // New fields.
   jobTitle: string;
   contentUpdated: string;
   contact: {
@@ -24,13 +17,7 @@ export interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   name: "Nguyễn Mạnh Hùng",
-  description:
-    "Product engineer tại Hà Nội: xây sản phẩm web và mobile từ ý tưởng đến production. React, Next.js, React Native, Node.js.",
   url: "https://www.nmhx.info",
-  ogImage: "/og-cover.png",
-  keywords: ["product engineer", "next.js developer", "react native developer", "full-stack developer vietnam", "nmhx"],
-  authors: [{ name: "Nguyễn Mạnh Hùng", url: "https://www.nmhx.info" }],
-  creator: "Nguyễn Mạnh Hùng",
   twitter: "@NMHx2005",
   jobTitle: "Product Engineer",
   contentUpdated: "2026-10-10",

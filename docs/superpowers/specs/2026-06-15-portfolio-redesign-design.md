@@ -1,5 +1,7 @@
 # Portfolio Redesign — Dark Aurora Studio
 
+> **Superseded** by the 2026-10-10 Product Engineer redesign (`docs/superpowers/specs/2026-10-10-product-engineer-redesign-design.md`). Kept for history.
+
 **Date**: 2026-06-15
 **Owner**: Nguyễn Mạnh Hùng
 **Status**: Approved, ready for implementation plan
