@@ -3,7 +3,17 @@ import type { SectionHead, SectionId } from "@/content/types";
 import { delay } from "@/lib/css-vars";
 import { Container } from "./container";
 
-export function Section({ id, head, children }: { id: SectionId; head: SectionHead; children: ReactNode }) {
+export function Section({
+  id,
+  head,
+  children,
+  wide = false,
+}: {
+  id: SectionId;
+  head: SectionHead;
+  children: ReactNode;
+  wide?: boolean;
+}) {
   return (
     <section id={id} aria-labelledby={`${id}-heading`} className="border-t border-border py-24 md:py-32">
       <Container>
@@ -25,9 +35,10 @@ export function Section({ id, head, children }: { id: SectionId; head: SectionHe
                 {head.lede}
               </p>
             ) : null}
-            <div className="mt-12 md:mt-16">{children}</div>
+            {wide ? null : <div className="mt-12 md:mt-16">{children}</div>}
           </div>
         </div>
+        {wide ? <div className="mt-14 md:mt-20">{children}</div> : null}
       </Container>
     </section>
   );

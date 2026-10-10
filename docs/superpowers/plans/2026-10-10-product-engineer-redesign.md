@@ -3028,9 +3028,11 @@ test("under reduced motion the hover effect does not move the image", async ({ p
   test.skip(isMobile, "hover is a pointer interaction");
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/en");
-  const image = page.locator("#projects article img").first();
-  await image.scrollIntoViewIfNeeded();
-  await image.hover();
+  const card = page.locator("#projects article").first();
+  const image = card.locator("img");
+  await card.scrollIntoViewIfNeeded();
+  // The stretched title link covers the whole card, so hover the card itself, not the image.
+  await card.hover();
   await expect(image).toHaveCSS("transform", "none");
 });
 ```
@@ -3262,7 +3264,8 @@ const hadi = getDictionary("en").work.items.hadi;
 
 test("navigating from the home work block opens the case study", async ({ page }) => {
   await page.goto("/en");
-  await page.locator("#projects article").nth(1).locator("img").click();
+  // The stretched title link covers the whole card; clicking the card navigates.
+  await page.locator("#projects article").nth(1).click();
   await expect(page).toHaveURL(/\/en\/projects\/hadi$/);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Hadi");
 });
@@ -5444,10 +5447,10 @@ test.describe("reduced motion", () => {
     await expect(page.locator(".scroll-progress")).toBeHidden();
 
     if (!isMobile) {
-      const image = page.locator("#projects article img").first();
-      await image.scrollIntoViewIfNeeded();
-      await image.hover();
-      await expect(image).toHaveCSS("transform", "none");
+      const card = page.locator("#projects article").first();
+      await card.scrollIntoViewIfNeeded();
+      await card.hover(); // the stretched title link covers the card, so hover the card, not the image
+      await expect(card.locator("img")).toHaveCSS("transform", "none");
     }
 
     await page.locator("#faq summary").first().click();
