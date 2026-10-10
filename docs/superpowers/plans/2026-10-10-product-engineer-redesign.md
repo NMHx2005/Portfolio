@@ -2708,7 +2708,7 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
           <Link
             href={home}
             aria-label={`NMHx — ${siteConfig.name}`}
-            className="inline-flex h-11 items-center font-mono text-sm font-semibold tracking-tight"
+            className="inline-flex h-11 min-w-11 items-center font-mono text-sm font-semibold tracking-tight"
           >
             NMHx<span className="text-accent">.</span>
           </Link>
@@ -4077,7 +4077,7 @@ export function ContactSection({ dict }: { dict: Dictionary }) {
   ].filter((row) => primaryIsEmail || row.key !== "telegram");
 
   const bigLink =
-    "break-all text-[clamp(1.25rem,4.5vw,3rem)] font-semibold tracking-[-0.03em] transition-colors hover:text-accent";
+    "inline-flex min-h-11 items-center break-all text-[clamp(1.25rem,4.5vw,3rem)] font-semibold tracking-[-0.03em] transition-colors hover:text-accent";
 
   return (
     <Section id="contact" head={dict.sections.contact}>
@@ -5420,7 +5420,8 @@ test("section anchors land below the fixed header", async ({ page, isMobile }) =
 
 test("old shared links still work: /#projects (through the locale redirect) and /en#stack", async ({ page }) => {
   await page.goto("/#projects");
-  await expect(page).toHaveURL(/\/vi#projects$/);
+  // The fragment survives the locale redirect; the locale itself follows Chromium's Accept-Language (en-US).
+  await expect(page).toHaveURL(/\/(vi|en)#projects$/);
   await expect(page.locator("#projects")).toBeInViewport();
 
   await page.goto("/en#stack");
@@ -5485,7 +5486,11 @@ test("when scripts run, the reveal arms itself: below-the-fold content waits, on
   await expect(below).toHaveCSS("opacity", "0");
   await below.scrollIntoViewIfNeeded();
   await expect(below).toHaveCSS("opacity", "1");
-  await expect(page.locator("#projects h2")).toHaveCSS("opacity", "1");
+
+  // A section that is already on screen at load (deep link) must never be hidden by arming.
+  await page.goto("/en#faq");
+  await expect(page.locator("html")).toHaveAttribute("data-reveal-ready", "");
+  await expect(page.locator("#faq h2")).toHaveCSS("opacity", "1");
 });
 
 test("scrolling the whole page reveals every section", async ({ page }) => {
