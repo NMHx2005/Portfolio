@@ -1,24 +1,33 @@
-export const siteConfig = {
-  name: "Nguyễn Mạnh Hùng — Freelance Web Developer",
-  description:
-    "Tôi xây website nhanh, đẹp, chạy mượt — từ landing page đến web app full-stack. Freelance Web Developer tại Hà Nội, làm việc với React, Next.js, Node.js.",
-  url: "https://www.nmhx.info",
-  ogImage: "/og-cover.png",
-  keywords: [
-    "freelance web developer",
-    "thuê làm website",
-    "web developer hanoi",
-    "next.js developer",
-    "react developer",
-    "node.js developer",
-    "full-stack developer vietnam",
-    "portfolio",
-    "nmhx",
-    "nguyen manh hung",
-  ],
-  authors: [{ name: "Nguyễn Mạnh Hùng", url: "https://www.nmhx.info" }],
-  creator: "Nguyễn Mạnh Hùng",
-  twitter: "@NMHx2005",
-};
+export interface SiteConfig {
+  name: string;
+  url: string;
+  twitter: string;
+  jobTitle: string;
+  contentUpdated: string;
+  contact: {
+    email: string | null;
+    telegram: { handle: string; url: string };
+    phone: { display: string; href: string };
+    github: string;
+    cv: string | null;
+  };
+  portrait: { src: string; width: number; height: number } | null;
+  heroStack: string[];
+}
 
-export type SiteConfig = typeof siteConfig;
+export const siteConfig: SiteConfig = {
+  name: "Nguyễn Mạnh Hùng",
+  url: "https://www.nmhx.info",
+  twitter: "@NMHx2005",
+  jobTitle: "Product Engineer",
+  contentUpdated: "2026-10-10",
+  contact: {
+    email: null, // set only to an address the owner has approved for publication (Appendix A)
+    telegram: { handle: "@nmhx_white", url: "https://t.me/nmhx_white" },
+    phone: { display: "+84 971 084 430", href: "tel:+84971084430" },
+    github: "https://github.com/NMHx2005",
+    cv: null,
+  },
+  portrait: null,
+  heroStack: ["React", "Next.js", "TypeScript", "React Native", "Node.js", "PostgreSQL", "Firebase"],
+};

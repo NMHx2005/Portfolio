@@ -1,72 +1,56 @@
-"use client";
-
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { SplitText } from "@/components/effects/split-text";
-import { useLocale } from "@/components/providers/locale-provider";
-import { siteContent } from "@/content";
+import { Section } from "@/components/ui/section";
+import { siteConfig } from "@/config/site";
+import type { Dictionary } from "@/content/types";
+import { cn } from "@/lib/utils";
 
-export function AboutSection() {
-  const { locale } = useLocale();
-  const content = siteContent[locale].about;
+export function AboutSection({ dict }: { dict: Dictionary }) {
+  const { about } = dict;
+  const portrait = siteConfig.portrait;
 
   return (
-    <section
-      id="about"
-      className="relative mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-10 lg:py-40"
-    >
-      <div className="grid items-start gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7, ease: [0.23, 1, 0.32, 1] }}
-          className="flex flex-col gap-6"
-        >
-          <div className="relative mx-auto aspect-square w-48 overflow-hidden rounded-3xl border border-border/60 bg-background-elevated/60 sm:w-64 lg:mx-0">
-            <Image
-              src="/portrait.svg"
-              alt="Portrait"
-              fill
-              className="object-cover"
-              sizes="(min-width: 1024px) 256px, 192px"
-            />
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            {content.values.map((v) => (
-              <span
-                key={v}
-                className="rounded-full border border-border/60 bg-background-elevated/40 px-4 py-1.5 text-sm font-medium text-foreground/80 backdrop-blur"
-              >
-                {v}
-              </span>
-            ))}
-          </div>
-        </motion.div>
+    <Section id="about" head={dict.sections.about}>
+      <div className={cn("grid gap-12", portrait && "lg:grid-cols-[14rem_1fr]")}>
+        {portrait ? (
+          <Image
+            src={portrait.src}
+            alt={about.portraitAlt}
+            width={portrait.width}
+            height={portrait.height}
+            sizes="(min-width: 1024px) 224px, 60vw"
+            className="h-auto w-full max-w-56 rounded-xl border border-border object-cover"
+          />
+        ) : null}
 
         <div>
-          <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-accent">
-            {content.eyebrow}
-          </p>
-          <SplitText as="h2" className="font-display text-4xl italic leading-tight sm:text-5xl md:text-6xl">
-            {content.headline}
-          </SplitText>
-          <div className="mt-6 space-y-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
-            {content.paragraphs.map((p, i) => (
-              <motion.p
-                key={i}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.6, delay: 0.1 + i * 0.08, ease: [0.23, 1, 0.32, 1] }}
-              >
-                {p}
-              </motion.p>
+          <div data-reveal className="max-w-2xl space-y-5 text-pretty text-lg text-fg-muted">
+            {about.paragraphs.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </div>
+
+          <ul
+            aria-label={about.principlesLabel}
+            className="mt-14 flex flex-wrap gap-x-8 gap-y-2 border-t border-border pt-8 font-medium"
+          >
+            {about.principles.map((principle) => (
+              <li key={principle}>{principle}</li>
+            ))}
+          </ul>
+
+          <h3 id="stack" className="mt-14 text-sm font-medium text-fg-muted">
+            {about.skillsTitle}
+          </h3>
+          <div className="mt-6 divide-y divide-border border-y border-border">
+            {about.skillGroups.map((group) => (
+              <div key={group.name} data-skill-group className="grid gap-2 py-4 sm:grid-cols-[11rem_1fr] sm:gap-6">
+                <p className="text-sm text-fg-subtle">{group.name}</p>
+                <p className="font-mono text-xs leading-6 text-fg-muted">{group.items.join(" · ")}</p>
+              </div>
             ))}
           </div>
         </div>
       </div>
-    </section>
+    </Section>
   );
 }
