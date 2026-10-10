@@ -3,6 +3,8 @@ import { JsonLd } from "@/components/json-ld";
 import { PageShell } from "@/components/page-shell";
 import { HeroSection } from "@/components/sections/hero-section";
 import { AboutSection } from "@/components/sections/about-section";
+import { FaqSection } from "@/components/sections/faq-section";
+import { ProcessSection } from "@/components/sections/process-section";
 import { ServicesSection } from "@/components/sections/services-section";
 import { WorkSection } from "@/components/sections/work-section";
 import { getDictionary } from "@/content/dictionary";
@@ -22,6 +24,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <WorkSection locale={locale} dict={dict} />
       <ServicesSection dict={dict} />
       <AboutSection dict={dict} />
+      <ProcessSection dict={dict} />
+      <FaqSection dict={dict} />
     </PageShell>
   );
 }
