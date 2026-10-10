@@ -89,6 +89,7 @@ export function CaseStudyView({ locale, dict, slug }: { locale: Locale; dict: Di
             alt={copy.imageAlt}
             width={data.image.width}
             height={data.image.height}
+            priority
             sizes="(min-width: 1152px) 1088px, 100vw"
             className="h-auto w-full"
           />

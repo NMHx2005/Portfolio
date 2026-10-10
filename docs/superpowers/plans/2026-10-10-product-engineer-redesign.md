@@ -3502,6 +3502,7 @@ export function CaseStudyView({ locale, dict, slug }: { locale: Locale; dict: Di
             alt={copy.imageAlt}
             width={data.image.width}
             height={data.image.height}
+            priority
             sizes="(min-width: 1152px) 1088px, 100vw"
             className="h-auto w-full"
           />
@@ -3616,7 +3617,7 @@ export function CaseStudyView({ locale, dict, slug }: { locale: Locale; dict: Di
 }
 ```
 
-> Case-study images are intentionally **not** `priority`; Task 20 decides from measured LCP data whether the case-study image on mobile needs it.
+> The case-study cover is `priority`: Task 20 measured it as the mobile LCP element, and a lazy-loaded cover cost ~1.5 s of resource-load delay (LCP 2.91 s → 1.72 s with `priority`). The work-block images on the home page stay lazy.
 
 - [ ] **Step 5: Implement the route**
 
@@ -5545,7 +5546,7 @@ git commit -m "test: add axe, overflow, touch-target, legacy-link, motion and sc
 ```bash
 npm run build && npm run start -- -p 3101
 ```
-With the chrome-devtools MCP `lighthouse_audit` use the **mobile** form factor with default simulated throttling, a fresh browser profile and no extensions, on `http://localhost:3101/vi`, `/en`, `/vi/projects/hadi`. Run each URL **5 times** and record the **median** of each category and of LCP, CLS, TBT (a single run is never evidence). Targets (spec §10): Performance ≥ 95, Accessibility 100, Best Practices ≥ 95, SEO 100; LCP < 2.0 s, CLS < 0.05, TBT < 100 ms.
+Use the Lighthouse CLI (`npm i --no-save lighthouse`, Chromium from Playwright via `CHROME_PATH`, `--chrome-flags="--headless=new --no-sandbox"`) with the **mobile** form factor and **`--throttling-method=devtools`** (applied throttling). Do *not* use the default simulated (lantern) throttling against localhost: every resource finishes before the real LCP, so the simulation assumes LCP depends on all of it and reports ~3 s for a page whose observed LCP is ~100 ms. Use a fresh profile and no extensions, on `http://localhost:3101/vi`, `/en`, `/vi/projects/hadi`. Run each URL **5 times** and record the **median** of each category and of LCP, CLS, TBT (a single run is never evidence). Targets (spec §10): Performance ≥ 95, Accessibility 100, Best Practices ≥ 95, SEO 100; LCP < 2.0 s, CLS < 0.05, TBT < 100 ms.
 
 - [ ] **Step 2: Fix by evidence, not by guess**
 
