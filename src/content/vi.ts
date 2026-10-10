@@ -33,11 +33,12 @@ export const vi: Dictionary = {
       "Mình là Nguyễn Mạnh Hùng. Mình xây sản phẩm web và mobile rồi đưa chúng vào production — hiện đang nhận dự án freelance.",
     primaryCta: "Xem dự án",
     secondaryCta: "Liên hệ",
-    nowTitle: "Hiện tại",
-    updatedLabel: "Cập nhật",
-    now: [
-      { label: "Đã ra mắt", value: "mythiep và Hadi chạy production; crossweave mã nguồn mở" },
-      { label: "Đang học", value: "Công nghệ thông tin, Đại học Mở Hà Nội" },
+    statsLabel: "Con số chính",
+    stats: [
+      { value: "3", label: "sản phẩm đã ra mắt: 2 chạy production, 1 mã nguồn mở" },
+      { value: "4.200+", label: "commit trên ba dự án" },
+      { value: "1.600+", label: "file test trên ba dự án" },
+      { value: "99", label: "điểm Lighthouse Performance trên mobile của chính website này" },
     ],
   },
   sections: {

@@ -1,7 +1,6 @@
 "use client";
 
 import { Search } from "lucide-react";
-import { useTheme } from "next-themes";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { headerControl } from "@/components/ui/header-control";
@@ -10,6 +9,7 @@ import { rememberLocale } from "@/lib/i18n/cookie";
 import { localeHref } from "@/lib/i18n/paths";
 import type { PaletteGroup, PaletteItem } from "@/lib/palette-items";
 import { matchesQuery } from "@/lib/search";
+import { useTheme } from "@/lib/use-theme";
 import { cn } from "@/lib/utils";
 
 interface CommandPaletteProps {
@@ -35,7 +35,7 @@ export function CommandPalette({ items, labels }: CommandPaletteProps) {
   const listId = useId();
   const router = useRouter();
   const pathname = usePathname();
-  const { resolvedTheme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
   const [notice, setNotice] = useState("");
@@ -96,7 +96,7 @@ export function CommandPalette({ items, labels }: CommandPaletteProps) {
       if (action.href.startsWith("http")) window.open(action.href, "_blank", "noopener,noreferrer");
       else router.push(action.href);
     } else if (action.kind === "theme") {
-      setTheme(resolvedTheme === "dark" ? "light" : "dark");
+      setTheme(theme === "dark" ? "light" : "dark");
     } else {
       rememberLocale(action.target);
       router.push(localeHref(pathname, window.location.search, window.location.hash, action.target));

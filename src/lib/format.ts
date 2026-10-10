@@ -1,5 +1,6 @@
 import type { Locale } from "@/lib/i18n/config";
 
-export function formatMonthYear(locale: Locale, isoDate: string): string {
-  return new Intl.DateTimeFormat(locale, { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(isoDate));
+/** Figures are written with a comma as the thousands separator; Vietnamese readers expect a dot. */
+export function localizeNumber(locale: Locale, text: string): string {
+  return locale === "vi" ? text.replace(/(\d),(?=\d{3}(?!\d))/g, "$1.") : text;
 }

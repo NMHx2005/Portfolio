@@ -33,11 +33,12 @@ export const en: Dictionary = {
       "I'm Nguyễn Mạnh Hùng. I build web and mobile products and ship them to production — currently open to freelance work.",
     primaryCta: "View work",
     secondaryCta: "Get in touch",
-    nowTitle: "Now",
-    updatedLabel: "Updated",
-    now: [
-      { label: "Shipped", value: "mythiep and Hadi in production; crossweave open source" },
-      { label: "Studying", value: "Information Technology, Hanoi Open University" },
+    statsLabel: "Key numbers",
+    stats: [
+      { value: "3", label: "products shipped: 2 in production, 1 open source" },
+      { value: "4,200+", label: "commits across the three projects" },
+      { value: "1,600+", label: "test files across the three projects" },
+      { value: "99", label: "mobile Lighthouse performance score of this very site" },
     ],
   },
   sections: {

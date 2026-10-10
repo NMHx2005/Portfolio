@@ -7,6 +7,7 @@ import { Container } from "@/components/ui/container";
 import { projectSlugs, projectsData } from "@/content/projects";
 import type { Dictionary, ProjectSlug } from "@/content/types";
 import { delay } from "@/lib/css-vars";
+import { localizeNumber } from "@/lib/format";
 import type { Locale } from "@/lib/i18n/config";
 import { localePath, projectPath } from "@/lib/i18n/paths";
 
@@ -171,7 +172,7 @@ export function CaseStudyView({ locale, dict, slug }: { locale: Locale; dict: Di
               {data.metrics.map((metric) => (
                 <div key={metric.key} className="flex gap-2">
                   <dt className="text-fg-subtle">{dict.work.metricLabels[metric.key]}</dt>
-                  <dd className="font-mono text-fg-muted">{metric.value}</dd>
+                  <dd className="font-mono text-fg-muted">{localizeNumber(locale, metric.value)}</dd>
                 </div>
               ))}
             </dl>

@@ -1,10 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { formatMonthYear } from "./format";
+import { localizeNumber } from "./format";
 
-describe("formatMonthYear", () => {
-  it("formats in the requested locale and is timezone-stable", () => {
-    expect(formatMonthYear("en", "2026-10-10")).toBe("October 2026");
-    expect(formatMonthYear("vi", "2026-10-10")).toMatch(/10.*2026/);
-    expect(formatMonthYear("en", "2026-01-01")).toBe("January 2026");
+describe("localizeNumber", () => {
+  it("keeps the comma for English", () => {
+    expect(localizeNumber("en", "4,200+")).toBe("4,200+");
+  });
+  it("uses a dot for Vietnamese, including several groups", () => {
+    expect(localizeNumber("vi", "4,200+")).toBe("4.200+");
+    expect(localizeNumber("vi", "1,234,567")).toBe("1.234.567");
+  });
+  it("leaves numbers without a thousands group and plain text alone", () => {
+    expect(localizeNumber("vi", "99")).toBe("99");
+    expect(localizeNumber("vi", "v0.5.0 · MIT")).toBe("v0.5.0 · MIT");
+    expect(localizeNumber("vi", "1,7")).toBe("1,7");
   });
 });

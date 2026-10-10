@@ -21,19 +21,21 @@ test.describe("hero", () => {
     }
   });
 
-  test("shows status, dated 'Now' facts, two CTAs and the stack tokens", async ({ page }) => {
+  test("shows the availability line, four key numbers, two CTAs and the stack tokens", async ({ page }) => {
     await page.goto("/en");
     await expect(page.getByText("Open to freelance · Hanoi, UTC+7")).toBeVisible();
-    const now = page.getByRole("group", { name: "Now" });
-    await expect(now.locator("dt")).toHaveCount(2);
-    await expect(now.getByText(/^Updated /)).toBeVisible();
+    const stats = page.getByRole("group", { name: "Key numbers" });
+    await expect(stats.locator("dt")).toHaveCount(4);
+    await expect(stats.locator("dd")).toHaveText(["3", "4,200+", "1,600+", "99"]);
+    await expect(page.getByText(/^Now$|Currently studying|Information Technology, Hanoi Open University/)).toHaveCount(0);
     await expect(page.getByRole("link", { name: "View work" })).toHaveAttribute("href", "/en#projects");
     await expect(page.getByRole("link", { name: "Get in touch" })).toHaveAttribute("href", "/en#contact");
     expect(await page.getByRole("list", { name: "Technology" }).locator("li").count()).toBeGreaterThanOrEqual(5);
   });
 
-  test("Vietnamese copy renders with diacritics intact", async ({ page }) => {
+  test("Vietnamese copy renders with diacritics intact and numbers use a dot as thousands separator", async ({ page }) => {
     await page.goto("/vi");
+    await expect(page.getByRole("group", { name: "Con số chính" }).locator("dd")).toHaveText(["3", "4.200+", "1.600+", "99"]);
     await expect(page.getByRole("heading", { level: 1 })).toContainText("xây sản phẩm web và mobile");
   });
 });

@@ -82,6 +82,28 @@ test("language links carry query and hash in their real href, so opening them in
   expect((await context.cookies()).find((c) => c.name === "NEXT_LOCALE")).toBeUndefined();
 });
 
+test("the chosen theme survives a reload and is applied before the page is painted", async ({ page }) => {
+  await page.goto("/en");
+  await page.getByRole("button", { name: "Toggle light/dark theme" }).click();
+  await expect(page.locator("html")).not.toHaveClass(/dark/);
+  expect(await page.evaluate(() => localStorage.getItem("theme"))).toBe("light");
+
+  await page.reload();
+  await expect(page.locator("html")).not.toHaveClass(/dark/);
+
+  await page.getByRole("button", { name: "Toggle light/dark theme" }).click();
+  await page.reload();
+  await expect(page.locator("html")).toHaveClass(/dark/);
+});
+
+test("a stored light theme is on <html> before any script of the app runs", async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem("theme", "light"));
+  await page.goto("/en", { waitUntil: "commit" });
+  // The inline head script runs before first paint, so the class is already settled at DOMContentLoaded.
+  await page.waitForLoadState("domcontentloaded");
+  expect(await page.evaluate(() => document.documentElement.classList.contains("dark"))).toBe(false);
+});
+
 test("theme toggle flips the dark class on <html>", async ({ page }) => {
   await page.goto("/en");
   const html = page.locator("html");

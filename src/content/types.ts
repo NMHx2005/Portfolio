@@ -52,9 +52,8 @@ export interface Dictionary {
     intro: string;
     primaryCta: string;
     secondaryCta: string;
-    nowTitle: string;
-    updatedLabel: string;
-    now: { label: string; value: string }[];
+    statsLabel: string;
+    stats: { value: string; label: string }[];
   };
   sections: Record<SectionId, SectionHead>;
   work: {
