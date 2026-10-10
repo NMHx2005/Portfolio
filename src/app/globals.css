@@ -120,3 +120,41 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Hidden by default: it only shows where the browser can drive it from scroll position and motion is allowed. */
+.scroll-progress {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes palette-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .palette[open] {
+    animation: palette-in 0.15s ease-out;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    @keyframes scroll-grow {
+      from {
+        transform: scaleX(0);
+      }
+      to {
+        transform: scaleX(1);
+      }
+    }
+
+    .scroll-progress {
+      display: block;
+      transform-origin: 0 50%;
+      animation: scroll-grow linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
