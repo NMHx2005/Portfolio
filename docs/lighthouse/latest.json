@@ -1,0 +1,279 @@
+{
+  "base": "http://localhost:3101",
+  "runsPerUrl": 5,
+  "tool": "lighthouse@13.5.0",
+  "results": {
+    "/vi": {
+      "median": {
+        "performance": 99,
+        "accessibility": 100,
+        "bestPractices": 96,
+        "seo": 100,
+        "lcpMs": 2020,
+        "cls": 0,
+        "tbtMs": 37
+      },
+      "runs": [
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 96,
+          "seo": 100,
+          "lcpMs": 2020,
+          "cls": 0,
+          "tbtMs": 48,
+          "lighthouseVersion": "13.5.0",
+          "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        },
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 96,
+          "seo": 100,
+          "lcpMs": 2024,
+          "cls": 0,
+          "tbtMs": 37,
+          "lighthouseVersion": "13.5.0",
+          "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        },
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 96,
+          "seo": 100,
+          "lcpMs": 2005,
+          "cls": 0,
+          "tbtMs": 37,
+          "lighthouseVersion": "13.5.0",
+          "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        },
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 96,
+          "seo": 100,
+          "lcpMs": 2018,
+          "cls": 0,
+          "tbtMs": 37,
+          "lighthouseVersion": "13.5.0",
+          "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        },
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 96,
+          "seo": 100,
+          "lcpMs": 2026,
+          "cls": 0,
+          "tbtMs": 34,
+          "lighthouseVersion": "13.5.0",
+          "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        }
+      ]
+    },
+    "/en": {
+      "median": {
+        "performance": 99,
+        "accessibility": 100,
+        "bestPractices": 96,
+        "seo": 100,
+        "lcpMs": 1687,
+        "cls": 0,
+        "tbtMs": 38
+      },
+      "runs": [
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 96,
+          "seo": 100,
+          "lcpMs": 1696,
+          "cls": 0,
+          "tbtMs": 33,
+          "lighthouseVersion": "13.5.0",
+          "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        },
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 96,
+          "seo": 100,
+          "lcpMs": 1697,
+          "cls": 0,
+          "tbtMs": 43,
+          "lighthouseVersion": "13.5.0",
+          "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        },
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 96,
+          "seo": 100,
+          "lcpMs": 1687,
+          "cls": 0,
+          "tbtMs": 36,
+          "lighthouseVersion": "13.5.0",
+          "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        },
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 96,
+          "seo": 100,
+          "lcpMs": 1679,
+          "cls": 0,
+          "tbtMs": 40,
+          "lighthouseVersion": "13.5.0",
+          "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        },
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 96,
+          "seo": 100,
+          "lcpMs": 1671,
+          "cls": 0,
+          "tbtMs": 38,
+          "lighthouseVersion": "13.5.0",
+          "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        }
+      ]
+    },
+    "/vi/projects/hadi": {
+      "median": {
+        "performance": 99,
+        "accessibility": 100,
+        "bestPractices": 96,
+        "seo": 100,
+        "lcpMs": 1779,
+        "cls": 0,
+        "tbtMs": 35
+      },
+      "runs": [
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 96,
+          "seo": 100,
+          "lcpMs": 1785,
+          "cls": 0,
+          "tbtMs": 32,
+          "lighthouseVersion": "13.5.0",
+          "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        },
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 96,
+          "seo": 100,
+          "lcpMs": 1771,
+          "cls": 0,
+          "tbtMs": 34,
+          "lighthouseVersion": "13.5.0",
+          "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        },
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 96,
+          "seo": 100,
+          "lcpMs": 1779,
+          "cls": 0,
+          "tbtMs": 41,
+          "lighthouseVersion": "13.5.0",
+          "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        },
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 96,
+          "seo": 100,
+          "lcpMs": 1779,
+          "cls": 0,
+          "tbtMs": 46,
+          "lighthouseVersion": "13.5.0",
+          "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        },
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 96,
+          "seo": 100,
+          "lcpMs": 1768,
+          "cls": 0,
+          "tbtMs": 35,
+          "lighthouseVersion": "13.5.0",
+          "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        }
+      ]
+    },
+    "/en/projects/mythiep": {
+      "median": {
+        "performance": 99,
+        "accessibility": 100,
+        "bestPractices": 96,
+        "seo": 100,
+        "lcpMs": 1776,
+        "cls": 0,
+        "tbtMs": 35
+      },
+      "runs": [
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 96,
+          "seo": 100,
+          "lcpMs": 1768,
+          "cls": 0,
+          "tbtMs": 35,
+          "lighthouseVersion": "13.5.0",
+          "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        },
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 96,
+          "seo": 100,
+          "lcpMs": 1776,
+          "cls": 0,
+          "tbtMs": 37,
+          "lighthouseVersion": "13.5.0",
+          "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        },
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 96,
+          "seo": 100,
+          "lcpMs": 1780,
+          "cls": 0,
+          "tbtMs": 52,
+          "lighthouseVersion": "13.5.0",
+          "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        },
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 96,
+          "seo": 100,
+          "lcpMs": 1803,
+          "cls": 0,
+          "tbtMs": 35,
+          "lighthouseVersion": "13.5.0",
+          "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        },
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 96,
+          "seo": 100,
+          "lcpMs": 1757,
+          "cls": 0,
+          "tbtMs": 35,
+          "lighthouseVersion": "13.5.0",
+          "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        }
+      ]
+    }
+  }
+}

@@ -1,13 +1,15 @@
 "use client";
 
 import { Search } from "lucide-react";
-import { useTheme } from "next-themes";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { headerControl } from "@/components/ui/header-control";
+import { copyText } from "@/lib/clipboard";
 import { rememberLocale } from "@/lib/i18n/cookie";
 import { localeHref } from "@/lib/i18n/paths";
 import type { PaletteGroup, PaletteItem } from "@/lib/palette-items";
 import { matchesQuery } from "@/lib/search";
+import { useTheme } from "@/lib/use-theme";
 import { cn } from "@/lib/utils";
 
 interface CommandPaletteProps {
@@ -28,10 +30,12 @@ const groupOrder: PaletteGroup[] = ["sections", "projects", "actions"];
 export function CommandPalette({ items, labels }: CommandPaletteProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const closeTimer = useRef<number | undefined>(undefined);
+  // Bumped whenever a session opens or ends, so a clipboard write that settles late cannot touch the next one.
+  const session = useRef(0);
   const listId = useId();
   const router = useRouter();
   const pathname = usePathname();
-  const { resolvedTheme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
   const [notice, setNotice] = useState("");
@@ -44,6 +48,7 @@ export function CommandPalette({ items, labels }: CommandPaletteProps) {
 
   const openPalette = useCallback(() => {
     window.clearTimeout(closeTimer.current);
+    session.current += 1;
     setQuery("");
     setActive(0);
     setNotice("");
@@ -76,16 +81,14 @@ export function CommandPalette({ items, labels }: CommandPaletteProps) {
     const { action } = item;
     if (action.kind === "copy") {
       // Keep the dialog open just long enough to tell the visitor what happened.
-      // `Promise.resolve().then` also catches the synchronous throw when the Clipboard API is unavailable.
-      Promise.resolve()
-        .then(() => navigator.clipboard.writeText(action.value))
-        .then(
-          () => setNotice(labels.copied),
-          () => setNotice(labels.copyFailed),
-        )
-        .finally(() => {
+      const mine = session.current;
+      void copyText(action.value, (text) => navigator.clipboard.writeText(text), () => session.current === mine).then(
+        (result) => {
+          if (result === "stale") return;
+          setNotice(result === "copied" ? labels.copied : labels.copyFailed);
           closeTimer.current = window.setTimeout(closePalette, 900);
-        });
+        },
+      );
       return;
     }
     closePalette();
@@ -93,7 +96,7 @@ export function CommandPalette({ items, labels }: CommandPaletteProps) {
       if (action.href.startsWith("http")) window.open(action.href, "_blank", "noopener,noreferrer");
       else router.push(action.href);
     } else if (action.kind === "theme") {
-      setTheme(resolvedTheme === "dark" ? "light" : "dark");
+      setTheme(theme === "dark" ? "light" : "dark");
     } else {
       rememberLocale(action.target);
       router.push(localeHref(pathname, window.location.search, window.location.hash, action.target));
@@ -122,19 +125,23 @@ export function CommandPalette({ items, labels }: CommandPaletteProps) {
         aria-label={labels.open}
         aria-haspopup="dialog"
         aria-keyshortcuts="Control+K Meta+K"
-        className="hidden h-10 items-center gap-2 rounded-lg px-2.5 text-fg-muted transition-colors hover:text-fg sm:flex"
+        className={cn(headerControl, "hidden min-w-10 gap-2 px-3 sm:flex touch:min-w-11")}
       >
         <Search className="h-[18px] w-[18px]" aria-hidden />
-        <kbd className="hidden rounded-md border border-border px-1.5 py-0.5 font-mono text-[11px] lg:inline">Ctrl K</kbd>
+        <kbd className="hidden font-mono text-[11px] text-fg-subtle lg:inline">Ctrl K</kbd>
       </button>
 
       <dialog
         ref={dialogRef}
         aria-label={labels.open}
+        onClose={() => {
+          window.clearTimeout(closeTimer.current);
+          session.current += 1;
+        }}
         onClick={(event) => {
           if (event.target === event.currentTarget) closePalette();
         }}
-        className="palette fixed inset-auto left-1/2 top-[14vh] m-0 w-[min(36rem,calc(100vw-2rem))] max-w-none -translate-x-1/2 rounded-xl border border-border-strong bg-surface p-0 text-fg backdrop:bg-black/50"
+        className="palette fixed inset-auto left-1/2 top-[14vh] m-0 w-[min(36rem,calc(100vw-2rem))] max-w-none -translate-x-1/2 border border-border-strong bg-surface p-0 text-fg backdrop:bg-black/50"
       >
         <div className="flex items-center gap-3 border-b border-border px-4 focus-within:border-accent">
           <Search className="h-4 w-4 shrink-0 text-fg-subtle" aria-hidden />
@@ -180,7 +187,7 @@ export function CommandPalette({ items, labels }: CommandPaletteProps) {
                         onMouseMove={() => setActive(index)}
                         onClick={() => run(item)}
                         className={cn(
-                          "flex h-11 cursor-pointer items-center rounded-lg px-3 text-sm",
+                          "flex h-11 cursor-pointer items-center px-3 text-sm",
                           selected ? "bg-fg/10 text-fg" : "text-fg-muted",
                         )}
                       >

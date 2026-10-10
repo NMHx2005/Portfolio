@@ -22,10 +22,16 @@ describe("findContentGaps", () => {
       "email",
       "portrait",
       "cv",
-      "project-a-live",
-      "project-a-repo",
+      "project-a-link",
       "project-a-role",
     ]);
+  });
+
+  it("accepts a project that has only a live URL or only a repository", () => {
+    for (const links of [{ live: "https://a.dev" }, { repo: "https://github.com/x/a" }]) {
+      const gaps = findContentGaps({ ...complete, projects: [{ slug: "a", hasRole: true, links }] }, () => true);
+      expect(gaps).toEqual([]);
+    }
   });
 
   it("reports configured files that do not exist on disk", () => {

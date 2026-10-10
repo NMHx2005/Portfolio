@@ -34,7 +34,7 @@ export function CopyEmailButton({ email, label, copiedLabel, failedLabel }: Copy
         type="button"
         onClick={copy}
         aria-label={label}
-        className="flex h-11 w-11 items-center justify-center rounded-lg border border-border text-fg-muted transition-colors hover:border-fg hover:text-fg"
+        className="flex h-11 w-11 items-center justify-center border border-border text-fg-muted transition-colors hover:border-fg hover:text-fg"
       >
         {state === "copied" ? <Check className="h-4 w-4 text-accent" aria-hidden /> : <Copy className="h-4 w-4" aria-hidden />}
       </button>

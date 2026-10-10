@@ -5,6 +5,7 @@ import { projectsData } from "@/content/projects";
 import type { Dictionary, ProjectSlug } from "@/content/types";
 import type { Locale } from "@/lib/i18n/config";
 import { projectPath } from "@/lib/i18n/paths";
+import { delay } from "@/lib/css-vars";
 import { cn } from "@/lib/utils";
 
 interface ProjectBlockProps {
@@ -15,7 +16,7 @@ interface ProjectBlockProps {
 }
 
 const externalLink =
-  "relative z-10 inline-flex min-h-11 items-center gap-1.5 text-fg-muted underline-offset-4 transition-colors hover:text-fg hover:underline";
+  "pointer-events-auto inline-flex min-h-11 items-center gap-1.5 text-fg-muted underline-offset-4 transition-colors hover:text-fg hover:underline";
 
 export function ProjectBlock({ locale, dict, slug, index }: ProjectBlockProps) {
   const data = projectsData[slug];
@@ -25,12 +26,15 @@ export function ProjectBlock({ locale, dict, slug, index }: ProjectBlockProps) {
 
   return (
     <article
-      data-reveal
-      className="group relative grid gap-8 rounded-xl has-[h3_a:focus-visible]:outline-2 has-[h3_a:focus-visible]:outline-offset-8 has-[h3_a:focus-visible]:outline-accent lg:grid-cols-12 lg:items-center lg:gap-12"
+      data-reveal="group"
+      className="group relative grid gap-8 has-[h3_a:focus-visible]:outline-2 has-[h3_a:focus-visible]:outline-offset-8 has-[h3_a:focus-visible]:outline-accent lg:grid-cols-12 lg:items-center lg:gap-12"
     >
+      {/* The whole card is clickable. This overlay is not inside the animated text, because a transformed parent
+          would become its containing block and shrink the click area while the text is still settling. */}
+      <Link href={href} aria-hidden tabIndex={-1} className="absolute inset-0 z-[1]" />
       <div
         className={cn(
-          "overflow-hidden rounded-xl border border-border bg-surface transition-colors duration-200 group-hover:border-border-strong lg:col-span-7",
+          "reveal-media overflow-hidden border border-border bg-surface transition-colors duration-200 group-hover:border-border-strong lg:col-span-7",
           mirrored && "lg:order-2",
         )}
       >
@@ -46,18 +50,20 @@ export function ProjectBlock({ locale, dict, slug, index }: ProjectBlockProps) {
       </div>
 
       <div className="lg:col-span-5">
-        <p className="text-sm text-fg-subtle">
+        <p className="reveal-item text-sm text-fg-subtle" style={delay(0)}>
           <span className="font-mono">{String(index + 1).padStart(2, "0")}</span>
           <span className="ml-3">{copy.category}</span>
         </p>
-        <h3 className="mt-3 text-3xl font-semibold tracking-tight">
-          <Link href={href} className="after:absolute after:inset-0 focus-visible:outline-none">
+        <h3 className="reveal-item mt-3 text-3xl font-semibold tracking-tight" style={delay(1)}>
+          <Link href={href} className="focus-visible:outline-none">
             {copy.title}
           </Link>
         </h3>
-        <p className="mt-4 text-pretty text-fg-muted">{copy.summary}</p>
+        <p className="reveal-item mt-4 text-pretty text-fg-muted" style={delay(2)}>
+          {copy.summary}
+        </p>
 
-        <dl className="mt-8 grid grid-cols-[auto_1fr] gap-x-6 gap-y-3 border-t border-border pt-6 text-sm">
+        <dl className="reveal-item mt-8 grid grid-cols-[auto_1fr] gap-x-6 gap-y-3 border-t border-border pt-6 text-sm" style={delay(3)}>
           {copy.role ? (
             <>
               <dt className="text-fg-subtle">{dict.caseStudy.role}</dt>
@@ -70,7 +76,7 @@ export function ProjectBlock({ locale, dict, slug, index }: ProjectBlockProps) {
           <dd className="font-mono text-xs leading-6 text-fg-muted">{data.stack.slice(0, 5).join(" · ")}</dd>
         </dl>
 
-        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
+        <div className="reveal-item pointer-events-none relative z-10 mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm" style={delay(4)}>
           <span aria-hidden className="inline-flex items-center gap-1.5 font-medium text-fg">
             {dict.work.viewCaseStudy}
             <ArrowRight className="h-4 w-4 motion-safe:transition-transform motion-safe:duration-200 motion-safe:group-hover:translate-x-1" />

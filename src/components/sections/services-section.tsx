@@ -19,7 +19,7 @@ export function ServicesSection({ dict }: { dict: Dictionary }) {
               <p className="text-pretty text-fg-muted">{item.description}</p>
               <ul className="mt-4 flex flex-wrap gap-2">
                 {item.tags.map((tag) => (
-                  <li key={tag} className="rounded-md border border-border px-2 py-1 font-mono text-xs text-fg-subtle">
+                  <li key={tag} className="border border-border px-2 py-1 font-mono text-xs text-fg-subtle">
                     {tag}
                   </li>
                 ))}

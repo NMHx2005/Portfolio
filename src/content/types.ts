@@ -1,7 +1,7 @@
 export type SectionId = "projects" | "services" | "about" | "process" | "faq" | "contact";
-export type ProjectSlug = "hnwedding" | "hadi";
-export type ProjectKind = "web" | "mobile";
-export type MetricKey = "themes" | "migrations" | "commits" | "languages" | "version";
+export type ProjectSlug = "mythiep" | "hadi" | "crossweave";
+export type ProjectKind = "web" | "mobile" | "tool";
+export type MetricKey = "templates" | "migrations" | "commits" | "languages" | "version" | "license" | "testFiles";
 
 export interface SectionHead {
   index: string;
@@ -52,9 +52,8 @@ export interface Dictionary {
     intro: string;
     primaryCta: string;
     secondaryCta: string;
-    nowTitle: string;
-    updatedLabel: string;
-    now: { label: string; value: string }[];
+    statsLabel: string;
+    stats: { value: string; label: string }[];
   };
   sections: Record<SectionId, SectionHead>;
   work: {
@@ -87,8 +86,8 @@ export interface Dictionary {
   services: { items: { title: string; description: string; tags: string[] }[] };
   about: {
     paragraphs: string[];
-    principlesLabel: string;
-    principles: string[];
+    habitsLabel: string;
+    habits: { title: string; detail: string }[];
     skillsTitle: string;
     skillGroups: { name: string; items: string[] }[];
     portraitAlt: string;
@@ -108,5 +107,4 @@ export interface Dictionary {
     hint: string;
   };
   footer: { tagline: string; note: string };
-  notFound: { title: string; text: string; cta: string };
 }

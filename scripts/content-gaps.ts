@@ -32,8 +32,9 @@ export function findContentGaps(inputs: ContentInputs, fileExists: (publicPath: 
   }
 
   for (const project of inputs.projects) {
-    if (!project.links.live) gaps.push({ id: `project-${project.slug}-live`, message: `${project.slug}: no live URL.` });
-    if (!project.links.repo) gaps.push({ id: `project-${project.slug}-repo`, message: `${project.slug}: no repository URL.` });
+    // A product may be closed source and a tool may have no site, so one public link is enough.
+    if (!project.links.live && !project.links.repo)
+      gaps.push({ id: `project-${project.slug}-link`, message: `${project.slug}: no public link (live URL or repository).` });
     if (!project.hasRole) gaps.push({ id: `project-${project.slug}-role`, message: `${project.slug}: no confirmed role (Appendix A).` });
   }
   return gaps;

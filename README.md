@@ -2,6 +2,10 @@
 
 Bilingual (vi/en) portfolio for a product engineer working on web and mobile. Next.js 16 App Router; content pages are prerendered per locale and a proxy negotiates the locale per request.
 
+## Requirements
+
+Node.js 22.12+ or 24+ (Vitest 5 sets this floor; `engines` and `.nvmrc` pin it). `nvm use` picks the right version.
+
 ## Scripts
 
 | Command | What it does |
@@ -21,6 +25,7 @@ Bilingual (vi/en) portfolio for a product engineer working on web and mobile. Ne
 - `src/content/` — `projects.ts` (language-neutral facts), `vi.ts` / `en.ts` (typed dictionaries)
 - `src/components/` — server sections + a few client islands (theme, language, mobile nav, command palette, reveal, copy-email)
 - `src/app/globals.css` — design tokens (light/dark) and motion primitives
+- Design language: square. No `rounded-*` utilities or `border-radius` anywhere (`src/design.test.ts` and `e2e/square.spec.ts` enforce it)
 - `e2e/` — Playwright specs · `scripts/` — content readiness check
 
 ## Content rules

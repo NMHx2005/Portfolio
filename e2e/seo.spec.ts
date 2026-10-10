@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("sitemap lists both locales and every case study with hreflang alternates", async ({ request }) => {
   const body = await (await request.get("/sitemap.xml")).text();
-  for (const path of ["/vi", "/en", "/vi/projects/hadi", "/en/projects/hnwedding"]) expect(body).toContain(path);
+  for (const path of ["/vi", "/en", "/vi/projects/hadi", "/en/projects/mythiep", "/en/projects/crossweave"]) expect(body).toContain(path);
   expect(body).toContain('hreflang="en"');
   expect(body).toContain('hreflang="vi"');
 });

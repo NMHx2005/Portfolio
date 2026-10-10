@@ -5584,7 +5584,7 @@ git commit -m "test: add axe, overflow, touch-target, legacy-link, motion and sc
 ```bash
 npm run build && npm run start -- -p 3101
 ```
-Use the Lighthouse CLI (`npm i --no-save lighthouse`, Chromium from Playwright via `CHROME_PATH`, `--chrome-flags="--headless=new --no-sandbox"`) with the **mobile** form factor and **`--throttling-method=devtools`** (applied throttling). Do *not* use the default simulated (lantern) throttling against localhost: every resource finishes before the real LCP, so the simulation assumes LCP depends on all of it and reports ~3 s for a page whose observed LCP is ~100 ms. Use a fresh profile and no extensions, on `http://localhost:3101/vi`, `/en`, `/vi/projects/hadi`. Run each URL **5 times** and record the **median** of each category and of LCP, CLS, TBT (a single run is never evidence). Targets (spec §10): Performance ≥ 95, Accessibility 100, Best Practices ≥ 95, SEO 100; LCP < 2.0 s, CLS < 0.05, TBT < 100 ms.
+Use the Lighthouse CLI (`npm i --no-save lighthouse`, Chromium from Playwright via `CHROME_PATH`, `--chrome-flags="--headless=new --no-sandbox"`) with the **mobile** form factor and **`--throttling-method=devtools`** (applied throttling). Do not mix methods: the default simulated (lantern) throttling against localhost reported ~3 s LCP for pages whose applied-throttling LCP was ~1.7–2.0 s, so the two numbers are not interchangeable. Acceptance uses applied throttling only; the command, versions and raw per-run numbers live in `docs/performance.md` (`scripts/lighthouse.mjs`). Use a fresh profile and no extensions, on `http://localhost:3101/vi`, `/en`, `/vi/projects/hadi`. Run each URL **5 times** and record the **median** of each category and of LCP, CLS, TBT (a single run is never evidence). Targets (spec §10): Performance ≥ 95, Accessibility 100, Best Practices ≥ 95, SEO 100; LCP < 2.0 s, CLS < 0.05, TBT < 100 ms.
 
 - [ ] **Step 2: Fix by evidence, not by guess**
 
@@ -5630,7 +5630,7 @@ git log --oneline master..HEAD
 
 - [ ] **Step 7: Review and hand back**
 
-Run `/code-review` on the branch diff and apply justified fixes. Then use `superpowers:finishing-a-development-branch`. **Do not merge or push** — merging to `master` and deploying are the owner's decisions; the live site (including the hero-role bug) only changes after that. Report: checks run with results, the Lighthouse table, the `check:content` list, and the security notes (no secrets added; phone and Telegram are deliberately published and an email only if the owner confirmed one; `target=_blank` links use `rel="noopener noreferrer"`; JSON-LD is escaped; no user input is processed server-side).
+Run `/code-review` on the branch diff and apply justified fixes. Then use `superpowers:finishing-a-development-branch`. **Do not merge or push without the owner's say-so** — merging to `master` and deploying are the owner's decisions; the live site (including the hero-role bug) only changes after that. (Executed: the owner approved a local merge to `master` in chat on 2026-10-10 ("bạn cứ merge đi") and explicitly kept deploy/push for after their own review.) Report: checks run with results, the Lighthouse table, the `check:content` list, and the security notes (no secrets added; phone and Telegram are deliberately published and an email only if the owner confirmed one; `target=_blank` links use `rel="noopener noreferrer"`; JSON-LD is escaped; no user input is processed server-side).
 
 ---
 

@@ -68,7 +68,13 @@ export function projectMetadata(locale: Locale, slug: ProjectSlug): Metadata {
   };
 }
 
-export function personJsonLd(locale: Locale): Record<string, unknown> {
+export function personJsonLd(
+  locale: Locale,
+  owner: Pick<typeof siteConfig, "portrait"> & { email: string | null } = {
+    portrait: siteConfig.portrait,
+    email: siteConfig.contact.email,
+  },
+): Record<string, unknown> {
   const d = getDictionary(locale);
   return {
     "@context": "https://schema.org",
@@ -77,11 +83,11 @@ export function personJsonLd(locale: Locale): Record<string, unknown> {
     jobTitle: siteConfig.jobTitle,
     url: absoluteUrl(localePath(locale)),
     description: d.meta.description,
-    ...(siteConfig.contact.email ? { email: `mailto:${siteConfig.contact.email}` } : {}),
+    ...(owner.email ? { email: `mailto:${owner.email}` } : {}),
     address: { "@type": "PostalAddress", addressLocality: "Hà Nội", addressCountry: "VN" },
     sameAs: [siteConfig.contact.github, siteConfig.contact.telegram.url],
     knowsAbout: ["React", "Next.js", "TypeScript", "React Native", "Node.js", "PostgreSQL"],
-    ...(siteConfig.portrait ? { image: absoluteUrl(siteConfig.portrait.src) } : {}),
+    ...(owner.portrait ? { image: absoluteUrl(owner.portrait.src) } : {}),
   };
 }
 

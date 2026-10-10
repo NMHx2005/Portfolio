@@ -23,7 +23,7 @@ export function LinkButton({ href, variant = "primary", external = false, childr
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
       className={cn(
-        "group inline-flex h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-medium transition-colors duration-200",
+        "group inline-flex h-11 items-center justify-center gap-2 px-5 text-sm font-medium transition-colors duration-200",
         variants[variant],
       )}
     >
