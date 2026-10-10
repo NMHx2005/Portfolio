@@ -3,6 +3,9 @@
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { headerControl } from "@/components/ui/header-control";
+import { useActiveSection } from "@/lib/use-active-section";
+import { cn } from "@/lib/utils";
 
 interface MobileNavProps {
   items: { id: string; label: string }[];
@@ -10,17 +13,17 @@ interface MobileNavProps {
   labels: { open: string; close: string; nav: string };
 }
 
-const iconButton =
-  "flex h-11 w-11 items-center justify-center rounded-lg text-fg-muted transition-colors hover:text-fg";
+const iconButton = cn(headerControl, "w-10 touch:w-11");
 
 export function MobileNav({ items, home, labels }: MobileNavProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
+  const active = useActiveSection(["hero", ...items.map((item) => item.id)], open);
 
-  // The trigger lives in an `md:hidden` wrapper; an open modal would keep locking the page
+  // The trigger lives in an `lg:hidden` wrapper; an open modal would keep locking the page
   // after a rotate/resize hides that wrapper, with no visible way to close it.
   useEffect(() => {
-    const desktop = window.matchMedia("(min-width: 768px)");
+    const desktop = window.matchMedia("(min-width: 1024px)");
     function onChange(event: MediaQueryListEvent) {
       if (event.matches) dialogRef.current?.close();
     }
@@ -29,7 +32,7 @@ export function MobileNav({ items, home, labels }: MobileNavProps) {
   }, []);
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
         type="button"
         aria-label={labels.open}
@@ -63,10 +66,16 @@ export function MobileNav({ items, home, labels }: MobileNavProps) {
                 <Link
                   href={`${home}#${item.id}`}
                   onClick={() => dialogRef.current?.close()}
-                  className="flex h-16 items-center justify-between text-2xl font-semibold tracking-tight"
+                  aria-current={active === item.id ? "location" : undefined}
+                  className={cn(
+                    "flex h-16 items-center justify-between text-2xl font-semibold tracking-tight",
+                    active === item.id ? "text-fg" : "text-fg-muted",
+                  )}
                 >
                   {item.label}
-                  <span className="font-mono text-xs font-normal text-fg-subtle">0{index + 1}</span>
+                  <span className={cn("font-mono text-xs font-normal", active === item.id ? "text-accent" : "text-fg-subtle")}>
+                    0{index + 1}
+                  </span>
                 </Link>
               </li>
             ))}

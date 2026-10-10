@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CommandPalette } from "@/components/command-palette";
+import { HeaderNav } from "@/components/header-nav";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { MobileNav } from "@/components/mobile-nav";
 import { ScrollProgress } from "@/components/scroll-progress";
@@ -26,22 +27,9 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
             NMHx<span className="text-accent">.</span>
           </Link>
 
-          <nav aria-label={dict.a11y.mainNav} className="hidden md:block">
-            <ul className="flex items-center gap-1">
-              {dict.nav.map((item) => (
-                <li key={item.id}>
-                  <Link
-                    href={`${home}#${item.id}`}
-                    className="inline-flex items-center rounded-lg px-3 py-2 text-sm text-fg-muted transition-colors hover:text-fg touch:min-h-11"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          <HeaderNav items={dict.nav} home={home} label={dict.a11y.mainNav} />
 
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-2">
             <CommandPalette
               items={buildPaletteItems(locale, dict)}
               labels={{ ...dict.palette, copied: dict.a11y.copied, copyFailed: dict.a11y.copyFailed }}

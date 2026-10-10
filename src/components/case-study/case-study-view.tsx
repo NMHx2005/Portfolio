@@ -83,7 +83,7 @@ export function CaseStudyView({ locale, dict, slug }: { locale: Locale; dict: Di
           </div>
         </dl>
 
-        <figure className="mt-12 overflow-hidden rounded-xl border border-border bg-surface">
+        <figure className="mt-12 overflow-hidden border border-border bg-surface">
           <Image
             src={data.image.src}
             alt={copy.imageAlt}

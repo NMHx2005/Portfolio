@@ -4,7 +4,7 @@ test("desktop shows inline navigation, no menu button", async ({ page, isMobile 
   test.skip(isMobile, "desktop only");
   await page.goto("/en");
   const nav = page.getByRole("navigation", { name: "Main navigation" });
-  await expect(nav.getByRole("link")).toHaveText(["Work", "Services", "About", "Contact"]);
+  await expect(nav.getByRole("link")).toHaveText(["Work", "Services", "About", "Process", "FAQ", "Contact"]);
   await expect(page.getByRole("button", { name: "Open menu" })).toBeHidden();
 });
 
@@ -18,7 +18,7 @@ test("mobile menu opens as a dialog, lists links, traps focus, closes on Escape 
   const dialog = page.getByRole("dialog");
   await expect(dialog).toBeVisible();
   await expect(open).toHaveAttribute("aria-expanded", "true");
-  await expect(dialog.getByRole("link")).toHaveCount(4);
+  await expect(dialog.getByRole("link")).toHaveCount(6);
 
   for (let i = 0; i < 8; i++) {
     await page.keyboard.press("Tab");
@@ -88,4 +88,54 @@ test("theme toggle flips the dark class on <html>", async ({ page }) => {
   await expect(html).toHaveClass(/dark/);
   await page.getByRole("button", { name: "Toggle light/dark theme" }).click();
   await expect(html).not.toHaveClass(/dark/);
+});
+
+test("the inline navigation takes over exactly at 1024px; below it the menu button is shown", async ({ page }) => {
+  await page.setViewportSize({ width: 1023, height: 800 });
+  await page.goto("/en");
+  await expect(page.getByRole("button", { name: "Open menu" })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Main navigation" }).first()).toBeHidden();
+
+  await page.setViewportSize({ width: 1024, height: 800 });
+  await expect(page.getByRole("button", { name: "Open menu" })).toBeHidden();
+  await expect(page.getByRole("navigation", { name: "Main navigation" }).getByRole("link")).toHaveCount(6);
+});
+
+test("the navigation highlights the section being read while scrolling", async ({ page, isMobile }) => {
+  test.skip(isMobile, "inline navigation is desktop only");
+  await page.emulateMedia({ reducedMotion: "reduce" }); // makes the jumps instant instead of smooth
+  await page.goto("/en");
+  const nav = page.getByRole("navigation", { name: "Main navigation" });
+  const current = nav.locator("a[aria-current]");
+
+  await expect(current).toHaveCount(0); // the hero is not in the navigation
+  for (const [id, label] of [
+    ["services", "Services"],
+    ["about", "About"],
+    ["faq", "FAQ"],
+    ["contact", "Contact"],
+  ] as const) {
+    await page.locator(`#${id}`).evaluate((el) => el.scrollIntoView());
+    await expect(current).toHaveCount(1);
+    await expect(current).toHaveText(label);
+  }
+
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect(current).toHaveCount(0);
+});
+
+test("the controls on the right of the header share one height and one centre line", async ({ page }) => {
+  for (const viewport of [{ width: 1440, height: 900 }, { width: 640, height: 900 }]) {
+    await page.setViewportSize(viewport);
+    await page.goto("/en");
+    const boxes = await page
+      .locator("header .flex.items-center.gap-2 > :visible")
+      .evaluateAll((els) => els.map((el) => {
+        const r = el.getBoundingClientRect();
+        return { h: Math.round(r.height), centre: Math.round(r.top + r.height / 2) };
+      }));
+    expect(boxes.length).toBeGreaterThanOrEqual(3);
+    expect(new Set(boxes.map((b) => b.h)).size, JSON.stringify(boxes)).toBe(1);
+    expect(new Set(boxes.map((b) => b.centre)).size, JSON.stringify(boxes)).toBe(1);
+  }
 });

@@ -22,6 +22,8 @@ export const en: Dictionary = {
     { id: "projects", label: "Work" },
     { id: "services", label: "Services" },
     { id: "about", label: "About" },
+    { id: "process", label: "Process" },
+    { id: "faq", label: "FAQ" },
     { id: "contact", label: "Contact" },
   ],
   hero: {
@@ -86,6 +88,7 @@ export const en: Dictionary = {
       languages: "languages",
       version: "version",
       license: "license",
+      testFiles: "test files",
     },
     items: {
       mythiep: {
@@ -99,7 +102,7 @@ export const en: Dictionary = {
         choices: [
           {
             title: "Puck as the canvas editor, loaded only in the editor; public invitations render with Puck's <Render>",
-            why: "Puck lays out in flow by default while invitation designs use absolute positions, so a three-day spike on a minimal canvas ran before the schema was written. The editor is never shipped to guests.",
+            why: "Puck lays out in flow by default while invitation designs use absolute positions, so a time-boxed spike on a minimal canvas ran before the schema was written. It showed that absolute positions work when react-moveable is attached in the editor only, and the editor is never shipped to guests.",
           },
           {
             title: "SePay payments: a signed form POST (HMAC-SHA256) and a payment notification verified by a secret header, one payment per invitation, Basic/Pro pricing per invitation type",
@@ -266,8 +269,29 @@ export const en: Dictionary = {
       "I'm an Information Technology student at Hanoi Open University, have been building full-stack websites for a few years, and take freelance projects.",
       "I like things that load fast, look beautiful, and still work great five years later. If you want a developer who understands both the code and the user, drop me a message.",
     ],
-    principlesLabel: "Principles",
-    principles: ["Clean code", "User-first", "Ship on time"],
+    habitsLabel: "How I approach engineering",
+    habits: [
+      {
+        title: "Tests live next to the code",
+        detail: "900+ test files in mythiep, 500+ in Hadi and 200+ in crossweave; the habit is to write them alongside the feature, not after it.",
+      },
+      {
+        title: "Decisions are written down before the code",
+        detail: "Larger features start from a spec and a plan. mythiep ran a time-boxed spike on the editor and recorded the decision before the schema was fixed.",
+      },
+      {
+        title: "Secrets never live in the client",
+        detail: "Hadi hands the app a 300-second key; mythiep verifies payment notifications with a signature and a secret header on the server.",
+      },
+      {
+        title: "Accessibility is measured, not eyeballed",
+        detail: "Hadi has a WCAG AA contrast test over 56 colour pairs. This site runs axe in its end-to-end tests and scores 100 for accessibility on Lighthouse.",
+      },
+      {
+        title: "Performance is measured, not guessed",
+        detail: "This site scores 99 for performance on mobile Lighthouse with a CLS of 0; the method and the raw numbers are kept in the repo.",
+      },
+    ],
     skillsTitle: "Technology",
     skillGroups: [
       { name: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Material-UI", "Framer Motion", "GSAP", "Electron"] },

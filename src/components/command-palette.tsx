@@ -4,6 +4,7 @@ import { Search } from "lucide-react";
 import { useTheme } from "next-themes";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { headerControl } from "@/components/ui/header-control";
 import { copyText } from "@/lib/clipboard";
 import { rememberLocale } from "@/lib/i18n/cookie";
 import { localeHref } from "@/lib/i18n/paths";
@@ -124,10 +125,10 @@ export function CommandPalette({ items, labels }: CommandPaletteProps) {
         aria-label={labels.open}
         aria-haspopup="dialog"
         aria-keyshortcuts="Control+K Meta+K"
-        className="hidden h-10 items-center justify-center gap-2 rounded-lg px-2.5 text-fg-muted transition-colors hover:text-fg sm:flex touch:h-11 touch:min-w-11"
+        className={cn(headerControl, "hidden min-w-10 gap-2 px-3 sm:flex touch:min-w-11")}
       >
         <Search className="h-[18px] w-[18px]" aria-hidden />
-        <kbd className="hidden rounded-md border border-border px-1.5 py-0.5 font-mono text-[11px] lg:inline">Ctrl K</kbd>
+        <kbd className="hidden font-mono text-[11px] text-fg-subtle lg:inline">Ctrl K</kbd>
       </button>
 
       <dialog
@@ -140,7 +141,7 @@ export function CommandPalette({ items, labels }: CommandPaletteProps) {
         onClick={(event) => {
           if (event.target === event.currentTarget) closePalette();
         }}
-        className="palette fixed inset-auto left-1/2 top-[14vh] m-0 w-[min(36rem,calc(100vw-2rem))] max-w-none -translate-x-1/2 rounded-xl border border-border-strong bg-surface p-0 text-fg backdrop:bg-black/50"
+        className="palette fixed inset-auto left-1/2 top-[14vh] m-0 w-[min(36rem,calc(100vw-2rem))] max-w-none -translate-x-1/2 border border-border-strong bg-surface p-0 text-fg backdrop:bg-black/50"
       >
         <div className="flex items-center gap-3 border-b border-border px-4 focus-within:border-accent">
           <Search className="h-4 w-4 shrink-0 text-fg-subtle" aria-hidden />
@@ -186,7 +187,7 @@ export function CommandPalette({ items, labels }: CommandPaletteProps) {
                         onMouseMove={() => setActive(index)}
                         onClick={() => run(item)}
                         className={cn(
-                          "flex h-11 cursor-pointer items-center rounded-lg px-3 text-sm",
+                          "flex h-11 cursor-pointer items-center px-3 text-sm",
                           selected ? "bg-fg/10 text-fg" : "text-fg-muted",
                         )}
                       >

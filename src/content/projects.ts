@@ -28,6 +28,7 @@ export const projectsData: Record<ProjectSlug, ProjectData> = {
       { key: "templates", value: "51" },
       { key: "migrations", value: "75" },
       { key: "commits", value: "1,700+" },
+      { key: "testFiles", value: "900+" },
     ],
   },
   hadi: {
@@ -40,6 +41,7 @@ export const projectsData: Record<ProjectSlug, ProjectData> = {
       { key: "languages", value: "3" },
       { key: "version", value: "1.3.2" },
       { key: "commits", value: "1,800+" },
+      { key: "testFiles", value: "500+" },
     ],
   },
   crossweave: {
@@ -52,6 +54,7 @@ export const projectsData: Record<ProjectSlug, ProjectData> = {
       { key: "version", value: "0.5.0" },
       { key: "commits", value: "700+" },
       { key: "license", value: "MIT" },
+      { key: "testFiles", value: "200+" },
     ],
   },
 };

@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 const paths = ["/vi", "/en", "/vi/projects/hadi", "/en/projects/mythiep"];
 
-for (const width of [320, 390, 768, 1440]) {
+for (const width of [320, 390, 768, 1024, 1440]) {
   for (const path of paths) {
     test(`no horizontal overflow at ${width}px: ${path}`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 });

@@ -9,11 +9,12 @@ test("services lists four capabilities with tags", async ({ page }) => {
   await expect(rows.last().locator("ul li")).not.toHaveCount(0);
 });
 
-test("about shows the bio, three principles and four skill groups; #stack lands on the skills", async ({ page }) => {
+test("about shows the bio, the engineering habits and four skill groups; #stack lands on the skills", async ({ page }) => {
   await page.goto("/en");
   const about = page.locator("#about");
   await expect(about.getByRole("heading", { level: 2 })).toContainText("understands both code and UX");
-  await expect(about.getByRole("list", { name: "Principles" }).locator("li")).toHaveCount(3);
+  await expect(about.getByRole("heading", { level: 3, name: "How I approach engineering" })).toBeVisible();
+  await expect(about.locator("h3", { hasText: "How I approach engineering" }).locator("xpath=following-sibling::ul[1]/li")).toHaveCount(5);
   await expect(about.getByRole("heading", { level: 3, name: "Technology" })).toHaveAttribute("id", "stack");
   await expect(about.locator("[data-skill-group]")).toHaveCount(4);
 });

@@ -22,6 +22,8 @@ export const vi: Dictionary = {
     { id: "projects", label: "Dự án" },
     { id: "services", label: "Dịch vụ" },
     { id: "about", label: "Về mình" },
+    { id: "process", label: "Quy trình" },
+    { id: "faq", label: "FAQ" },
     { id: "contact", label: "Liên hệ" },
   ],
   hero: {
@@ -86,6 +88,7 @@ export const vi: Dictionary = {
       languages: "ngôn ngữ",
       version: "phiên bản",
       license: "giấy phép",
+      testFiles: "file test",
     },
     items: {
       mythiep: {
@@ -99,7 +102,7 @@ export const vi: Dictionary = {
         choices: [
           {
             title: "Puck làm trình chỉnh sửa canvas, chỉ nạp ở phần editor; thiệp công khai render bằng <Render> của Puck",
-            why: "Puck mặc định xếp bố cục theo luồng, trong khi mẫu thiệp dùng vị trí tuyệt đối, nên mình chạy một spike ba ngày trên canvas tối giản trước khi viết schema. Editor không bao giờ được tải xuống máy khách mời.",
+            why: "Puck mặc định xếp bố cục theo luồng, trong khi mẫu thiệp dùng vị trí tuyệt đối, nên mình chạy một spike giới hạn thời gian trên canvas tối giản trước khi viết schema. Spike cho thấy vị trí tuyệt đối dùng được khi chỉ gắn react-moveable ở phía editor, và editor không bao giờ được tải xuống máy khách mời.",
           },
           {
             title: "Thanh toán SePay: form POST có chữ ký (HMAC-SHA256) và thông báo thanh toán được xác thực bằng secret header, mỗi thiệp trả một lần, giá Basic/Pro theo từng loại thiệp",
@@ -266,8 +269,29 @@ export const vi: Dictionary = {
       "Mình là sinh viên Công nghệ thông tin tại Đại học Mở Hà Nội, đã làm web full-stack được vài năm và đang nhận dự án freelance.",
       "Mình thích những thứ chạy nhanh, nhìn đẹp và làm xong rồi vẫn còn dùng tốt 5 năm sau. Nếu bạn cần một người làm web hiểu cả code lẫn UX, hãy nhắn mình.",
     ],
-    principlesLabel: "Nguyên tắc",
-    principles: ["Clean code", "User-first", "Ship on time"],
+    habitsLabel: "Cách mình làm kỹ thuật",
+    habits: [
+      {
+        title: "Test nằm cạnh code",
+        detail: "Hơn 900 file test trong mythiep, hơn 500 trong Hadi và hơn 200 trong crossweave; mình viết test cùng lúc với tính năng chứ không để sau.",
+      },
+      {
+        title: "Quyết định được viết ra trước khi code",
+        detail: "Các tính năng lớn bắt đầu bằng spec và plan. mythiep chạy một spike giới hạn thời gian cho trình chỉnh sửa và ghi lại quyết định trước khi chốt schema.",
+      },
+      {
+        title: "Khóa bí mật không bao giờ nằm trong client",
+        detail: "Hadi cấp khóa tạm 300 giây cho app; mythiep xác thực thông báo thanh toán bằng chữ ký và secret header ở phía server.",
+      },
+      {
+        title: "Khả năng tiếp cận được đo bằng số",
+        detail: "Hadi có test tương phản WCAG AA trên 56 cặp màu. Chính website này chạy axe trong e2e và đạt 100 điểm Accessibility trên Lighthouse.",
+      },
+      {
+        title: "Hiệu năng được đo chứ không đoán",
+        detail: "Website này đạt 99 điểm Performance trên Lighthouse mobile với CLS 0; phương pháp đo và số liệu thô được lưu trong repo.",
+      },
+    ],
     skillsTitle: "Công nghệ",
     skillGroups: [
       { name: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Material-UI", "Framer Motion", "GSAP", "Electron"] },

@@ -26,11 +26,11 @@ export function ProjectBlock({ locale, dict, slug, index }: ProjectBlockProps) {
   return (
     <article
       data-reveal
-      className="group relative grid gap-8 rounded-xl has-[h3_a:focus-visible]:outline-2 has-[h3_a:focus-visible]:outline-offset-8 has-[h3_a:focus-visible]:outline-accent lg:grid-cols-12 lg:items-center lg:gap-12"
+      className="group relative grid gap-8 has-[h3_a:focus-visible]:outline-2 has-[h3_a:focus-visible]:outline-offset-8 has-[h3_a:focus-visible]:outline-accent lg:grid-cols-12 lg:items-center lg:gap-12"
     >
       <div
         className={cn(
-          "overflow-hidden rounded-xl border border-border bg-surface transition-colors duration-200 group-hover:border-border-strong lg:col-span-7",
+          "overflow-hidden border border-border bg-surface transition-colors duration-200 group-hover:border-border-strong lg:col-span-7",
           mirrored && "lg:order-2",
         )}
       >

@@ -18,7 +18,7 @@ export function AboutSection({ dict }: { dict: Dictionary }) {
             width={portrait.width}
             height={portrait.height}
             sizes="(min-width: 1024px) 224px, 60vw"
-            className="h-auto w-full max-w-56 rounded-xl border border-border object-cover"
+            className="h-auto w-full max-w-56 border border-border object-cover"
           />
         ) : null}
 
@@ -29,12 +29,13 @@ export function AboutSection({ dict }: { dict: Dictionary }) {
             ))}
           </div>
 
-          <ul
-            aria-label={about.principlesLabel}
-            className="mt-14 flex flex-wrap gap-x-8 gap-y-2 border-t border-border pt-8 font-medium"
-          >
-            {about.principles.map((principle) => (
-              <li key={principle}>{principle}</li>
+          <h3 className="mt-14 text-sm font-medium text-fg-muted">{about.habitsLabel}</h3>
+          <ul className="mt-6 divide-y divide-border border-y border-border">
+            {about.habits.map((habit) => (
+              <li key={habit.title} className="grid gap-2 py-5 sm:grid-cols-[14rem_1fr] sm:gap-6">
+                <p className="font-medium">{habit.title}</p>
+                <p className="text-sm text-fg-muted">{habit.detail}</p>
+              </li>
             ))}
           </ul>
 

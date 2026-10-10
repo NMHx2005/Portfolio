@@ -37,7 +37,7 @@ export function LanguageSwitcher({ locale, label }: { locale: Locale; label: str
   }
 
   return (
-    <div role="group" aria-label={label} className="flex items-center rounded-lg border border-border p-0.5">
+    <div role="group" aria-label={label} className="flex h-10 items-stretch inset-ring-1 inset-ring-border touch:h-11">
       {locales.map((target) => {
         const active = target === locale;
         return (
@@ -54,7 +54,7 @@ export function LanguageSwitcher({ locale, label }: { locale: Locale; label: str
             onContextMenu={refresh}
             onClick={(event) => onClick(event, target)}
             className={cn(
-              "flex h-8 min-w-9 items-center justify-center rounded-md px-2 font-mono text-xs uppercase transition-colors touch:h-11 touch:min-w-11",
+              "flex min-w-10 items-center justify-center px-2.5 font-mono text-xs uppercase transition-colors touch:min-w-11",
               active ? "bg-fg text-bg" : "text-fg-muted hover:text-fg",
             )}
           >

@@ -15,14 +15,14 @@ Targets (spec §10): Performance ≥ 95, Accessibility 100, Best Practices ≥ 9
 
 | URL | Perf | A11y | Best Practices | SEO | LCP | CLS | TBT |
 |---|---|---|---|---|---|---|---|
-| `/vi` | 99 | 100 | 96 | 100 | **2.01 s** | 0 | 35 ms |
-| `/en` | 99 | 100 | 96 | 100 | 1.68 s | 0 | 38 ms |
-| `/vi/projects/hadi` | 99 | 100 | 96 | 100 | 1.77 s | 0 | 34 ms |
-| `/en/projects/mythiep` | 99 | 100 | 96 | 100 | 1.77 s | 0 | 34 ms |
+| `/vi` | 99 | 100 | 96 | 100 | **2.02 s** | 0 | 37 ms |
+| `/en` | 99 | 100 | 96 | 100 | 1.69 s | 0 | 38 ms |
+| `/vi/projects/hadi` | 99 | 100 | 96 | 100 | 1.78 s | 0 | 35 ms |
+| `/en/projects/mythiep` | 99 | 100 | 96 | 100 | 1.78 s | 0 | 35 ms |
 
 ## Exceptions
 
-- **`/vi` LCP 2.01 s vs. target < 2.0 s** (five runs: 2.002–2.021 s). The cause was not isolated; earlier experiments (removing the reveal opacity, the entrance animation, font preloading) did not move it and were reverted. Accepted as an exception, not rounded away: the margin is within run-to-run noise and Performance is 99.
+- **`/vi` LCP 2.02 s vs. target < 2.0 s** (five runs: 2.005–2.026 s). The cause was not isolated; earlier experiments (removing the reveal opacity, the entrance animation, font preloading) did not move it and were reverted. Accepted as an exception, not rounded away: the margin is within run-to-run noise and Performance is 99.
 - **Best Practices 96, not 100**: the only failing audit is the local 404 for the Vercel Analytics script (`/_vercel/insights/script.js`), which exists only on Vercel. It is expected to pass there; verify after deploy.
 
 ## Not yet covered

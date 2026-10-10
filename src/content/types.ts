@@ -1,7 +1,7 @@
 export type SectionId = "projects" | "services" | "about" | "process" | "faq" | "contact";
 export type ProjectSlug = "mythiep" | "hadi" | "crossweave";
 export type ProjectKind = "web" | "mobile" | "tool";
-export type MetricKey = "templates" | "migrations" | "commits" | "languages" | "version" | "license";
+export type MetricKey = "templates" | "migrations" | "commits" | "languages" | "version" | "license" | "testFiles";
 
 export interface SectionHead {
   index: string;
@@ -87,8 +87,8 @@ export interface Dictionary {
   services: { items: { title: string; description: string; tags: string[] }[] };
   about: {
     paragraphs: string[];
-    principlesLabel: string;
-    principles: string[];
+    habitsLabel: string;
+    habits: { title: string; detail: string }[];
     skillsTitle: string;
     skillGroups: { name: string; items: string[] }[];
     portraitAlt: string;

@@ -47,7 +47,7 @@ export default async function LocaleLayout({
       <body className="min-h-dvh bg-bg font-sans text-fg antialiased">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-fg focus:px-4 focus:py-2 focus:text-bg"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-fg focus:px-4 focus:py-2 focus:text-bg"
         >
           {getDictionary(locale).a11y.skip}
         </a>

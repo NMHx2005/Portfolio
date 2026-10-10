@@ -19,7 +19,7 @@ export function HeroSection({ locale, dict }: { locale: Locale; dict: Dictionary
         <div className={cn("grid gap-16", hasNow && "lg:grid-cols-[1fr_20rem] lg:gap-20")}>
           <div>
             <p className="rise inline-flex items-center gap-3 text-sm text-fg-muted" style={delay(0)}>
-              <span aria-hidden className="h-2 w-2 rounded-full bg-accent" />
+              <span aria-hidden className="h-2 w-2 bg-accent" />
               {hero.status}
             </p>
             <h1
