@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Pipeline } from "@/components/case-study/pipeline";
 import { Container } from "@/components/ui/container";
+import { SplitWords } from "@/components/ui/split-words";
 import { projectSlugs, projectsData } from "@/content/projects";
 import type { Dictionary, ProjectSlug } from "@/content/types";
 import { delay } from "@/lib/css-vars";
@@ -50,10 +51,9 @@ export function CaseStudyView({ locale, dict, slug }: { locale: Locale; dict: Di
             {copy.category}
           </p>
           <h1
-            className="rise mt-3 text-[clamp(2.25rem,6vw,4.5rem)] font-semibold leading-[1.05] tracking-[-0.035em]"
-            style={delay(1)}
+            className="mt-3 text-[clamp(2.25rem,6vw,4.5rem)] font-semibold leading-[1.05] tracking-[-0.035em]"
           >
-            {copy.title}
+            <SplitWords text={copy.title} />
           </h1>
           <p className="rise mt-6 max-w-2xl text-pretty text-lg text-fg-muted" style={delay(2)}>
             {copy.summary}

@@ -1,5 +1,6 @@
 import { Container } from "@/components/ui/container";
 import { LinkButton } from "@/components/ui/link-button";
+import { SplitWords } from "@/components/ui/split-words";
 import { siteConfig } from "@/config/site";
 import type { Dictionary } from "@/content/types";
 import { delay } from "@/lib/css-vars";
@@ -21,10 +22,9 @@ export function HeroSection({ locale, dict }: { locale: Locale; dict: Dictionary
             </p>
             <h1
               id="hero-heading"
-              className="rise mt-8 max-w-4xl text-balance text-[clamp(2.25rem,6vw,4.5rem)] font-semibold leading-[1.05] tracking-[-0.035em]"
-              style={delay(1)}
+              className="mt-8 max-w-4xl text-balance text-[clamp(2.25rem,6vw,4.5rem)] font-semibold leading-[1.05] tracking-[-0.035em]"
             >
-              {hero.headline}
+              <SplitWords text={hero.headline} />
             </h1>
             <p className="rise mt-6 max-w-xl text-pretty text-lg text-fg-muted" style={delay(2)}>
               {hero.intro}
@@ -37,10 +37,10 @@ export function HeroSection({ locale, dict }: { locale: Locale; dict: Dictionary
             </div>
           </div>
 
-          <div role="group" aria-label={hero.statsLabel} className="rise" style={delay(4)}>
-            <dl className="grid grid-cols-2 gap-px border border-border bg-border">
-              {hero.stats.map((stat) => (
-                <div key={stat.label} className="flex flex-col justify-between gap-6 bg-bg p-5">
+          <div role="group" aria-label={hero.statsLabel}>
+            <dl className="grid grid-cols-2 border-l border-t border-border">
+              {hero.stats.map((stat, index) => (
+                <div key={stat.label} className="rise flex flex-col justify-between gap-6 border-b border-r border-border p-5" style={delay(4 + index)}>
                   <dd className="order-1 text-4xl font-semibold tracking-tight">{stat.value}</dd>
                   <dt className="order-2 text-xs leading-5 text-fg-muted">{stat.label}</dt>
                 </div>

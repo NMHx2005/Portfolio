@@ -8,13 +8,20 @@ export const themeInitScript = `try{if(localStorage.getItem("${themeStorageKey}"
 
 export function applyTheme(theme: Theme): void {
   const root = document.documentElement;
-  // Switching the class would animate every colour at once; suspend transitions for that single frame.
-  const style = document.createElement("style");
-  style.textContent = "*,*::before,*::after{transition:none!important}";
-  document.head.appendChild(style);
-  root.classList.toggle("dark", theme === "dark");
-  void getComputedStyle(root).opacity;
-  window.setTimeout(() => style.remove(), 1);
+  const swap = () => root.classList.toggle("dark", theme === "dark");
+
+  if (typeof document.startViewTransition === "function" && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    // The browser cross-fades old and new page (see ::view-transition-* in globals.css).
+    document.startViewTransition(swap);
+  } else {
+    // Without it, switching the class would animate every colour at once; suspend transitions for that frame.
+    const style = document.createElement("style");
+    style.textContent = "*,*::before,*::after{transition:none!important}";
+    document.head.appendChild(style);
+    swap();
+    void getComputedStyle(root).opacity;
+    window.setTimeout(() => style.remove(), 1);
+  }
   try {
     localStorage.setItem(themeStorageKey, theme);
   } catch {

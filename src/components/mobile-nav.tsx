@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { headerControl } from "@/components/ui/header-control";
+import { delay } from "@/lib/css-vars";
 import { useActiveSection } from "@/lib/use-active-section";
 import { cn } from "@/lib/utils";
 
@@ -62,7 +63,7 @@ export function MobileNav({ items, home, labels }: MobileNavProps) {
         <nav aria-label={labels.nav} className="px-5">
           <ul className="divide-y divide-border border-y border-border">
             {items.map((item, index) => (
-              <li key={item.id}>
+              <li key={item.id} style={delay(index)}>
                 <Link
                   href={`${home}#${item.id}`}
                   onClick={() => dialogRef.current?.close()}

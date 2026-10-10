@@ -56,3 +56,16 @@ test("under reduced motion the hover effect does not move the image", async ({ p
   await card.hover();
   await expect(image).toHaveCSS("transform", "none");
 });
+
+test("external links stay clickable above the whole-card link, even while the card is still settling", async ({ page }) => {
+  await page.goto("/en");
+  for (const link of await page.locator("#projects a[target=_blank]").all()) {
+    await link.scrollIntoViewIfNeeded(); // immediately: the entrance transition has barely started
+    const hit = await link.evaluate((el) => {
+      const r = el.getBoundingClientRect();
+      const top = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+      return top?.closest("a")?.getAttribute("href") === el.getAttribute("href");
+    });
+    expect(hit, String(await link.getAttribute("href"))).toBe(true);
+  }
+});

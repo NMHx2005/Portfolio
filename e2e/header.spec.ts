@@ -161,3 +161,19 @@ test("the controls on the right of the header share one height and one centre li
     expect(new Set(boxes.map((b) => b.centre)).size, JSON.stringify(boxes)).toBe(1);
   }
 });
+
+test.describe("default theme", () => {
+  test("a first-time visitor gets the dark theme, even when their system prefers light", async ({ browser }) => {
+    const context = await browser.newContext({ colorScheme: "light" });
+    const page = await context.newPage();
+    await page.goto("/en");
+    await expect(page.locator("html")).toHaveClass(/dark/);
+    expect(await page.evaluate(() => localStorage.getItem("theme"))).toBeNull();
+    await context.close();
+  });
+
+  test("dark is already in the server HTML, so there is no light flash before scripts run", async ({ request }) => {
+    const html = await (await request.get("/en")).text();
+    expect(html).toMatch(/<html[^>]*class="dark /);
+  });
+});
