@@ -10,7 +10,7 @@ import { join } from "node:path";
 const LIGHTHOUSE = "lighthouse@13.5.0";
 const RUNS = 5;
 const base = process.argv[2] ?? "http://localhost:3101";
-const paths = ["/vi", "/en", "/vi/projects/hadi", "/en/projects/hnwedding"];
+const paths = ["/vi", "/en", "/vi/projects/hadi", "/en/projects/mythiep"];
 
 const median = (xs) => [...xs].sort((a, b) => a - b)[Math.floor(xs.length / 2)];
 const work = mkdtempSync(join(tmpdir(), "lh-"));

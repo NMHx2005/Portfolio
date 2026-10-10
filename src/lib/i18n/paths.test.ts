@@ -5,7 +5,7 @@ describe("paths", () => {
   it("builds locale and project paths", () => {
     expect(localePath("vi")).toBe("/vi");
     expect(localePath("en", "/projects/hadi")).toBe("/en/projects/hadi");
-    expect(projectPath("vi", "hnwedding")).toBe("/vi/projects/hnwedding");
+    expect(projectPath("vi", "mythiep")).toBe("/vi/projects/mythiep");
   });
   it("switches the locale segment and keeps the rest", () => {
     expect(switchLocalePath("/vi", "en")).toBe("/en");

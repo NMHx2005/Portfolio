@@ -34,7 +34,7 @@ export const en: Dictionary = {
     nowTitle: "Now",
     updatedLabel: "Updated",
     now: [
-      { label: "Shipped", value: "HNWedding and Hadi — live in production" },
+      { label: "Shipped", value: "mythiep and Hadi in production; crossweave open source" },
       { label: "Studying", value: "Information Technology, Hanoi Open University" },
     ],
   },
@@ -43,7 +43,7 @@ export const en: Dictionary = {
       index: "01",
       label: "Work",
       heading: "Shipped products",
-      lede: "Two products running in production. Open a case study for the problem and the technical choices.",
+      lede: "Two products in production and one open-source tool. Open a case study for the problem and the technical choices.",
     },
     services: {
       index: "02",
@@ -80,80 +80,139 @@ export const en: Dictionary = {
     live: "Visit product",
     repository: "Source code",
     metricLabels: {
-      themes: "invitation themes",
+      templates: "invitation templates",
       migrations: "DB migrations",
       commits: "commits",
       languages: "languages",
       version: "version",
+      license: "license",
     },
     items: {
-      hnwedding: {
-        title: "HNWedding",
-        category: "Wedding invitations · Agency platform",
+      mythiep: {
+        title: "mythiep",
+        category: "Online invitations · Self-service SaaS",
         summary:
-          "An agency-operated platform: customers submit an order publicly, the team builds the invitation in a custom block editor and publishes it at /thiep/[slug].",
+          "A self-service product for online invitations: pick a template, pay once, edit it in the browser and publish a link guests can RSVP from. No yearly fee.",
         status: "Live in production",
         problem:
-          "Couples want a beautiful, personalized online wedding invitation. Off-the-shelf drag-and-drop builders aren't refined enough, and hiring a developer per couple doesn't scale.",
+          "Hosts want an invitation they can finish themselves in a day: choose a design, make it theirs, share a link and collect replies — without hiring a designer and without paying a yearly fee to keep it online.",
         choices: [
           {
-            title: "A custom block editor for the team to build and publish invitations",
-            why: "Off-the-shelf drag-and-drop builders aren't refined enough, and hiring a developer per couple doesn't scale.",
+            title: "Puck as the canvas editor, loaded only in the editor; public invitations render with Puck's <Render>",
+            why: "Puck lays out in flow by default while invitation designs use absolute positions, so a three-day spike on a minimal canvas ran before the schema was written. The editor is never shipped to guests.",
           },
-          { title: "Next.js 16 App Router + Prisma 7 + Supabase PostgreSQL, strict TypeScript" },
-          { title: "Payments through VietQR/PayOS" },
-          { title: "Images on Cloudflare R2, automated email via Resend" },
+          {
+            title: "SePay payments: a signed form POST (HMAC-SHA256) and a payment notification verified by a secret header, one payment per invitation, Basic/Pro pricing per invitation type",
+          },
+          { title: "Invitation photos stored on Cloudflare R2 as webp variants (768/1200/1600 px) and served with srcset instead of next/image" },
+          {
+            title: "Next.js 16 and Prisma 7 on PostgreSQL: the app and Redis on a VPS, the database on Supabase used as plain Postgres (no Supabase Auth, Storage or Realtime)",
+          },
+          { title: "Cloudflare Turnstile on the RSVP and wish forms, so a public invitation can take replies without accounts or spam" },
         ],
-        flow: ["Customer submits an order", "Admin builds the invitation in the block editor", "Published at /thiep/[slug]"],
+        flow: ["Pick a template", "Pay once (SePay VietQR)", "Edit in the browser", "Publish at /thiep/[slug]", "Guests reply (RSVP)"],
         services: [
-          { label: "Data", detail: "Prisma 7 on Supabase PostgreSQL" },
+          { label: "Data", detail: "Prisma 7 on PostgreSQL (Supabase)" },
           { label: "Auth", detail: "Auth.js" },
-          { label: "Payments", detail: "VietQR / PayOS" },
+          { label: "Payments", detail: "SePay (VietQR)" },
           { label: "Images", detail: "Cloudflare R2" },
-          { label: "Email", detail: "Resend" },
+          { label: "Cache and queue", detail: "Redis" },
+          { label: "Monitoring", detail: "Sentry" },
         ],
         shipped: [
-          "Public order intake → admin builds and publishes invitations through a custom block editor.",
-          "4+ ready-made invitation themes (Gold Philosopher, Sage Classic, Wing Door…).",
-          "VietQR/PayOS payments, automated email via Resend.",
-          "Live in production.",
+          "51 templates across six invitation types: wedding, birthday, baby's first-year, housewarming, event and graduation.",
+          "Basic edits through a form; Pro opens the full canvas editor.",
+          "One-time purchase per invitation with SePay VietQR checkout.",
+          "RSVP, guestbook and map blocks on the published invitation.",
+          "An admin area for types, templates, pricing, orders and invoices.",
+          "Live at mythiep.com.",
         ],
-        imageAlt: "HNWedding wedding invitation platform interface",
+        imageAlt: "The mythiep template catalog, showing invitation templates grouped by type",
       },
       hadi: {
         title: "Hadi",
         category: "Mobile app · React Native",
         summary:
-          "An app that streams two-way Korean/Japanese ↔ Vietnamese subtitles in real time, stores sessions offline-first and syncs to Firestore after each lecture.",
+          "An app that records a lecture and shows two-way Korean/Japanese ↔ Vietnamese subtitles in real time, keeps sessions offline-first and syncs them after each lecture.",
         status: "Live in production",
         problem:
           "Students learning Korean or Japanese need real-time translated subtitles during lectures, with timestamped notes. Most speech-translation apps are one-directional, laggy, or don't save the session.",
         choices: [
-          { title: "A raw WebSocket to Soniox stt-rt-v5 with no SDK; two-way Korean/Japanese ↔ Vietnamese streaming on a single socket" },
-          { title: "Hybrid translation through Cloud Functions: Gemini 3.5 Flash-Lite → Gemini 3.6 Flash → Claude fallback" },
-          { title: "Offline-first: stored with expo-sqlite, synced to Firestore across devices after each session" },
-          { title: "Apple/Email sign-in through Firebase Auth, following Apple HIG" },
+          {
+            title: "The phone streams audio straight to Soniox stt-rt-v5 over a raw WebSocket, using a short-lived single-use key minted by a Cloud Function",
+            why: "A provider key must never ship inside the client. The temporary key is scoped to transcription and expires after 300 seconds.",
+            tradeoff: "Soniox is the only provider on the recording path: if it is down, recording and live translation stop, so balance alerts and error monitoring are required.",
+          },
+          {
+            title: "All AI post-processing runs in Cloud Functions: summaries, retranslation, politeness labels and kanji lookup",
+          },
+          { title: "Offline-first: sessions are stored in expo-sqlite and synced to Firestore across devices after each lecture" },
+          { title: "Audio is never stored, only the transcript and its translation; Firestore security rules block any cross-user access" },
+          {
+            title: "A shared design-token package with a test that fails on hard-coded colours and a numeric WCAG AA contrast check over 56 colour pairs",
+          },
         ],
         flow: [
           "Speech",
-          "Soniox stt-rt-v5 (WebSocket)",
-          "Cloud Functions: Gemini → Claude fallback",
-          "Real-time bilingual subtitles",
+          "Soniox stt-rt-v5 (WebSocket, temporary key)",
+          "Live bilingual subtitles",
           "expo-sqlite (offline)",
           "Firestore sync",
+          "Cloud Functions: summary and retranslation",
         ],
         services: [
           { label: "Local storage", detail: "expo-sqlite" },
-          { label: "Sync", detail: "Firestore" },
+          { label: "Sync and data", detail: "Firestore" },
           { label: "Auth", detail: "Firebase Auth (Apple, Email)" },
+          { label: "Server logic", detail: "Cloud Functions" },
+          { label: "Billing", detail: "Apple in-app purchase, verified on the server" },
         ],
         shipped: [
           "Real-time bilingual Korean/Japanese ↔ Vietnamese subtitles on a single socket.",
           "Offline-first storage with expo-sqlite and multi-device sync via Firestore.",
-          "Apple/Email sign-in through Firebase Auth, following Apple HIG.",
-          "Live in production, version V6.",
+          "A marketing website built with Next.js.",
+          "Hadi Live, a Chrome extension that captions a tab's audio (in development).",
+          "Live in production, app version 1.3.2.",
         ],
-        imageAlt: "Hadi lecture translation app interface",
+        imageAlt: "The Hadi website, showing the app recording a lecture with live bilingual subtitles",
+      },
+      crossweave: {
+        title: "crossweave",
+        category: "Developer tool · Open source",
+        summary:
+          "A local-first cockpit for running many coding sessions on one repository, each in its own git worktree, and landing them back without hand-merging.",
+        status: "Open source · v0.5.0",
+        problem:
+          "Running several coding agents or dev servers side by side on one repository ends with hand-merging at the end of the day, and parallel runs collide on ports, caches and databases.",
+        choices: [
+          {
+            title: "A session is a git worktree plus a shell in it, with its own port block, cache directory and optional database or Docker names",
+            why: "Isolating only the files is not enough: parallel runs also collide on ports and shared state.",
+          },
+          {
+            title: "A background daemon trial-merges sessions against each other, so landing shows what is safe to merge and in what order",
+          },
+          {
+            title: "crossweave never picks, configures or launches the agent; what runs in the shell is yours",
+            tradeoff: "Features were removed on purpose (collision radar, browser remote control, in-app voice input) and are kept reachable through release tags.",
+          },
+          { title: "Bun for the CLI and the daemon, shipped as compiled binaries; Electron with Vite for the desktop cockpit" },
+          { title: "A debug bundle for AI: one compact, secret-scrubbed summary of why a session failed, made to paste into an assistant" },
+        ],
+        flow: ["cw session new", "Work in the session's worktree", "cw converge status", "cw check", "cw land all"],
+        services: [
+          { label: "Runtime", detail: "Bun (macOS, Linux)" },
+          { label: "Desktop", detail: "Electron + Vite" },
+          { label: "Distribution", detail: "GitHub Releases with a checksum-verified installer" },
+        ],
+        shipped: [
+          "Worktree isolation with per-session ports, caches and database names.",
+          "Convergence engine: a pairwise conflict matrix, a recommended merge order and land-all.",
+          "A desktop cockpit with a session rail, a prompt composer that sends one prompt to several sessions, and side-by-side comparison.",
+          "Distribution and self-update, a terminal UI, and notifications.",
+          "Open source under the MIT licence, version 0.5.0.",
+        ],
+        imageAlt: "The crossweave cockpit: a rail of sessions on the left and two agent panes side by side",
       },
     },
   },
@@ -175,7 +234,7 @@ export const en: Dictionary = {
     facts: "More facts",
     next: "Next project",
     previous: "Previous project",
-    platforms: { web: "Web", mobile: "Mobile" },
+    platforms: { web: "Web", mobile: "Mobile", tool: "Developer tool" },
   },
   services: {
     items: [
@@ -211,11 +270,11 @@ export const en: Dictionary = {
     principles: ["Clean code", "User-first", "Ship on time"],
     skillsTitle: "Technology",
     skillGroups: [
-      { name: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Material-UI", "Framer Motion", "GSAP"] },
+      { name: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Material-UI", "Framer Motion", "GSAP", "Electron"] },
       { name: "Mobile", items: ["React Native", "Expo", "expo-sqlite"] },
       {
         name: "Backend & data",
-        items: ["Node.js", "Express", "PostgreSQL", "Prisma", "MongoDB", "MySQL", "Socket.io", "Firebase", "Auth.js", "JWT"],
+        items: ["Node.js", "Express", "PostgreSQL", "Prisma", "MongoDB", "MySQL", "Socket.io", "Firebase", "Auth.js", "JWT", "Redis", "Bun"],
       },
       { name: "Infra & tools", items: ["Vercel", "Supabase", "Cloudflare R2", "Git", "GitHub", "Postman", "Figma"] },
     ],

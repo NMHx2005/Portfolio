@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-const paths = ["/vi", "/en", "/vi/projects/hadi", "/en/projects/hnwedding"];
+const paths = ["/vi", "/en", "/vi/projects/hadi", "/en/projects/mythiep"];
 
 for (const width of [320, 390, 768, 1440]) {
   for (const path of paths) {

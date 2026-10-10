@@ -29,23 +29,36 @@ test("case study shows meta, problem, technical choices, architecture flow and s
 
   await expect(page.getByRole("list", { name: "Main flow" }).locator("li")).toHaveCount(hadi.flow.length);
   await expect(page.locator("#shipped ul > li")).toHaveCount(hadi.shipped.length);
-  await expect(page.locator("#shipped dl")).toContainText("332+");
+  await expect(page.locator("#shipped dl")).toContainText("1,800+");
 });
 
 test("prev/next links walk the project list with wrap-around", async ({ page }) => {
-  await page.goto("/en/projects/hnwedding");
-  await page.getByRole("link", { name: /Next project/ }).click();
-  await expect(page).toHaveURL(/\/projects\/hadi$/);
-  await page.getByRole("link", { name: /Next project/ }).click();
-  await expect(page).toHaveURL(/\/projects\/hnwedding$/);
+  await page.goto("/en/projects/mythiep");
+  for (const slug of ["hadi", "crossweave", "mythiep"]) {
+    await page.getByRole("link", { name: /Next project/ }).click();
+    await expect(page).toHaveURL(new RegExp(`/projects/${slug}$`));
+  }
+  await page.getByRole("link", { name: /Previous project/ }).click();
+  await expect(page).toHaveURL(/\/projects\/crossweave$/);
 });
 
 test("Vietnamese case study is localized and carries structured data", async ({ page }) => {
-  await page.goto("/vi/projects/hnwedding");
+  await page.goto("/vi/projects/mythiep");
   await expect(page.locator("html")).toHaveAttribute("lang", "vi");
   await expect(page.getByRole("heading", { level: 2, name: "Lựa chọn kỹ thuật" })).toBeVisible();
   const ld = await page.locator('script[type="application/ld+json"]').allTextContents();
   expect(ld.join("")).toContain("CreativeWork");
+});
+
+test("the open-source tool links to its repository and has no live site; the product links to its site", async ({ page }) => {
+  await page.goto("/en/projects/crossweave");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("crossweave");
+  await expect(page.getByRole("link", { name: /Source code/ })).toHaveAttribute("href", "https://github.com/NMHx2005/crossweave");
+  await expect(page.getByRole("link", { name: /Visit product/ })).toHaveCount(0);
+  await expect(page.locator("dt", { hasText: /^Platform$/ }).locator("xpath=following-sibling::dd[1]")).toHaveText("Developer tool");
+
+  await page.goto("/en/projects/mythiep");
+  await expect(page.getByRole("link", { name: /Visit product/ })).toHaveAttribute("href", "https://mythiep.com");
 });
 
 test("unknown project slug is a 404; the back link returns to the work section", async ({ page }) => {

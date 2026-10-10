@@ -1,7 +1,7 @@
 export type SectionId = "projects" | "services" | "about" | "process" | "faq" | "contact";
-export type ProjectSlug = "hnwedding" | "hadi";
-export type ProjectKind = "web" | "mobile";
-export type MetricKey = "themes" | "migrations" | "commits" | "languages" | "version";
+export type ProjectSlug = "mythiep" | "hadi" | "crossweave";
+export type ProjectKind = "web" | "mobile" | "tool";
+export type MetricKey = "templates" | "migrations" | "commits" | "languages" | "version" | "license";
 
 export interface SectionHead {
   index: string;

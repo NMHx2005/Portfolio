@@ -9,11 +9,13 @@ describe("sitemapEntries", () => {
     expect(entries.map((e) => e.url).sort()).toEqual(
       [
         "/en",
+        "/en/projects/crossweave",
         "/en/projects/hadi",
-        "/en/projects/hnwedding",
+        "/en/projects/mythiep",
         "/vi",
+        "/vi/projects/crossweave",
         "/vi/projects/hadi",
-        "/vi/projects/hnwedding",
+        "/vi/projects/mythiep",
       ].map(absoluteUrl),
     );
   });

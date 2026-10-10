@@ -49,9 +49,9 @@ describe("json-ld", () => {
     expect(p.email).toBe("mailto:hi@example.com");
   });
   it("project json-ld references the localized url", () => {
-    const g = projectJsonLd("en", "hnwedding") as { "@graph": Record<string, unknown>[] };
+    const g = projectJsonLd("en", "mythiep") as { "@graph": Record<string, unknown>[] };
     const creative = g["@graph"].find((n) => n["@type"] === "CreativeWork");
-    expect(creative?.url).toBe(absoluteUrl("/en/projects/hnwedding"));
+    expect(creative?.url).toBe(absoluteUrl("/en/projects/mythiep"));
   });
   it("serialization escapes < so a value can never close the script tag", () => {
     expect(serializeJsonLd({ a: "</script><b>" })).not.toContain("</script>");

@@ -34,7 +34,7 @@ export const vi: Dictionary = {
     nowTitle: "Hiện tại",
     updatedLabel: "Cập nhật",
     now: [
-      { label: "Đã ra mắt", value: "HNWedding và Hadi — đang chạy production" },
+      { label: "Đã ra mắt", value: "mythiep và Hadi chạy production; crossweave mã nguồn mở" },
       { label: "Đang học", value: "Công nghệ thông tin, Đại học Mở Hà Nội" },
     ],
   },
@@ -43,7 +43,7 @@ export const vi: Dictionary = {
       index: "01",
       label: "Dự án",
       heading: "Sản phẩm đã ra mắt",
-      lede: "Hai sản phẩm đang chạy thật ngoài production. Mở case study để xem bài toán và các lựa chọn kỹ thuật.",
+      lede: "Hai sản phẩm đang chạy production và một công cụ mã nguồn mở. Mở case study để xem bài toán và các lựa chọn kỹ thuật.",
     },
     services: {
       index: "02",
@@ -80,80 +80,139 @@ export const vi: Dictionary = {
     live: "Xem sản phẩm",
     repository: "Mã nguồn",
     metricLabels: {
-      themes: "theme thiệp",
+      templates: "mẫu thiệp",
       migrations: "DB migration",
       commits: "commit",
       languages: "ngôn ngữ",
       version: "phiên bản",
+      license: "giấy phép",
     },
     items: {
-      hnwedding: {
-        title: "HNWedding",
-        category: "Thiệp cưới điện tử · Agency platform",
+      mythiep: {
+        title: "mythiep",
+        category: "Thiệp mời online · SaaS tự phục vụ",
         summary:
-          "Nền tảng vận hành kiểu agency: khách đặt đơn công khai, đội ngũ dựng thiệp bằng block editor riêng rồi xuất bản tại /thiep/[slug].",
+          "Sản phẩm thiệp mời online tự phục vụ: chọn mẫu, trả tiền một lần, tự sửa ngay trên trình duyệt rồi xuất bản thành một đường link để khách xác nhận tham dự. Không phí duy trì hằng năm.",
         status: "Đang chạy production",
         problem:
-          "Các cặp đôi muốn thiệp cưới online đẹp, cá nhân hóa theo câu chuyện riêng. Công cụ kéo-thả có sẵn không đủ tinh tế, còn thuê dev riêng cho từng thiệp thì không mở rộng được.",
+          "Chủ thiệp muốn tự hoàn thiện một tấm thiệp trong một ngày: chọn mẫu, cá nhân hóa, gửi link và nhận phản hồi — không phải thuê designer và không phải trả phí hằng năm để giữ thiệp trực tuyến.",
         choices: [
           {
-            title: "Block editor riêng để đội ngũ dựng và xuất bản thiệp",
-            why: "Công cụ kéo-thả có sẵn không đủ tinh tế, còn thuê dev riêng cho từng thiệp thì không mở rộng được.",
+            title: "Puck làm trình chỉnh sửa canvas, chỉ nạp ở phần editor; thiệp công khai render bằng <Render> của Puck",
+            why: "Puck mặc định xếp bố cục theo luồng, trong khi mẫu thiệp dùng vị trí tuyệt đối, nên mình chạy một spike ba ngày trên canvas tối giản trước khi viết schema. Editor không bao giờ được tải xuống máy khách mời.",
           },
-          { title: "Next.js 16 App Router + Prisma 7 + Supabase PostgreSQL, TypeScript strict" },
-          { title: "Thanh toán VietQR/PayOS" },
-          { title: "Ảnh lưu trên Cloudflare R2, email tự động qua Resend" },
+          {
+            title: "Thanh toán SePay: form POST có chữ ký (HMAC-SHA256) và thông báo thanh toán được xác thực bằng secret header, mỗi thiệp trả một lần, giá Basic/Pro theo từng loại thiệp",
+          },
+          { title: "Ảnh thiệp lưu trên Cloudflare R2 dưới dạng webp nhiều kích thước (768/1200/1600 px), phục vụ bằng srcset thay vì next/image" },
+          {
+            title: "Next.js 16 và Prisma 7 trên PostgreSQL: app và Redis chạy trên VPS, cơ sở dữ liệu ở Supabase chỉ dùng như Postgres thuần (không dùng Supabase Auth, Storage hay Realtime)",
+          },
+          { title: "Cloudflare Turnstile cho form RSVP và lời chúc, để thiệp công khai nhận phản hồi mà không cần tài khoản và hạn chế spam" },
         ],
-        flow: ["Khách đặt đơn công khai", "Admin dựng thiệp bằng block editor", "Xuất bản tại /thiep/[slug]"],
+        flow: ["Chọn mẫu thiệp", "Trả tiền một lần (SePay VietQR)", "Tự sửa trên trình duyệt", "Xuất bản tại /thiep/[slug]", "Khách xác nhận tham dự (RSVP)"],
         services: [
-          { label: "Dữ liệu", detail: "Prisma 7 trên Supabase PostgreSQL" },
+          { label: "Dữ liệu", detail: "Prisma 7 trên PostgreSQL (Supabase)" },
           { label: "Đăng nhập", detail: "Auth.js" },
-          { label: "Thanh toán", detail: "VietQR / PayOS" },
+          { label: "Thanh toán", detail: "SePay (VietQR)" },
           { label: "Ảnh", detail: "Cloudflare R2" },
-          { label: "Email", detail: "Resend" },
+          { label: "Cache và hàng đợi", detail: "Redis" },
+          { label: "Giám sát", detail: "Sentry" },
         ],
         shipped: [
-          "Luồng đặt đơn công khai → admin dựng và xuất bản thiệp qua block editor riêng.",
-          "4+ theme thiệp dựng sẵn (Gold Philosopher, Sage Classic, Wing Door…).",
-          "Thanh toán VietQR/PayOS, email tự động qua Resend.",
-          "Đang chạy production.",
+          "51 mẫu thuộc sáu loại thiệp: cưới, sinh nhật, thôi nôi, tân gia, sự kiện và tốt nghiệp.",
+          "Gói Basic sửa qua form; gói Pro mở trình chỉnh sửa canvas đầy đủ.",
+          "Mua một lần cho mỗi tấm thiệp, thanh toán qua SePay VietQR.",
+          "Khối RSVP, sổ mừng và bản đồ trên thiệp đã xuất bản.",
+          "Khu quản trị cho loại thiệp, mẫu, bảng giá, đơn hàng và hóa đơn.",
+          "Đang chạy tại mythiep.com.",
         ],
-        imageAlt: "Giao diện nền tảng thiệp cưới HNWedding",
+        imageAlt: "Danh mục mẫu thiệp của mythiep, các mẫu được nhóm theo loại",
       },
       hadi: {
         title: "Hadi",
         category: "Ứng dụng di động · React Native",
         summary:
-          "App stream phụ đề dịch hai chiều Hàn/Nhật ↔ Việt theo thời gian thực, lưu offline-first rồi đồng bộ Firestore sau buổi học.",
+          "App ghi âm buổi giảng và hiển thị phụ đề dịch hai chiều Hàn/Nhật ↔ Việt theo thời gian thực, lưu offline-first rồi đồng bộ sau buổi học.",
         status: "Đang chạy production",
         problem:
           "Người học tiếng Hàn, Nhật cần phụ đề dịch theo thời gian thực trong buổi giảng kèm ghi chú có mốc thời gian. Đa số app dịch giọng nói chỉ hỗ trợ một chiều, độ trễ cao hoặc không lưu lại được bài học.",
         choices: [
-          { title: "WebSocket thô tới Soniox stt-rt-v5, không dùng SDK; stream hai chiều Hàn/Nhật ↔ Việt trên cùng một socket" },
-          { title: "Dịch hybrid qua Cloud Functions: Gemini 3.5 Flash-Lite → Gemini 3.6 Flash → Claude (fallback)" },
-          { title: "Offline-first: lưu bằng expo-sqlite, đồng bộ Firestore đa thiết bị sau buổi học" },
-          { title: "Đăng nhập Apple/Email qua Firebase Auth, theo Apple HIG" },
+          {
+            title: "Điện thoại stream âm thanh thẳng tới Soniox stt-rt-v5 qua WebSocket thô, dùng khóa tạm dùng một lần do Cloud Function cấp",
+            why: "Khóa gốc của nhà cung cấp không bao giờ được nằm trong client. Khóa tạm chỉ có quyền phiên âm và hết hạn sau 300 giây.",
+            tradeoff: "Soniox là nhà cung cấp duy nhất trên đường ghi âm: nếu nó ngừng, ghi âm và dịch realtime cũng ngừng, nên bắt buộc có cảnh báo số dư và giám sát lỗi.",
+          },
+          {
+            title: "Mọi xử lý AI hậu kỳ chạy trong Cloud Functions: tóm tắt, dịch lại, nhãn lịch sự và tra chữ Hán",
+          },
+          { title: "Offline-first: buổi học lưu trong expo-sqlite, đồng bộ Firestore đa thiết bị sau mỗi buổi" },
+          { title: "Không lưu âm thanh, chỉ lưu transcript và bản dịch; Firestore security rules chặn mọi truy cập chéo giữa người dùng" },
+          {
+            title: "Gói design token dùng chung kèm test sẽ đỏ nếu có màu viết cứng và kiểm tra tương phản WCAG AA bằng số trên 56 cặp màu",
+          },
         ],
         flow: [
           "Giọng nói",
-          "Soniox stt-rt-v5 (WebSocket)",
-          "Cloud Functions: Gemini → Claude fallback",
+          "Soniox stt-rt-v5 (WebSocket, khóa tạm)",
           "Phụ đề song ngữ realtime",
           "expo-sqlite (offline)",
           "Đồng bộ Firestore",
+          "Cloud Functions: tóm tắt và dịch lại",
         ],
         services: [
           { label: "Lưu trữ cục bộ", detail: "expo-sqlite" },
-          { label: "Đồng bộ", detail: "Firestore" },
+          { label: "Đồng bộ và dữ liệu", detail: "Firestore" },
           { label: "Xác thực", detail: "Firebase Auth (Apple, Email)" },
+          { label: "Logic phía server", detail: "Cloud Functions" },
+          { label: "Thanh toán", detail: "Apple in-app purchase, xác minh ở server" },
         ],
         shipped: [
           "Phụ đề song ngữ realtime Hàn/Nhật ↔ Việt trên cùng một socket.",
           "Lưu offline-first bằng expo-sqlite, đồng bộ Firestore đa thiết bị.",
-          "Đăng nhập Apple/Email qua Firebase Auth, theo Apple HIG.",
-          "Đang chạy production, phiên bản V6.",
+          "Website giới thiệu xây bằng Next.js.",
+          "Hadi Live, tiện ích Chrome tạo phụ đề cho âm thanh của tab (đang phát triển).",
+          "Đang chạy production, app phiên bản 1.3.2.",
         ],
-        imageAlt: "Giao diện ứng dụng dịch bài giảng Hadi",
+        imageAlt: "Website Hadi với app đang ghi một buổi giảng và phụ đề song ngữ realtime",
+      },
+      crossweave: {
+        title: "crossweave",
+        category: "Công cụ cho lập trình viên · Mã nguồn mở",
+        summary:
+          "Cockpit chạy local để điều khiển nhiều phiên làm việc trên cùng một repo, mỗi phiên nằm trong một git worktree riêng, rồi gộp chúng lại mà không phải merge tay.",
+        status: "Mã nguồn mở · v0.5.0",
+        problem:
+          "Chạy nhiều coding agent hoặc dev server song song trên một repo thì cuối ngày phải merge tay, và các lượt chạy song song còn đụng nhau ở cổng, cache và cơ sở dữ liệu.",
+        choices: [
+          {
+            title: "Một phiên là một git worktree cộng một shell trong đó, có khối cổng, thư mục cache và tên database hoặc Docker (tùy chọn) riêng",
+            why: "Chỉ cô lập file là chưa đủ: các lượt chạy song song còn đụng nhau ở cổng và trạng thái dùng chung.",
+          },
+          {
+            title: "Một daemon chạy nền thử merge các phiên với nhau, nên khi land biết phiên nào an toàn để gộp và theo thứ tự nào",
+          },
+          {
+            title: "crossweave không chọn, cấu hình hay khởi chạy agent; thứ gì chạy trong shell là do bạn quyết",
+            tradeoff: "Một số tính năng bị gỡ có chủ đích (collision radar, điều khiển từ xa qua trình duyệt, nhập giọng nói trong app) và vẫn truy cập được qua các tag phát hành.",
+          },
+          { title: "Bun cho CLI và daemon, đóng gói thành binary đã biên dịch; Electron kèm Vite cho cockpit trên desktop" },
+          { title: "Gói debug cho AI: một bản tóm tắt gọn, đã xóa secret, về lý do phiên thất bại, để dán thẳng vào trợ lý" },
+        ],
+        flow: ["cw session new", "Làm việc trong worktree của phiên", "cw converge status", "cw check", "cw land all"],
+        services: [
+          { label: "Runtime", detail: "Bun (macOS, Linux)" },
+          { label: "Desktop", detail: "Electron + Vite" },
+          { label: "Phân phối", detail: "GitHub Releases, trình cài đặt có kiểm tra checksum" },
+        ],
+        shipped: [
+          "Cô lập theo worktree với cổng, cache và tên database riêng cho từng phiên.",
+          "Convergence engine: ma trận xung đột từng cặp, thứ tự merge được đề xuất và land-all.",
+          "Cockpit desktop với thanh danh sách phiên, trình soạn prompt gửi một prompt tới nhiều phiên và so sánh song song.",
+          "Phân phối và tự cập nhật, giao diện terminal và thông báo.",
+          "Mã nguồn mở theo giấy phép MIT, phiên bản 0.5.0.",
+        ],
+        imageAlt: "Cockpit của crossweave: thanh danh sách phiên bên trái và hai khung agent cạnh nhau",
       },
     },
   },
@@ -175,7 +234,7 @@ export const vi: Dictionary = {
     facts: "Thông tin thêm",
     next: "Dự án tiếp theo",
     previous: "Dự án trước",
-    platforms: { web: "Web", mobile: "Mobile" },
+    platforms: { web: "Web", mobile: "Mobile", tool: "Công cụ lập trình" },
   },
   services: {
     items: [
@@ -211,11 +270,11 @@ export const vi: Dictionary = {
     principles: ["Clean code", "User-first", "Ship on time"],
     skillsTitle: "Công nghệ",
     skillGroups: [
-      { name: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Material-UI", "Framer Motion", "GSAP"] },
+      { name: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Material-UI", "Framer Motion", "GSAP", "Electron"] },
       { name: "Mobile", items: ["React Native", "Expo", "expo-sqlite"] },
       {
         name: "Backend & dữ liệu",
-        items: ["Node.js", "Express", "PostgreSQL", "Prisma", "MongoDB", "MySQL", "Socket.io", "Firebase", "Auth.js", "JWT"],
+        items: ["Node.js", "Express", "PostgreSQL", "Prisma", "MongoDB", "MySQL", "Socket.io", "Firebase", "Auth.js", "JWT", "Redis", "Bun"],
       },
       { name: "Hạ tầng & công cụ", items: ["Vercel", "Supabase", "Cloudflare R2", "Git", "GitHub", "Postman", "Figma"] },
     ],

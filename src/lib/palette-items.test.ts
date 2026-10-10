@@ -4,10 +4,10 @@ import { locales } from "@/lib/i18n/config";
 import { buildPaletteItems } from "./palette-items";
 
 describe("buildPaletteItems", () => {
-  it.each(locales)("with an email: 6 sections, 2 projects, 4 actions for %s, unique ids", (locale) => {
+  it.each(locales)("with an email: 6 sections, 3 projects, 4 actions for %s, unique ids", (locale) => {
     const items = buildPaletteItems(locale, getDictionary(locale), "someone@example.com");
     expect(items.filter((i) => i.group === "sections")).toHaveLength(6);
-    expect(items.filter((i) => i.group === "projects")).toHaveLength(2);
+    expect(items.filter((i) => i.group === "projects")).toHaveLength(3);
     expect(items.filter((i) => i.group === "actions")).toHaveLength(4);
     expect(new Set(items.map((i) => i.id)).size).toBe(items.length);
     for (const item of items) expect(item.label.trim()).not.toBe("");
