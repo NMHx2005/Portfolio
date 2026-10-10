@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { siteConfig } from "@/config/site";
 import {
   absoluteUrl,
   alternatesFor,
@@ -37,12 +36,17 @@ describe("metadata", () => {
 });
 
 describe("json-ld", () => {
-  it("person has Product Engineer and omits image when no portrait is configured", () => {
-    const p = personJsonLd("vi") as Record<string, unknown>;
+  it("person has Product Engineer and omits image and email when neither is configured", () => {
+    const p = personJsonLd("vi", { portrait: null, email: null });
     expect(p["@type"]).toBe("Person");
     expect(p.jobTitle).toBe("Product Engineer");
     expect("image" in p).toBe(false);
-    expect("email" in p).toBe(siteConfig.contact.email !== null);
+    expect("email" in p).toBe(false);
+  });
+  it("person includes image and email once they are configured", () => {
+    const p = personJsonLd("en", { portrait: { src: "/portrait.webp", width: 800, height: 800 }, email: "hi@example.com" });
+    expect(p.image).toBe(absoluteUrl("/portrait.webp"));
+    expect(p.email).toBe("mailto:hi@example.com");
   });
   it("project json-ld references the localized url", () => {
     const g = projectJsonLd("en", "hnwedding") as { "@graph": Record<string, unknown>[] };
