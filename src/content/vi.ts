@@ -263,9 +263,4 @@ export const vi: Dictionary = {
     tagline: "Sẵn sàng cho dự án mới.",
     note: "© 2026 Nguyễn Mạnh Hùng. Xây dựng tại Hà Nội bằng Next.js.",
   },
-  notFound: {
-    title: "Không tìm thấy trang",
-    text: "Đường dẫn này không tồn tại hoặc đã được chuyển đi.",
-    cta: "Về trang chủ",
-  },
 };

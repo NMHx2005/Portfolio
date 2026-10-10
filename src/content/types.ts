@@ -108,5 +108,4 @@ export interface Dictionary {
     hint: string;
   };
   footer: { tagline: string; note: string };
-  notFound: { title: string; text: string; cta: string };
 }

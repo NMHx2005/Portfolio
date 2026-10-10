@@ -263,9 +263,4 @@ export const en: Dictionary = {
     tagline: "Ready for your next project.",
     note: "© 2026 Nguyễn Mạnh Hùng. Built in Hanoi with Next.js.",
   },
-  notFound: {
-    title: "Page not found",
-    text: "This link doesn't exist or has moved.",
-    cta: "Back to home",
-  },
 };

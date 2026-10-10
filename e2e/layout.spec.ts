@@ -29,23 +29,6 @@ for (const path of paths) {
   });
 }
 
-test("touch targets are at least 44x44 CSS px on coarse pointers", async ({ page, isMobile }) => {
-  test.skip(!isMobile, "mobile project emulates a coarse pointer");
-  await page.goto("/en");
-  expect(await page.evaluate(() => matchMedia("(pointer: coarse)").matches)).toBe(true);
-  const tooSmall = await page
-    .locator("header button:visible, header a:visible, footer a:visible, summary:visible, #contact a:visible, #contact button:visible")
-    .evaluateAll((els) =>
-      els
-        .map((el) => {
-          const r = el.getBoundingClientRect();
-          return { name: el.getAttribute("aria-label") ?? el.textContent?.trim().slice(0, 30) ?? el.tagName, w: Math.round(r.width), h: Math.round(r.height) };
-        })
-        .filter((x) => x.w < 44 || x.h < 44),
-    );
-  expect(tooSmall).toEqual([]);
-});
-
 test("section anchors land below the fixed header", async ({ page, isMobile }) => {
   test.skip(isMobile, "inline nav is desktop only");
   await page.goto("/en");

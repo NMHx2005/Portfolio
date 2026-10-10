@@ -2,7 +2,7 @@
 
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface MobileNavProps {
   items: { id: string; label: string }[];
@@ -16,6 +16,17 @@ const iconButton =
 export function MobileNav({ items, home, labels }: MobileNavProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
+
+  // The trigger lives in an `md:hidden` wrapper; an open modal would keep locking the page
+  // after a rotate/resize hides that wrapper, with no visible way to close it.
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 768px)");
+    function onChange(event: MediaQueryListEvent) {
+      if (event.matches) dialogRef.current?.close();
+    }
+    desktop.addEventListener("change", onChange);
+    return () => desktop.removeEventListener("change", onChange);
+  }, []);
 
   return (
     <div className="md:hidden">

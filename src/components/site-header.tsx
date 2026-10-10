@@ -32,7 +32,7 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
                 <li key={item.id}>
                   <Link
                     href={`${home}#${item.id}`}
-                    className="rounded-lg px-3 py-2 text-sm text-fg-muted transition-colors hover:text-fg"
+                    className="inline-flex items-center rounded-lg px-3 py-2 text-sm text-fg-muted transition-colors hover:text-fg touch:min-h-11"
                   >
                     {item.label}
                   </Link>

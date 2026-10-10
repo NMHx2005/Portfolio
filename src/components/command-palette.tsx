@@ -4,6 +4,7 @@ import { Search } from "lucide-react";
 import { useTheme } from "next-themes";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { copyText } from "@/lib/clipboard";
 import { rememberLocale } from "@/lib/i18n/cookie";
 import { localeHref } from "@/lib/i18n/paths";
 import type { PaletteGroup, PaletteItem } from "@/lib/palette-items";
@@ -28,6 +29,8 @@ const groupOrder: PaletteGroup[] = ["sections", "projects", "actions"];
 export function CommandPalette({ items, labels }: CommandPaletteProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const closeTimer = useRef<number | undefined>(undefined);
+  // Bumped whenever a session opens or ends, so a clipboard write that settles late cannot touch the next one.
+  const session = useRef(0);
   const listId = useId();
   const router = useRouter();
   const pathname = usePathname();
@@ -44,6 +47,7 @@ export function CommandPalette({ items, labels }: CommandPaletteProps) {
 
   const openPalette = useCallback(() => {
     window.clearTimeout(closeTimer.current);
+    session.current += 1;
     setQuery("");
     setActive(0);
     setNotice("");
@@ -76,16 +80,14 @@ export function CommandPalette({ items, labels }: CommandPaletteProps) {
     const { action } = item;
     if (action.kind === "copy") {
       // Keep the dialog open just long enough to tell the visitor what happened.
-      // `Promise.resolve().then` also catches the synchronous throw when the Clipboard API is unavailable.
-      Promise.resolve()
-        .then(() => navigator.clipboard.writeText(action.value))
-        .then(
-          () => setNotice(labels.copied),
-          () => setNotice(labels.copyFailed),
-        )
-        .finally(() => {
+      const mine = session.current;
+      void copyText(action.value, (text) => navigator.clipboard.writeText(text), () => session.current === mine).then(
+        (result) => {
+          if (result === "stale") return;
+          setNotice(result === "copied" ? labels.copied : labels.copyFailed);
           closeTimer.current = window.setTimeout(closePalette, 900);
-        });
+        },
+      );
       return;
     }
     closePalette();
@@ -122,7 +124,7 @@ export function CommandPalette({ items, labels }: CommandPaletteProps) {
         aria-label={labels.open}
         aria-haspopup="dialog"
         aria-keyshortcuts="Control+K Meta+K"
-        className="hidden h-10 items-center gap-2 rounded-lg px-2.5 text-fg-muted transition-colors hover:text-fg sm:flex"
+        className="hidden h-10 items-center justify-center gap-2 rounded-lg px-2.5 text-fg-muted transition-colors hover:text-fg sm:flex touch:h-11 touch:min-w-11"
       >
         <Search className="h-[18px] w-[18px]" aria-hidden />
         <kbd className="hidden rounded-md border border-border px-1.5 py-0.5 font-mono text-[11px] lg:inline">Ctrl K</kbd>
@@ -131,6 +133,10 @@ export function CommandPalette({ items, labels }: CommandPaletteProps) {
       <dialog
         ref={dialogRef}
         aria-label={labels.open}
+        onClose={() => {
+          window.clearTimeout(closeTimer.current);
+          session.current += 1;
+        }}
         onClick={(event) => {
           if (event.target === event.currentTarget) closePalette();
         }}
