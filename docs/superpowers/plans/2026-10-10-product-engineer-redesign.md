@@ -1523,14 +1523,18 @@ export function absoluteUrl(path: string): string {
   return `${getSiteUrl()}${path}`;
 }
 
+export function languageUrls(pathFor: (locale: Locale) => string): Record<string, string> {
+  const languages: Record<string, string> = {};
+  for (const l of locales) languages[l] = absoluteUrl(pathFor(l));
+  languages["x-default"] = absoluteUrl(pathFor(defaultLocale));
+  return languages;
+}
+
 export function alternatesFor(
   locale: Locale,
   pathFor: (locale: Locale) => string,
 ): NonNullable<Metadata["alternates"]> {
-  const languages: Record<string, string> = {};
-  for (const l of locales) languages[l] = absoluteUrl(pathFor(l));
-  languages["x-default"] = absoluteUrl(pathFor(defaultLocale));
-  return { canonical: absoluteUrl(pathFor(locale)), languages };
+  return { canonical: absoluteUrl(pathFor(locale)), languages: languageUrls(pathFor) };
 }
 
 function openGraph(locale: Locale, title: string, description: string, path: string): Metadata["openGraph"] {
@@ -1644,7 +1648,7 @@ import { siteConfig } from "@/config/site";
 import { projectSlugs } from "@/content/projects";
 import { locales, type Locale } from "@/lib/i18n/config";
 import { localePath, projectPath } from "@/lib/i18n/paths";
-import { absoluteUrl, alternatesFor } from "@/lib/seo";
+import { absoluteUrl, languageUrls } from "@/lib/seo";
 
 export function sitemapEntries(): MetadataRoute.Sitemap {
   const lastModified = new Date(siteConfig.contentUpdated);
@@ -1659,7 +1663,7 @@ export function sitemapEntries(): MetadataRoute.Sitemap {
       lastModified,
       changeFrequency: "monthly" as const,
       priority,
-      alternates: { languages: alternatesFor(locale, pathFor).languages },
+      alternates: { languages: languageUrls(pathFor) },
     })),
   );
 }
