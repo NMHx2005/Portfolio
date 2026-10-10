@@ -2835,7 +2835,7 @@ test.describe("hero", () => {
 
   test("shows status, dated 'Now' facts, two CTAs and the stack tokens", async ({ page }) => {
     await page.goto("/en");
-    await expect(page.getByText("Open to freelance")).toBeVisible();
+    await expect(page.getByText("Open to freelance · Hanoi, UTC+7")).toBeVisible();
     const now = page.getByRole("group", { name: "Now" });
     await expect(now.locator("dt")).toHaveCount(2);
     await expect(now.getByText(/^Updated /)).toBeVisible();
