@@ -128,7 +128,7 @@ Rules: nothing loops (no pulse); every movement is gated by `prefers-reduced-mot
 
 ## 10. Performance targets (measured on `next build && next start`, mobile emulation)
 
-Lighthouse: Performance ≥ 95, Accessibility 100, Best Practices ≥ 95, SEO 100. LCP < 2.0 s, CLS < 0.05, TBT < 100 ms. Hero is text, so the work images sit below the fold: no `priority`/preload unless a trace shows an image as the LCP element. Method: production build, mobile preset with default simulated throttling, clean profile, **median of 5 runs** per URL; a single run is never evidence. Fonts via `next/font` (self-hosted, `display: swap`).
+Lighthouse: Performance ≥ 95, Accessibility 100, Best Practices ≥ 95, SEO 100. LCP < 2.0 s, CLS < 0.05, TBT < 100 ms. Hero is text, so the work images sit below the fold: no `priority`/preload unless a trace shows an image as the LCP element. Method (the one method for acceptance; see `docs/performance.md` for command, versions and results): production build served locally, mobile preset with **applied (`devtools`) throttling**, clean profile, **median of 5 runs** per URL; a single run is never evidence. Applied throttling is chosen because the default simulated (lantern) throttling models a localhost page as if every resource arrived before the real LCP and reports a misleadingly slow LCP; results are therefore a lab approximation of a throttled mobile device, not a field measurement. Any target missed by a hair is recorded as an explicit exception in `docs/performance.md`, never rounded away. Fonts via `next/font` (self-hosted, `display: swap`).
 
 ## 11. Testing strategy
 
