@@ -5,7 +5,7 @@ import { useTheme } from "next-themes";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { rememberLocale } from "@/lib/i18n/cookie";
-import { switchLocalePath } from "@/lib/i18n/paths";
+import { localeHref } from "@/lib/i18n/paths";
 import type { PaletteGroup, PaletteItem } from "@/lib/palette-items";
 import { matchesQuery } from "@/lib/search";
 import { cn } from "@/lib/utils";
@@ -96,7 +96,7 @@ export function CommandPalette({ items, labels }: CommandPaletteProps) {
       setTheme(resolvedTheme === "dark" ? "light" : "dark");
     } else {
       rememberLocale(action.target);
-      router.push(switchLocalePath(pathname, action.target));
+      router.push(localeHref(pathname, window.location.search, window.location.hash, action.target));
     }
   }
 

@@ -10,10 +10,15 @@ export function proxy(request: NextRequest) {
     acceptLanguage: request.headers.get("accept-language"),
   });
   if (!target) return NextResponse.next();
-  return NextResponse.redirect(new URL(target, request.url), 307);
+  const response = NextResponse.redirect(new URL(target, request.url), 307);
+  // The target depends on the Cookie and Accept-Language headers, so a shared cache must never reuse it for another visitor.
+  response.headers.set("Vary", "Accept-Language, Cookie");
+  response.headers.set("Cache-Control", "private, no-store");
+  return response;
 }
 
 export const config = {
-  // Skip API routes, Next internals and anything with a file extension (sitemap.xml, robots.txt, images…).
-  matcher: ["/((?!api|_next|.*\\..*).*)"],
+  // Skip API routes and Next internals (whole path segments only: /apiary is a normal page path) and anything with a
+  // file extension (sitemap.xml, robots.txt, images…).
+  matcher: ["/((?!api(?:/|$)|_next(?:/|$)|.*\\..*).*)"],
 };

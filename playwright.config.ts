@@ -8,6 +8,8 @@ const PORT = prod ? 3101 : 3100;
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
+  // Each worker is a headless Chromium hammering one Next server; more than this starves the CPU and causes timeouts.
+  workers: 4,
   reporter: [["list"]],
   use: { baseURL: `http://localhost:${PORT}`, trace: "retain-on-failure" },
   webServer: {

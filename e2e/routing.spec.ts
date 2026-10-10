@@ -25,6 +25,22 @@ test.describe("locale redirect", () => {
   });
 });
 
+test.describe("locale redirect: caching and matcher", () => {
+  test("the redirect varies on the negotiation headers and is not shareable", async ({ request }) => {
+    const res = await request.get("/", { maxRedirects: 0 });
+    expect(res.headers()["vary"]).toContain("Accept-Language");
+    expect(res.headers()["cache-control"]).toContain("no-store");
+  });
+
+  test("paths that merely start with 'api' or '_next' are still localized", async ({ request }) => {
+    for (const path of ["/apiary", "/_nextgen"]) {
+      const res = await request.get(path, { maxRedirects: 0 });
+      expect(res.status(), path).toBe(307);
+      expect(res.headers()["location"], path).toMatch(new RegExp(`/vi${path}$`));
+    }
+  });
+});
+
 test.describe("locale pages", () => {
   test("html lang follows the URL", async ({ page }) => {
     await page.goto("/en");

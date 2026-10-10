@@ -60,6 +60,9 @@ test("old shared links still work: /#projects (through the locale redirect) and 
   await expect(page).toHaveURL(/\/(vi|en)#projects$/);
   await expect(page.locator("#projects")).toBeInViewport();
 
+  // Leave the document first: a URL that differs only by fragment is a same-document navigation, which the
+  // browser would scroll *smoothly* (and slowly under load) instead of performing a real page load.
+  await page.goto("about:blank");
   await page.goto("/en#stack");
   await expect(page.getByRole("heading", { level: 3, name: "Technology" })).toBeInViewport();
 });

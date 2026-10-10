@@ -13,9 +13,9 @@ export function LanguageSwitcher({ locale, label }: { locale: Locale; label: str
   const router = useRouter();
 
   function onClick(event: MouseEvent<HTMLAnchorElement>, target: Locale) {
-    rememberLocale(target);
     const modified = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0;
-    if (modified) return;
+    if (modified) return; // opening in a new tab must not change this tab's remembered choice
+    rememberLocale(target);
     // The plain href (no query/hash) is the no-JS fallback; with JS we keep the visitor's context.
     event.preventDefault();
     router.push(localeHref(pathname, window.location.search, window.location.hash, target));

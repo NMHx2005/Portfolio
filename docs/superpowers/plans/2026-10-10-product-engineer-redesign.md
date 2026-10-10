@@ -1924,6 +1924,8 @@ const PORT = prod ? 3101 : 3100;
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
+  // Each worker is a headless Chromium hammering one Next server; more than this starves the CPU and causes timeouts.
+  workers: 4,
   reporter: [["list"]],
   use: { baseURL: `http://localhost:${PORT}`, trace: "retain-on-failure" },
   webServer: {
@@ -1966,6 +1968,22 @@ test.describe("locale redirect", () => {
     expect(a.headers()["location"]).toMatch(/\/vi\/projects\/hadi\?utm=x$/);
     const b = await request.get("/vietnam", { maxRedirects: 0 });
     expect(b.headers()["location"]).toMatch(/\/vi\/vietnam$/);
+  });
+});
+
+test.describe("locale redirect: caching and matcher", () => {
+  test("the redirect varies on the negotiation headers and is not shareable", async ({ request }) => {
+    const res = await request.get("/", { maxRedirects: 0 });
+    expect(res.headers()["vary"]).toContain("Accept-Language");
+    expect(res.headers()["cache-control"]).toContain("no-store");
+  });
+
+  test("paths that merely start with 'api' or '_next' are still localized", async ({ request }) => {
+    for (const path of ["/apiary", "/_nextgen"]) {
+      const res = await request.get(path, { maxRedirects: 0 });
+      expect(res.status(), path).toBe(307);
+      expect(res.headers()["location"], path).toMatch(new RegExp(`/vi${path}$`));
+    }
   });
 });
 
@@ -2023,12 +2041,17 @@ export function proxy(request: NextRequest) {
     acceptLanguage: request.headers.get("accept-language"),
   });
   if (!target) return NextResponse.next();
-  return NextResponse.redirect(new URL(target, request.url), 307);
+  const response = NextResponse.redirect(new URL(target, request.url), 307);
+  // The target depends on the Cookie and Accept-Language headers, so a shared cache must never reuse it for another visitor.
+  response.headers.set("Vary", "Accept-Language, Cookie");
+  response.headers.set("Cache-Control", "private, no-store");
+  return response;
 }
 
 export const config = {
-  // Skip API routes, Next internals and anything with a file extension (sitemap.xml, robots.txt, images…).
-  matcher: ["/((?!api|_next|.*\\..*).*)"],
+  // Skip API routes and Next internals (whole path segments only: /apiary is a normal page path) and anything with a
+  // file extension (sitemap.xml, robots.txt, images…).
+  matcher: ["/((?!api(?:/|$)|_next(?:/|$)|.*\\..*).*)"],
 };
 ```
 
@@ -2576,9 +2599,9 @@ export function LanguageSwitcher({ locale, label }: { locale: Locale; label: str
   const router = useRouter();
 
   function onClick(event: MouseEvent<HTMLAnchorElement>, target: Locale) {
-    rememberLocale(target);
     const modified = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0;
-    if (modified) return;
+    if (modified) return; // opening in a new tab must not change this tab's remembered choice
+    rememberLocale(target);
     // The plain href (no query/hash) is the no-JS fallback; with JS we keep the visitor's context.
     event.preventDefault();
     router.push(localeHref(pathname, window.location.search, window.location.hash, target));
@@ -4015,7 +4038,7 @@ Expected: contact tests FAIL.
 "use client";
 
 import { Check, Copy } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface CopyEmailButtonProps {
   email: string;
@@ -4026,6 +4049,9 @@ interface CopyEmailButtonProps {
 
 export function CopyEmailButton({ email, label, copiedLabel, failedLabel }: CopyEmailButtonProps) {
   const [state, setState] = useState<"idle" | "copied" | "failed">("idle");
+  const timer = useRef<number | undefined>(undefined);
+
+  useEffect(() => () => window.clearTimeout(timer.current), []);
 
   async function copy() {
     try {
@@ -4035,7 +4061,8 @@ export function CopyEmailButton({ email, label, copiedLabel, failedLabel }: Copy
       // Clipboard can be unavailable (insecure context, denied permission); the mailto link stays usable.
       setState("failed");
     }
-    window.setTimeout(() => setState("idle"), 2000);
+    window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => setState("idle"), 2000);
   }
 
   return (
@@ -4756,6 +4783,14 @@ test("copy email action gives feedback; it does not exist without a public email
   await expect(page.getByRole("dialog")).toBeHidden();
 });
 
+test("switching language from the palette keeps query string and hash", async ({ page }) => {
+  await page.goto("/vi?utm=x#faq");
+  await page.keyboard.press("Control+K");
+  await page.getByRole("combobox").fill("switch");
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/\/en\?utm=x#faq$/);
+});
+
 test("actions: switch language and toggle theme", async ({ page }) => {
   await page.goto("/vi");
   await page.keyboard.press("Control+K");
@@ -4804,7 +4839,7 @@ import { useTheme } from "next-themes";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { rememberLocale } from "@/lib/i18n/cookie";
-import { switchLocalePath } from "@/lib/i18n/paths";
+import { localeHref } from "@/lib/i18n/paths";
 import type { PaletteGroup, PaletteItem } from "@/lib/palette-items";
 import { matchesQuery } from "@/lib/search";
 import { cn } from "@/lib/utils";
@@ -4895,7 +4930,7 @@ export function CommandPalette({ items, labels }: CommandPaletteProps) {
       setTheme(resolvedTheme === "dark" ? "light" : "dark");
     } else {
       rememberLocale(action.target);
-      router.push(switchLocalePath(pathname, action.target));
+      router.push(localeHref(pathname, window.location.search, window.location.hash, action.target));
     }
   }
 
@@ -5425,6 +5460,9 @@ test("old shared links still work: /#projects (through the locale redirect) and 
   await expect(page).toHaveURL(/\/(vi|en)#projects$/);
   await expect(page.locator("#projects")).toBeInViewport();
 
+  // Leave the document first: a URL that differs only by fragment is a same-document navigation, which the
+  // browser would scroll *smoothly* (and slowly under load) instead of performing a real page load.
+  await page.goto("about:blank");
   await page.goto("/en#stack");
   await expect(page.getByRole("heading", { level: 3, name: "Technology" })).toBeInViewport();
 });

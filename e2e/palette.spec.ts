@@ -101,6 +101,14 @@ test("copy email action gives feedback; it does not exist without a public email
   await expect(page.getByRole("dialog")).toBeHidden();
 });
 
+test("switching language from the palette keeps query string and hash", async ({ page }) => {
+  await page.goto("/vi?utm=x#faq");
+  await page.keyboard.press("Control+K");
+  await page.getByRole("combobox").fill("switch");
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/\/en\?utm=x#faq$/);
+});
+
 test("actions: switch language and toggle theme", async ({ page }) => {
   await page.goto("/vi");
   await page.keyboard.press("Control+K");
