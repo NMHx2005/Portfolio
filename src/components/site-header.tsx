@@ -1,62 +1,54 @@
-"use client";
-
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { MobileNav } from "@/components/mobile-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { useLocale } from "@/components/providers/locale-provider";
-import { siteContent } from "@/content";
-import { cn } from "@/lib/utils";
+import { Container } from "@/components/ui/container";
+import { siteConfig } from "@/config/site";
+import type { Dictionary } from "@/content/types";
+import type { Locale } from "@/lib/i18n/config";
+import { localePath } from "@/lib/i18n/paths";
 
-export function SiteHeader() {
-  const { locale } = useLocale();
-  const content = siteContent[locale];
+export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  const home = localePath(locale);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 border-b border-border/40 bg-background/60 backdrop-blur-xl">
-      <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-4 lg:px-10">
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-        >
+    <header className="fixed inset-x-0 top-0 z-40 border-b border-border bg-bg">
+      <Container>
+        <div className="flex h-16 items-center justify-between gap-4">
           <Link
-            href="#hero"
-            className="group inline-flex items-center gap-2 rounded-full border border-border/60 bg-background-elevated/60 px-3.5 py-1.5 text-xs font-semibold backdrop-blur transition hover:border-primary/40 hover:text-primary sm:text-sm"
-            data-cursor="hover"
+            href={home}
+            aria-label={`NMHx — ${siteConfig.name}`}
+            className="inline-flex h-11 items-center font-mono text-sm font-semibold tracking-tight"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/60 opacity-75" />
-              <span className="relative inline-flex h-full w-full rounded-full bg-primary" />
-            </span>
-            <span>NMHx</span>
+            NMHx<span className="text-accent">.</span>
           </Link>
-        </motion.div>
 
-        <nav className="hidden items-center gap-1 md:flex">
-          {content.nav.map((item, i) => (
-            <motion.a
-              key={item.id}
-              href={`#${item.id}`}
-              className={cn(
-                "group relative rounded-full px-3.5 py-1.5 text-sm font-medium text-muted-foreground transition hover:text-foreground",
-              )}
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.05 * i, ease: [0.23, 1, 0.32, 1] }}
-              data-cursor="hover"
-            >
-              <span className="relative z-10">{item.label}</span>
-              <span className="absolute inset-0 rounded-full bg-foreground/0 transition group-hover:bg-foreground/5" />
-            </motion.a>
-          ))}
-        </nav>
+          <nav aria-label={dict.a11y.mainNav} className="hidden md:block">
+            <ul className="flex items-center gap-1">
+              {dict.nav.map((item) => (
+                <li key={item.id}>
+                  <Link
+                    href={`${home}#${item.id}`}
+                    className="rounded-lg px-3 py-2 text-sm text-fg-muted transition-colors hover:text-fg"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-        <div className="flex items-center gap-2">
-          <LanguageSwitcher />
-          <ThemeToggle />
+          <div className="flex items-center gap-1.5">
+            <LanguageSwitcher locale={locale} label={dict.a11y.switchLanguage} />
+            <ThemeToggle label={dict.a11y.toggleTheme} />
+            <MobileNav
+              items={dict.nav}
+              home={home}
+              labels={{ open: dict.a11y.openMenu, close: dict.a11y.closeMenu, nav: dict.a11y.mainNav }}
+            />
+          </div>
         </div>
-      </div>
+      </Container>
     </header>
   );
 }

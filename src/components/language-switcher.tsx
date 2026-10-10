@@ -1,40 +1,46 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { useLocale } from "@/components/providers/locale-provider";
-import { supportedLocales } from "@/content";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import type { MouseEvent } from "react";
+import { localeLabels, locales, type Locale } from "@/lib/i18n/config";
+import { rememberLocale } from "@/lib/i18n/cookie";
+import { localeHref, switchLocalePath } from "@/lib/i18n/paths";
 import { cn } from "@/lib/utils";
 
-export function LanguageSwitcher() {
-  const { locale, setLocale } = useLocale();
+export function LanguageSwitcher({ locale, label }: { locale: Locale; label: string }) {
+  const pathname = usePathname();
+  const router = useRouter();
+
+  function onClick(event: MouseEvent<HTMLAnchorElement>, target: Locale) {
+    rememberLocale(target);
+    const modified = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0;
+    if (modified) return;
+    // The plain href (no query/hash) is the no-JS fallback; with JS we keep the visitor's context.
+    event.preventDefault();
+    router.push(localeHref(pathname, window.location.search, window.location.hash, target));
+  }
 
   return (
-    <div className="inline-flex items-center rounded-full border border-border/60 bg-background-elevated/60 p-1 text-xs shadow-sm backdrop-blur">
-      {supportedLocales.map((item) => {
-        const isActive = locale === item.code;
+    <div role="group" aria-label={label} className="flex items-center rounded-lg border border-border p-0.5">
+      {locales.map((target) => {
+        const active = target === locale;
         return (
-          <button
-            key={item.code}
-            type="button"
-            onClick={() => setLocale(item.code)}
+          <Link
+            key={target}
+            href={switchLocalePath(pathname, target)}
+            hrefLang={target}
+            lang={target}
+            aria-label={localeLabels[target]}
+            aria-current={active ? "true" : undefined}
+            onClick={(event) => onClick(event, target)}
             className={cn(
-              "relative flex min-w-[56px] items-center justify-center rounded-full px-3 py-1.5 font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
-              isActive ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground",
+              "flex h-8 min-w-9 items-center justify-center rounded-md px-2 font-mono text-xs uppercase transition-colors touch:h-11 touch:min-w-11",
+              active ? "bg-fg text-bg" : "text-fg-muted hover:text-fg",
             )}
-            data-cursor="hover"
-            aria-label={`Switch to ${item.label}`}
           >
-            <span className="relative z-10">{item.code.toUpperCase()}</span>
-            <AnimatePresence>
-              {isActive ? (
-                <motion.span
-                  layoutId="language-pill"
-                  className="absolute inset-0 rounded-full bg-gradient-to-r from-primary via-primary to-secondary"
-                  transition={{ type: "spring", stiffness: 320, damping: 26 }}
-                />
-              ) : null}
-            </AnimatePresence>
-          </button>
+            {target}
+          </Link>
         );
       })}
     </div>

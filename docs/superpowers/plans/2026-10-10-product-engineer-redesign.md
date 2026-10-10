@@ -2441,7 +2441,7 @@ Expected: lint/tsc/build clean.
 
 **Files:**
 - Overwrite: `src/components/site-header.tsx`, `src/components/theme-toggle.tsx`, `src/components/language-switcher.tsx`
-- Create: `src/components/mobile-nav.tsx`
+- Create: `src/components/mobile-nav.tsx`, `src/lib/i18n/cookie.ts`
 - Modify: `src/app/[locale]/page.tsx` (render header)
 - Test: `e2e/header.spec.ts`
 
@@ -2480,7 +2480,13 @@ test("mobile menu opens as a dialog, lists links, traps focus, closes on Escape 
 
   for (let i = 0; i < 8; i++) {
     await page.keyboard.press("Tab");
-    expect(await page.evaluate(() => document.activeElement?.closest("dialog") !== null)).toBe(true);
+    expect(
+      await page.evaluate(() => {
+        const el = document.activeElement;
+        // A native modal dialog makes the page behind it inert: focus may reach the browser UI (body) but never page content.
+        return el === null || el === document.body || el.closest("dialog") !== null;
+      }),
+    ).toBe(true);
   }
 
   await page.keyboard.press("Escape");
@@ -2541,6 +2547,17 @@ export function ThemeToggle({ label }: { label: string }) {
 }
 ```
 
+`src/lib/i18n/cookie.ts` (a helper outside components: React's compiler lint rule forbids assigning `document.cookie` inside a component body):
+
+```ts
+import { LOCALE_COOKIE, type Locale } from "./config";
+
+/** Remembers the visitor's explicit choice for a year; the proxy reads it on the next un-prefixed visit. */
+export function rememberLocale(locale: Locale): void {
+  document.cookie = `${LOCALE_COOKIE}=${locale}; path=/; max-age=31536000; samesite=lax`;
+}
+```
+
 `src/components/language-switcher.tsx` (overwrite):
 
 ```tsx
@@ -2549,7 +2566,8 @@ export function ThemeToggle({ label }: { label: string }) {
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { MouseEvent } from "react";
-import { LOCALE_COOKIE, localeLabels, locales, type Locale } from "@/lib/i18n/config";
+import { localeLabels, locales, type Locale } from "@/lib/i18n/config";
+import { rememberLocale } from "@/lib/i18n/cookie";
 import { localeHref, switchLocalePath } from "@/lib/i18n/paths";
 import { cn } from "@/lib/utils";
 
@@ -2558,7 +2576,7 @@ export function LanguageSwitcher({ locale, label }: { locale: Locale; label: str
   const router = useRouter();
 
   function onClick(event: MouseEvent<HTMLAnchorElement>, target: Locale) {
-    document.cookie = `${LOCALE_COOKIE}=${target}; path=/; max-age=31536000; samesite=lax`;
+    rememberLocale(target);
     const modified = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0;
     if (modified) return;
     // The plain href (no query/hash) is the no-JS fallback; with JS we keep the visitor's context.
@@ -4650,7 +4668,13 @@ test("Tab and Shift+Tab never leave the dialog", async ({ page }) => {
   await page.keyboard.press("Control+K");
   for (const key of ["Tab", "Tab", "Shift+Tab", "Shift+Tab", "Shift+Tab"]) {
     await page.keyboard.press(key);
-    expect(await page.evaluate(() => document.activeElement?.closest("dialog") !== null)).toBe(true);
+    expect(
+      await page.evaluate(() => {
+        const el = document.activeElement;
+        // A native modal dialog makes the page behind it inert: focus may reach the browser UI (body) but never page content.
+        return el === null || el === document.body || el.closest("dialog") !== null;
+      }),
+    ).toBe(true);
   }
 });
 
@@ -4763,7 +4787,7 @@ import { Search } from "lucide-react";
 import { useTheme } from "next-themes";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
-import { LOCALE_COOKIE } from "@/lib/i18n/config";
+import { rememberLocale } from "@/lib/i18n/cookie";
 import { switchLocalePath } from "@/lib/i18n/paths";
 import type { PaletteGroup, PaletteItem } from "@/lib/palette-items";
 import { matchesQuery } from "@/lib/search";
@@ -4854,7 +4878,7 @@ export function CommandPalette({ items, labels }: CommandPaletteProps) {
     } else if (action.kind === "theme") {
       setTheme(resolvedTheme === "dark" ? "light" : "dark");
     } else {
-      document.cookie = `${LOCALE_COOKIE}=${action.target}; path=/; max-age=31536000; samesite=lax`;
+      rememberLocale(action.target);
       router.push(switchLocalePath(pathname, action.target));
     }
   }
