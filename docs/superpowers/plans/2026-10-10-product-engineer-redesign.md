@@ -4219,6 +4219,13 @@ describe("robots", () => {
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { ogText } from "./og";
+
+describe("ogText", () => {
+  it("replaces glyphs Inter lacks so they do not render as emoji", () => {
+    expect(ogText("Hàn/Nhật ↔ Việt")).toBe("Hàn/Nhật – Việt");
+  });
+});
 
 describe("og fonts", () => {
   it.each(["latin-400", "vietnamese-400", "latin-600", "vietnamese-600"])("Inter-%s.woff is bundled", (name) => {
@@ -4334,6 +4341,11 @@ async function loadFonts() {
   );
 }
 
+/** Inter has no ↔ glyph, so it would fall back to a colour emoji; use an en dash in the image. */
+export function ogText(value: string): string {
+  return value.replaceAll("↔", "–");
+}
+
 interface OgProps {
   eyebrow: string;
   title: string;
@@ -4360,13 +4372,13 @@ export async function renderOg({ eyebrow, title, subtitle, footer }: OgProps) {
       >
         <div style={{ display: "flex", alignItems: "center", gap: 14, fontSize: 28, color: "#a1a1aa" }}>
           <div style={{ width: 12, height: 12, borderRadius: 6, background: "#6ee7b7" }} />
-          <div>{eyebrow}</div>
+          <div>{ogText(eyebrow)}</div>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-          <div style={{ fontSize: 76, fontWeight: 600, letterSpacing: -2, lineHeight: 1.05 }}>{title}</div>
-          <div style={{ fontSize: 32, color: "#a1a1aa", lineHeight: 1.4, maxWidth: 940 }}>{subtitle}</div>
+          <div style={{ fontSize: 76, fontWeight: 600, letterSpacing: -2, lineHeight: 1.05 }}>{ogText(title)}</div>
+          <div style={{ fontSize: 32, color: "#a1a1aa", lineHeight: 1.4, maxWidth: 940 }}>{ogText(subtitle)}</div>
         </div>
-        <div style={{ fontSize: 26, color: "#8a8a93" }}>{footer}</div>
+        <div style={{ fontSize: 26, color: "#8a8a93" }}>{ogText(footer)}</div>
       </div>
     ),
     { width: 1200, height: 630, fonts },
