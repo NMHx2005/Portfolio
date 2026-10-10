@@ -1,85 +1,71 @@
-"use client";
+import { ArrowUpRight } from "lucide-react";
+import { CopyEmailButton } from "@/components/copy-email-button";
+import { Section } from "@/components/ui/section";
+import { siteConfig } from "@/config/site";
+import type { Dictionary } from "@/content/types";
 
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { ArrowUpRight, Github, Linkedin, Mail, MessageCircle, Phone, Send, type LucideIcon } from "lucide-react";
-import { SplitText } from "@/components/effects/split-text";
-import { TiltCard } from "@/components/effects/tilt-card";
-import { useLocale } from "@/components/providers/locale-provider";
-import { siteContent, type ContactChannel } from "@/content";
+export function ContactSection({ dict }: { dict: Dictionary }) {
+  const { contact } = siteConfig;
+  const labels = dict.contact.labels;
+  const primaryIsEmail = contact.email !== null;
 
-const iconMap: Record<ContactChannel["type"], LucideIcon> = {
-  email: Mail,
-  zalo: MessageCircle,
-  phone: Phone,
-  github: Github,
-  linkedin: Linkedin,
-  telegram: Send,
-};
+  const rows = [
+    { key: "telegram", label: labels.telegram, value: contact.telegram.handle, href: contact.telegram.url, external: true },
+    { key: "phone", label: labels.phone, value: contact.phone.display, href: contact.phone.href, external: false },
+    { key: "github", label: labels.github, value: contact.github.replace("https://", ""), href: contact.github, external: true },
+    ...(contact.cv ? [{ key: "cv", label: labels.cv, value: "PDF", href: contact.cv, external: true }] : []),
+  ].filter((row) => primaryIsEmail || row.key !== "telegram");
 
-export function ContactSection() {
-  const { locale } = useLocale();
-  const content = siteContent[locale].contact;
+  const bigLink =
+    "break-all text-[clamp(1.25rem,4.5vw,3rem)] font-semibold tracking-[-0.03em] transition-colors hover:text-accent";
 
   return (
-    <section
-      id="contact"
-      className="relative mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-10 lg:py-40"
-    >
-      <header className="mb-14 max-w-3xl">
-        <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-accent">
-          {content.eyebrow}
-        </p>
-        <SplitText as="h2" className="font-display text-4xl italic leading-tight sm:text-5xl md:text-6xl">
-          {content.headline}
-        </SplitText>
-        <p className="mt-4 text-base text-muted-foreground sm:text-lg">{content.description}</p>
-      </header>
-
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {content.channels.map((ch, i) => {
-          const Icon = iconMap[ch.type];
-          const isExternal = ch.href.startsWith("http");
-          return (
-            <motion.div
-              key={ch.type}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, delay: i * 0.06, ease: [0.23, 1, 0.32, 1] }}
-            >
-              <TiltCard
-                max={6}
-                className="group relative h-full overflow-hidden rounded-3xl border border-border/60 bg-background-elevated/60 p-6 backdrop-blur transition-colors hover:border-primary/40"
-              >
-                <Link
-                  href={ch.href}
-                  target={isExternal ? "_blank" : undefined}
-                  rel={isExternal ? "noopener noreferrer" : undefined}
-                  className="absolute inset-0 z-10"
-                  aria-label={`${ch.label}: ${ch.value}`}
-                  data-cursor="hover"
-                />
-                <div className="absolute -top-12 -right-12 h-40 w-40 rounded-full bg-primary/15 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
-                <div className="relative flex items-start justify-between gap-4">
-                  <div>
-                    <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl border border-border/60 bg-background/60">
-                      <Icon className="h-5 w-5 text-primary" aria-hidden />
-                    </div>
-                    <p className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-                      {ch.label}
-                    </p>
-                    <p className="mt-1 text-lg font-semibold tracking-tight sm:text-xl">
-                      {ch.value}
-                    </p>
-                  </div>
-                  <ArrowUpRight className="h-5 w-5 text-muted-foreground transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
-                </div>
-              </TiltCard>
-            </motion.div>
-          );
-        })}
+    <Section id="contact" head={dict.sections.contact}>
+      <div data-reveal>
+        <p className="text-sm text-fg-subtle">{primaryIsEmail ? labels.email : labels.telegram}</p>
+        <div className="mt-3 flex flex-wrap items-center gap-4">
+          {contact.email !== null ? (
+            <>
+              <a href={`mailto:${contact.email}`} className={bigLink}>
+                {contact.email}
+              </a>
+              <CopyEmailButton
+                email={contact.email}
+                label={dict.a11y.copyEmail}
+                copiedLabel={dict.a11y.copied}
+                failedLabel={dict.a11y.copyFailed}
+              />
+            </>
+          ) : (
+            <a href={contact.telegram.url} target="_blank" rel="noopener noreferrer" className={bigLink}>
+              {contact.telegram.handle}
+            </a>
+          )}
+        </div>
+        <p className="mt-3 text-sm text-fg-muted">{dict.contact.response}</p>
       </div>
-    </section>
+
+      <ul className="mt-14 divide-y divide-border border-y border-border">
+        {rows.map((row) => (
+          <li key={row.key}>
+            <a
+              href={row.href}
+              target={row.external ? "_blank" : undefined}
+              rel={row.external ? "noopener noreferrer" : undefined}
+              className="group flex min-h-14 items-center justify-between gap-4 py-3 transition-colors hover:text-accent"
+            >
+              <span className="text-fg-muted group-hover:text-inherit">{row.label}</span>
+              <span className="flex items-center gap-2 font-mono text-sm">
+                {row.value}
+                <ArrowUpRight
+                  className="h-4 w-4 motion-safe:transition-transform motion-safe:duration-200 motion-safe:group-hover:-translate-y-0.5 motion-safe:group-hover:translate-x-0.5"
+                  aria-hidden
+                />
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </Section>
   );
 }

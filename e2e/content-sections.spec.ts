@@ -47,3 +47,39 @@ test("FAQ is a native accordion: opens on click, exclusive, keyboard operable", 
   await page.keyboard.press("Enter");
   await expect(items.nth(2)).toHaveAttribute("open", "");
 });
+
+test.describe("contact", () => {
+  const { email, telegram, phone, github, cv } = siteConfig.contact;
+
+  test("the primary action matches what is configured; other channels listed without duplicates", async ({ page }) => {
+    await page.goto("/en");
+    const contact = page.locator("#contact");
+    if (email) {
+      await expect(contact.getByRole("link", { name: email })).toHaveAttribute("href", `mailto:${email}`);
+    } else {
+      await expect(contact.locator(`a[href^="mailto:"]`)).toHaveCount(0);
+      await expect(contact.getByRole("button", { name: "Copy email" })).toHaveCount(0);
+    }
+    await expect(contact.locator(`a[href="${telegram.url}"]`)).toHaveCount(1);
+    await expect(contact.locator(`a[href="${phone.href}"]`)).toHaveCount(1);
+    await expect(contact.locator(`a[href="${github}"]`)).toHaveCount(1);
+    await expect(contact.getByRole("link", { name: "Download CV" })).toHaveCount(cv ? 1 : 0);
+  });
+
+  test("copy button writes the email to the clipboard and announces the result", async ({ page, context, browserName }) => {
+    test.skip(!email, "no public email configured");
+    test.skip(browserName !== "chromium", "clipboard permissions are chromium-specific");
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    await page.goto("/en");
+    await page.getByRole("button", { name: "Copy email" }).click();
+    expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(email);
+    await expect(page.getByRole("status")).toHaveText("Copied");
+  });
+
+  test("footer is present with a GitHub link and a back-to-top link", async ({ page }) => {
+    await page.goto("/en");
+    const footer = page.getByRole("contentinfo");
+    await expect(footer.getByRole("link", { name: "GitHub" })).toHaveAttribute("href", github);
+    await expect(footer.getByRole("link", { name: "Back to top" })).toHaveAttribute("href", "#main");
+  });
+});
