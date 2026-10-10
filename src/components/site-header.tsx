@@ -21,7 +21,7 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
           <Link
             href={home}
             aria-label={`NMHx — ${siteConfig.name}`}
-            className="inline-flex h-11 items-center font-mono text-sm font-semibold tracking-tight"
+            className="inline-flex h-11 min-w-11 items-center font-mono text-sm font-semibold tracking-tight"
           >
             NMHx<span className="text-accent">.</span>
           </Link>

@@ -17,7 +17,7 @@ export function ContactSection({ dict }: { dict: Dictionary }) {
   ].filter((row) => primaryIsEmail || row.key !== "telegram");
 
   const bigLink =
-    "break-all text-[clamp(1.25rem,4.5vw,3rem)] font-semibold tracking-[-0.03em] transition-colors hover:text-accent";
+    "inline-flex min-h-11 items-center break-all text-[clamp(1.25rem,4.5vw,3rem)] font-semibold tracking-[-0.03em] transition-colors hover:text-accent";
 
   return (
     <Section id="contact" head={dict.sections.contact}>
