@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist_Mono, Inter } from "next/font/google";
 import { notFound } from "next/navigation";
 import { Analytics } from "@vercel/analytics/react";
+import { MotionRoot } from "@/components/motion-root";
 import { RevealObserver } from "@/components/reveal-observer";
 import { getDictionary } from "@/content/dictionary";
 import { isLocale, locales } from "@/lib/i18n/config";
@@ -41,6 +42,7 @@ export default async function LocaleLayout({
 }) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
+  const skip = getDictionary(locale).a11y.skip;
 
   return (
     <html
@@ -53,14 +55,20 @@ export default async function LocaleLayout({
         {/* A <script> element in the tree makes React warn whenever the layout is rendered on the client (the 404
             route does that). The same script as markup inside a div is parsed and run once, before first paint. */}
         <div hidden dangerouslySetInnerHTML={{ __html: `<script>${themeInitScript}</script>` }} />
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-fg focus:px-4 focus:py-2 focus:text-bg"
-        >
-          {getDictionary(locale).a11y.skip}
-        </a>
+        {/* axe only exempts a skip link from the landmark rule while it precedes every other link in the document. The
+            dev server renders the 404 route on the client and the Next dev overlay's own link ends up first, so the
+            skip link sits in a landmark of its own instead of relying on document order. */}
+        <nav aria-label={skip}>
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-fg focus:px-4 focus:py-2 focus:text-bg"
+          >
+            {skip}
+          </a>
+        </nav>
         {children}
         <RevealObserver />
+        <MotionRoot />
         <Analytics />
       </body>
     </html>

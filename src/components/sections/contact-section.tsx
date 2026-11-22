@@ -1,20 +1,24 @@
 import { ArrowUpRight } from "lucide-react";
+import { ContactForm } from "@/components/contact-form";
 import { CopyEmailButton } from "@/components/copy-email-button";
 import { Section } from "@/components/ui/section";
 import { siteConfig } from "@/config/site";
 import type { Dictionary } from "@/content/types";
+import { getContactFormConfig } from "@/lib/contact/config";
+import type { Locale } from "@/lib/i18n/config";
 
-export function ContactSection({ dict }: { dict: Dictionary }) {
+export function ContactSection({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  // Only the two public Turnstile values leave the server; everything else in the config stays here.
+  const config = getContactFormConfig();
   const { contact } = siteConfig;
   const labels = dict.contact.labels;
-  const primaryIsEmail = contact.email !== null;
 
   const rows = [
-    { key: "telegram", label: labels.telegram, value: contact.telegram.handle, href: contact.telegram.url, external: true },
+    ...(contact.zalo ? [{ key: "zalo", label: labels.zalo, value: contact.zalo.display, href: contact.zalo.url, external: true }] : []),
     { key: "phone", label: labels.phone, value: contact.phone.display, href: contact.phone.href, external: false },
     { key: "github", label: labels.github, value: contact.github.replace("https://", ""), href: contact.github, external: true },
     ...(contact.cv ? [{ key: "cv", label: labels.cv, value: "PDF", href: contact.cv, external: true }] : []),
-  ].filter((row) => primaryIsEmail || row.key !== "telegram");
+  ];
 
   const bigLink =
     "inline-flex min-h-11 items-center break-all text-[clamp(1.25rem,4.5vw,3rem)] font-semibold tracking-[-0.03em] transition-colors hover:text-accent";
@@ -22,7 +26,7 @@ export function ContactSection({ dict }: { dict: Dictionary }) {
   return (
     <Section id="contact" head={dict.sections.contact}>
       <div data-reveal>
-        <p className="text-sm text-fg-subtle">{primaryIsEmail ? labels.email : labels.telegram}</p>
+        <p className="text-sm text-fg-subtle">{contact.email !== null ? labels.email : labels.phone}</p>
         <div className="mt-3 flex flex-wrap items-center gap-4">
           {contact.email !== null ? (
             <>
@@ -37,8 +41,8 @@ export function ContactSection({ dict }: { dict: Dictionary }) {
               />
             </>
           ) : (
-            <a href={contact.telegram.url} target="_blank" rel="noopener noreferrer" className={bigLink}>
-              {contact.telegram.handle}
+            <a href={contact.phone.href} className={bigLink}>
+              {contact.phone.display}
             </a>
           )}
         </div>
@@ -66,6 +70,23 @@ export function ContactSection({ dict }: { dict: Dictionary }) {
           </li>
         ))}
       </ul>
+
+      {config !== null ? (
+        <noscript>
+          <p className="mt-8 text-sm text-fg-muted">{dict.contact.form.noScript}</p>
+        </noscript>
+      ) : null}
+
+      <div id="contact-form-slot">
+        {config !== null ? (
+          <ContactForm
+            locale={locale}
+            copy={dict.contact.form}
+            siteKey={config.turnstileSiteKey}
+            scriptUrl={config.turnstileScriptUrl}
+          />
+        ) : null}
+      </div>
     </Section>
   );
 }

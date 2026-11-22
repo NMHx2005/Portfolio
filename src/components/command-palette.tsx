@@ -2,7 +2,7 @@
 
 import { Search } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { headerControl } from "@/components/ui/header-control";
 import { copyText } from "@/lib/clipboard";
 import { rememberLocale } from "@/lib/i18n/cookie";
@@ -57,7 +57,9 @@ export function CommandPalette({ items, labels }: CommandPaletteProps) {
 
   const closePalette = useCallback(() => dialogRef.current?.close(), []);
 
-  useEffect(() => {
+  // A layout effect: a route change runs in a view transition and React holds passive effects back until it ends, which
+  // would leave the shortcut dead for the first frames of every new page.
+  useLayoutEffect(() => {
     function onKeyDown(event: globalThis.KeyboardEvent) {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
@@ -163,7 +165,7 @@ export function CommandPalette({ items, labels }: CommandPaletteProps) {
           />
         </div>
 
-        <div id={listId} role="listbox" aria-label={labels.open} className="max-h-[50vh] overflow-y-auto p-2">
+        <div id={listId} role="listbox" aria-label={labels.open} data-lenis-prevent className="max-h-[50vh] overflow-y-auto p-2">
           {results.length === 0 ? (
             <p className="px-3 py-8 text-center text-sm text-fg-subtle">{labels.empty}</p>
           ) : (

@@ -58,7 +58,7 @@ export function homeMetadata(locale: Locale): Metadata {
 
 export function projectMetadata(locale: Locale, slug: ProjectSlug): Metadata {
   const copy = getDictionary(locale).work.items[slug];
-  const title = `${copy.title} — ${copy.category}`;
+  const title = `${copy.title} — ${copy.platform}`;
   return {
     title,
     description: copy.summary,
@@ -70,10 +70,7 @@ export function projectMetadata(locale: Locale, slug: ProjectSlug): Metadata {
 
 export function personJsonLd(
   locale: Locale,
-  owner: Pick<typeof siteConfig, "portrait"> & { email: string | null } = {
-    portrait: siteConfig.portrait,
-    email: siteConfig.contact.email,
-  },
+  owner: { email: string | null } = { email: siteConfig.contact.email },
 ): Record<string, unknown> {
   const d = getDictionary(locale);
   return {
@@ -85,9 +82,8 @@ export function personJsonLd(
     description: d.meta.description,
     ...(owner.email ? { email: `mailto:${owner.email}` } : {}),
     address: { "@type": "PostalAddress", addressLocality: "Hà Nội", addressCountry: "VN" },
-    sameAs: [siteConfig.contact.github, siteConfig.contact.telegram.url],
-    knowsAbout: ["React", "Next.js", "TypeScript", "React Native", "Node.js", "PostgreSQL"],
-    ...(owner.portrait ? { image: absoluteUrl(owner.portrait.src) } : {}),
+    sameAs: [siteConfig.contact.github],
+    knowsAbout: ["React", "Next.js", "TypeScript", "React Native", "Flutter", "Node.js", "PostgreSQL"],
   };
 }
 
@@ -114,7 +110,7 @@ export function projectJsonLd(locale: Locale, slug: ProjectSlug): Record<string,
         description: copy.summary,
         url,
         inLanguage: locale,
-        image: absoluteUrl(data.image.src),
+        image: absoluteUrl(data.cover.src),
         keywords: data.stack.join(", "),
         author: { "@type": "Person", name: siteConfig.name, url: absoluteUrl(localePath(locale)) },
       },

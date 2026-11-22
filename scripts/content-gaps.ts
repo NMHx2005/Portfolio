@@ -5,9 +5,9 @@ export interface ContentGap {
 
 interface ContentInputs {
   email: string | null;
-  portrait: { src: string } | null;
+  zalo: { url: string } | null;
   cv: string | null;
-  projects: { slug: string; hasRole: boolean; links: { live?: string; repo?: string } }[];
+  projects: { slug: string; status: string; links: { live?: string } }[];
 }
 
 export function findContentGaps(inputs: ContentInputs, fileExists: (publicPath: string) => boolean): ContentGap[] {
@@ -19,10 +19,8 @@ export function findContentGaps(inputs: ContentInputs, fileExists: (publicPath: 
     gaps.push({ id: "email-invalid", message: "siteConfig.contact.email is not a valid email address." });
   }
 
-  if (!inputs.portrait) {
-    gaps.push({ id: "portrait", message: "No portrait: set siteConfig.portrait (About section + JSON-LD image)." });
-  } else if (!fileExists(inputs.portrait.src)) {
-    gaps.push({ id: "portrait-file", message: `Portrait file missing in /public: ${inputs.portrait.src}` });
+  if (!inputs.zalo) {
+    gaps.push({ id: "zalo", message: "No Zalo link: set siteConfig.contact.zalo." });
   }
 
   if (!inputs.cv) {
@@ -32,10 +30,9 @@ export function findContentGaps(inputs: ContentInputs, fileExists: (publicPath: 
   }
 
   for (const project of inputs.projects) {
-    // A product may be closed source and a tool may have no site, so one public link is enough.
-    if (!project.links.live && !project.links.repo)
-      gaps.push({ id: `project-${project.slug}-link`, message: `${project.slug}: no public link (live URL or repository).` });
-    if (!project.hasRole) gaps.push({ id: `project-${project.slug}-role`, message: `${project.slug}: no confirmed role (Appendix A).` });
+    // Only a live product is expected to have a public address; launching and for-sale ones may not.
+    if (project.status === "live" && !project.links.live)
+      gaps.push({ id: `project-${project.slug}-link`, message: `${project.slug}: live project without a public link.` });
   }
   return gaps;
 }

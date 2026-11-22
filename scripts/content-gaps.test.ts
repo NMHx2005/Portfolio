@@ -3,9 +3,9 @@ import { findContentGaps } from "./content-gaps";
 
 const complete = {
   email: "someone@example.com" as string | null,
-  portrait: { src: "/portrait.jpg" } as { src: string } | null,
+  zalo: { url: "https://zalo.me/0900000000" } as { url: string } | null,
   cv: "/cv/cv.pdf" as string | null,
-  projects: [{ slug: "a", hasRole: true, links: { live: "https://a.dev", repo: "https://github.com/x/a" } }],
+  projects: [{ slug: "a", status: "live", links: { live: "https://a.dev" } }],
 };
 
 describe("findContentGaps", () => {
@@ -15,27 +15,19 @@ describe("findContentGaps", () => {
 
   it("reports every missing optional input", () => {
     const gaps = findContentGaps(
-      { email: null, portrait: null, cv: null, projects: [{ slug: "a", hasRole: false, links: {} }] },
+      { email: null, zalo: null, cv: null, projects: [{ slug: "a", status: "live", links: {} }] },
       () => true,
     );
-    expect(gaps.map((g) => g.id)).toEqual([
-      "email",
-      "portrait",
-      "cv",
-      "project-a-link",
-      "project-a-role",
-    ]);
+    expect(gaps.map((g) => g.id)).toEqual(["email", "zalo", "cv", "project-a-link"]);
   });
 
-  it("accepts a project that has only a live URL or only a repository", () => {
-    for (const links of [{ live: "https://a.dev" }, { repo: "https://github.com/x/a" }]) {
-      const gaps = findContentGaps({ ...complete, projects: [{ slug: "a", hasRole: true, links }] }, () => true);
-      expect(gaps).toEqual([]);
-    }
+  it("does not ask for a link on a project that is not live", () => {
+    for (const status of ["launching", "forSale"])
+      expect(findContentGaps({ ...complete, projects: [{ slug: "a", status, links: {} }] }, () => true)).toEqual([]);
   });
 
-  it("reports configured files that do not exist on disk", () => {
-    expect(findContentGaps(complete, () => false).map((g) => g.id)).toEqual(["portrait-file", "cv-file"]);
+  it("reports a configured CV file that does not exist on disk", () => {
+    expect(findContentGaps(complete, () => false).map((g) => g.id)).toEqual(["cv-file"]);
   });
 
   it("rejects a malformed email but treats null as merely 'not provided'", () => {

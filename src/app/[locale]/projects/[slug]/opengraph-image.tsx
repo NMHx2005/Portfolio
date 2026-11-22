@@ -16,9 +16,10 @@ export function generateStaticParams() {
 export default async function Image({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
   if (!isLocale(locale) || !isProjectSlug(slug)) notFound();
-  const copy = getDictionary(locale).work.items[slug];
+  const dict = getDictionary(locale);
+  const copy = dict.work.items[slug];
   return renderOg({
-    eyebrow: copy.category,
+    eyebrow: `${dict.work.statusLabels[projectsData[slug].status]} · ${copy.client}`,
     title: copy.title,
     subtitle: copy.summary,
     footer: `${siteConfig.name} · ${projectsData[slug].stack.slice(0, 4).join(" · ")}`,

@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
 const paths = ["/vi", "/en", "/vi/projects/hadi", "/en/projects/mythiep"];
 
@@ -35,6 +35,77 @@ test("section anchors land below the fixed header", async ({ page, isMobile }) =
   await page.getByRole("navigation", { name: "Main navigation" }).getByRole("link", { name: "Services" }).click();
   await expect(page).toHaveURL(/#services$/);
   await expect.poll(async () => (await page.locator("#services").boundingBox())?.y ?? -1).toBeGreaterThanOrEqual(64);
+});
+
+// The section's top edge once the page has stopped moving: neither Lenis nor a native smooth scroll is still travelling.
+async function settledTop(page: Page, id: string) {
+  const top = () => page.locator(`#${id}`).evaluate((el) => Math.round(el.getBoundingClientRect().top));
+  const frames = () =>
+    page.evaluate(async () => {
+      for (let i = 0; i < 6; i++) await new Promise((resolve) => requestAnimationFrame(resolve));
+    });
+  await expect
+    .poll(async () => {
+      const before = await top();
+      await frames();
+      return before === (await top()) && before >= 0 && before <= 96;
+    })
+    .toBe(true);
+  return top();
+}
+
+test("with inertial scrolling on, anchors still land below the fixed header and the navigation follows", async ({ page, isMobile }) => {
+  test.skip(isMobile, "inline nav and inertial scrolling are desktop only");
+  await page.goto("/en");
+  await expect(page.locator("html")).toHaveAttribute("data-motion", /smooth/);
+  const nav = page.getByRole("navigation", { name: "Main navigation" });
+
+  for (const [name, id] of [["Services", "services"], ["FAQ", "faq"], ["Work", "projects"]] as const) {
+    await nav.getByRole("link", { name }).click();
+    await expect(page).toHaveURL(new RegExp(`#${id}$`));
+    expect(await settledTop(page, id)).toBeGreaterThanOrEqual(64);
+    await expect(nav.getByRole("link", { name })).toHaveAttribute("aria-current", "location");
+  }
+});
+
+test("with inertial scrolling on, the palette's section jumps and the language switcher's hash both still work", async ({ page, isMobile }) => {
+  test.skip(isMobile, "inertial scrolling is desktop only");
+  await page.goto("/en");
+  await expect(page.locator("html")).toHaveAttribute("data-motion", /smooth/);
+  await page.keyboard.press("Control+K");
+  await page.getByRole("dialog").getByRole("combobox").fill("faq");
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/#faq$/);
+  expect(await settledTop(page, "faq")).toBeGreaterThanOrEqual(0);
+  await expect(page.locator("#faq h2")).toBeInViewport();
+
+  await page.getByRole("link", { name: "Tiếng Việt" }).click();
+  await expect(page).toHaveURL(/\/vi#faq$/);
+  await expect(page.locator("html")).toHaveAttribute("data-motion", /smooth/);
+  await settledTop(page, "faq");
+  await expect(page.locator("#faq h2")).toBeInViewport();
+});
+
+test("a deep link that is still scrolling when inertial scrolling starts ends on its section", async ({ page, isMobile }) => {
+  test.skip(isMobile, "inertial scrolling is desktop only");
+  await page.goto("/en#faq");
+  await expect(page.locator("html")).toHaveAttribute("data-motion", /smooth/);
+  // The browser's own scroll to the fragment lands 60 or 80px under the top depending on timing, with or without
+  // Lenis, so only "in view, below the viewport top and at rest" is asserted here.
+  await settledTop(page, "faq");
+  await expect(page.locator("#faq h2")).toBeInViewport();
+});
+
+test("with inertial scrolling on, the skip link still jumps to the main content", async ({ page, isMobile }) => {
+  test.skip(isMobile, "inertial scrolling is desktop only");
+  await page.goto("/en");
+  await expect(page.locator("html")).toHaveAttribute("data-motion", /smooth/);
+  await page.evaluate(() => window.scrollTo({ top: 1500, behavior: "instant" }));
+  await page.getByRole("link", { name: "Skip to main content" }).focus();
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/#main$/);
+  expect(await settledTop(page, "main")).toBeGreaterThanOrEqual(0);
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
 });
 
 test("old shared links still work: /#projects (through the locale redirect) and /en#stack", async ({ page }) => {

@@ -10,7 +10,7 @@ import { join } from "node:path";
 const LIGHTHOUSE = "lighthouse@13.5.0";
 const RUNS = 5;
 const base = process.argv[2] ?? "http://localhost:3101";
-const paths = ["/vi", "/en", "/vi/projects/hadi", "/en/projects/mythiep"];
+const paths = ["/vi", "/en", "/vi/projects/hadi", "/en/projects/rankdle"];
 
 const median = (xs) => [...xs].sort((a, b) => a - b)[Math.floor(xs.length / 2)];
 const work = mkdtempSync(join(tmpdir(), "lh-"));
@@ -45,6 +45,8 @@ for (const path of paths) {
       lcpMs: Math.round(lhr.audits["largest-contentful-paint"].numericValue),
       cls: Number(lhr.audits["cumulative-layout-shift"].numericValue.toFixed(3)),
       tbtMs: Math.round(lhr.audits["total-blocking-time"].numericValue),
+      totalKb: Math.round(lhr.audits["total-byte-weight"].numericValue / 1024),
+      lcpElement: lhr.audits["lcp-breakdown-insight"]?.details?.items?.find((i) => i.type === "node")?.snippet?.slice(0, 90),
       lighthouseVersion: lhr.lighthouseVersion,
       chrome: lhr.environment.hostUserAgent,
     });

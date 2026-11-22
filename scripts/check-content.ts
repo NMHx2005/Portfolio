@@ -1,20 +1,17 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { siteConfig } from "../src/config/site";
-import { getDictionary } from "../src/content/dictionary";
 import { projectSlugs, projectsData } from "../src/content/projects";
 import { findContentGaps } from "./content-gaps";
-
-const dict = getDictionary("vi");
 
 const gaps = findContentGaps(
   {
     email: siteConfig.contact.email,
-    portrait: siteConfig.portrait,
+    zalo: siteConfig.contact.zalo,
     cv: siteConfig.contact.cv,
     projects: projectSlugs.map((slug) => ({
       slug,
-      hasRole: Boolean(dict.work.items[slug].role),
+      status: projectsData[slug].status,
       links: projectsData[slug].links,
     })),
   },

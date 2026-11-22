@@ -15,6 +15,10 @@ export function ProcessSection({ dict }: { dict: Dictionary }) {
           </li>
         ))}
       </ol>
+      <div data-reveal className="mt-14 grid gap-4 border-t border-border pt-6 text-fg-muted md:grid-cols-2 md:gap-12">
+        <p>{dict.process.ownership}</p>
+        <p>{dict.process.payment}</p>
+      </div>
     </Section>
   );
 }

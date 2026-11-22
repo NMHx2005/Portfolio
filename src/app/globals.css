@@ -99,6 +99,16 @@
     interpolate-size: allow-keywords;
   }
 
+  /* Lenis animates the scroll itself; the browser must not smooth the same movement a second time. */
+  html.lenis {
+    scroll-behavior: auto;
+  }
+
+  /* A dialog's own scroll area must not hand leftover wheel movement to the page behind it. */
+  .lenis [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
   @keyframes rise {
     from {
       opacity: 0;
@@ -149,6 +159,79 @@
     transform: translateY(36px);
   }
 
+  /* The strip is a native scroll row until a script takes it over and marks it ready. */
+  [data-motion-strip-viewport][data-strip-ready] {
+    display: flex;
+    gap: 1rem;
+    overflow: hidden;
+    scroll-snap-type: none;
+  }
+
+  [data-motion-strip-viewport][data-strip-ready] > ul {
+    flex: none;
+  }
+
+  /* The projects are a stacked list until a script takes them over and marks the wrapper ready. From then on they share
+   * one cell (the stage is as tall as the tallest) and the script alone decides which one is on show: it sets the
+   * opacity of the items, and nothing here may hide them or let the reveal rules do it. */
+  [data-motion-pin][data-pin-ready] {
+    display: grid;
+    position: relative;
+  }
+
+  /* The browser would move the page by the spacer's height each time ScrollTrigger takes the pin out and puts it back
+   * while it measures; the pin module keeps the visitor's place itself. */
+  html:has([data-motion-pin][data-pin-ready]) {
+    overflow-anchor: none;
+  }
+
+  [data-motion-pin][data-pin-ready] > [data-pin-item] {
+    grid-area: 1 / 1;
+    margin: 0;
+    pointer-events: none;
+  }
+
+  [data-motion-pin][data-pin-ready] > [data-pin-item][data-pin-active] {
+    pointer-events: auto;
+  }
+
+  /* The live link opts in to pointer events on its own; a project that is not on show must not keep that. */
+  [data-motion-pin][data-pin-ready] > [data-pin-item]:not([data-pin-active]) a {
+    pointer-events: none;
+  }
+
+  /* The script animates opacity, transform and clip-path of these; a transition on the same properties would fight it. */
+  [data-motion-pin][data-pin-ready] > [data-pin-item],
+  [data-motion-pin][data-pin-ready] > [data-pin-item] .reveal-item {
+    transition: none;
+  }
+
+  /* The cover keeps its hover feedback (the border colour fade); only its clip-path is the script's. */
+  [data-motion-pin][data-pin-ready] > [data-pin-item] .reveal-media {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-duration: 0.2s;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: 0s;
+  }
+
+  html[data-reveal-ready] [data-motion-pin][data-pin-ready] > [data-pin-item]:not(.is-visible) .reveal-item {
+    opacity: 1;
+    transform: none;
+  }
+
+  html[data-reveal-ready] [data-motion-pin][data-pin-ready] > [data-pin-item]:not(.is-visible) .reveal-media {
+    clip-path: inset(0 0 0 0);
+  }
+
+  /* Above the stage, in the band the pin reserves between the header and the stage. */
+  [data-motion-pin][data-pin-ready] > [data-pin-indicator] {
+    display: block;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    margin: 0 0 0.75rem;
+  }
+
   html[data-reveal-ready] [data-reveal]:not(.is-visible) .reveal-item {
     opacity: 0;
     transform: translateY(28px);
@@ -156,7 +239,9 @@
 
   /* Images are uncovered from the bottom while they settle from slightly zoomed in. */
   .reveal-media {
-    transition: clip-path 1.2s var(--ease-out);
+    transition:
+      clip-path 1.2s var(--ease-out),
+      border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     clip-path: inset(0 0 0 0);
   }
 
@@ -192,9 +277,40 @@
     }
   }
 
-  /* Theme change cross-fades the whole page (View Transitions) instead of snapping. */
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
+  /* A route change runs in a view transition too, and only the cover is meant to move: the rest of the page cuts
+   * straight over. The new page's effects (keyboard shortcuts among them) wait for the transition to end, so it must
+   * not be kept open by a cross-fade nobody asked for. */
+  html:not(.theme-swap)::view-transition-group(root),
+  html:not(.theme-swap)::view-transition-image-pair(root),
+  html:not(.theme-swap)::view-transition-old(root),
+  html:not(.theme-swap)::view-transition-new(root) {
+    animation: none;
+  }
+
+  ::view-transition-group(.cover-morph) {
+    animation-duration: 0.5s;
+    animation-timing-function: var(--ease-out);
+  }
+
+  /* A cover whose partner is out of view (the other page's cover is below the fold) has nothing to morph from or into:
+   * it must not fade across the new page. */
+  ::view-transition-old(.cover-morph):only-child {
+    display: none;
+    animation: none;
+  }
+
+  ::view-transition-new(.cover-morph):only-child {
+    animation: none;
+  }
+
+  /* The overlay would swallow clicks for the length of the morph. */
+  ::view-transition {
+    pointer-events: none;
+  }
+
+  /* Theme change cross-fades the whole page instead of snapping; `theme-swap` is on <html> for that transition only. */
+  html.theme-swap::view-transition-old(root),
+  html.theme-swap::view-transition-new(root) {
     animation-duration: 0.5s;
     animation-timing-function: var(--ease-out);
   }
@@ -209,6 +325,14 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* `*` does not reach the transition's pseudo-elements, so a route change must be told to skip its animations. */
+  ::view-transition-group(*),
+  ::view-transition-image-pair(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }
 

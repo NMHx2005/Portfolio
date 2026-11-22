@@ -4,8 +4,8 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 const variants = {
-  primary: "bg-fg text-bg hover:bg-fg/85",
-  secondary: "border border-border-strong text-fg hover:border-fg",
+  primary: "bg-fg text-bg hover:bg-fg/85 active:bg-fg/70",
+  secondary: "border border-border-strong text-fg hover:border-fg active:bg-fg/10",
 } as const;
 
 interface LinkButtonProps {
@@ -22,6 +22,7 @@ export function LinkButton({ href, variant = "primary", external = false, childr
       href={href}
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
+      data-magnetic={variant === "primary" ? "" : undefined}
       className={cn(
         "group inline-flex h-11 items-center justify-center gap-2 px-5 text-sm font-medium transition-colors duration-200",
         variants[variant],

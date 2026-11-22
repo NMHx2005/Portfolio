@@ -4,13 +4,22 @@ import { locales } from "@/lib/i18n/config";
 import { buildPaletteItems } from "./palette-items";
 
 describe("buildPaletteItems", () => {
-  it.each(locales)("with an email: 6 sections, 3 projects, 4 actions for %s, unique ids", (locale) => {
+  it.each(locales)("with an email: 6 sections, 5 projects, 4 actions for %s, unique ids", (locale) => {
     const items = buildPaletteItems(locale, getDictionary(locale), "someone@example.com");
     expect(items.filter((i) => i.group === "sections")).toHaveLength(6);
-    expect(items.filter((i) => i.group === "projects")).toHaveLength(3);
+    expect(items.filter((i) => i.group === "projects")).toHaveLength(5);
     expect(items.filter((i) => i.group === "actions")).toHaveLength(4);
     expect(new Set(items.map((i) => i.id)).size).toBe(items.length);
     for (const item of items) expect(item.label.trim()).not.toBe("");
+  });
+
+  it("project ids are the five case-study slugs", () => {
+    const ids = buildPaletteItems("en", getDictionary("en")).filter((i) => i.group === "projects").map((i) => i.id);
+    expect(ids).toEqual(["project-tingtingvac", "project-rankdle", "project-mythiep", "project-hadi", "project-tinvid"]);
+  });
+
+  it("the configured email gives a copy-email action by default", () => {
+    expect(buildPaletteItems("vi", getDictionary("vi")).some((i) => i.id === "copy-email")).toBe(true);
   });
 
   it("without a public email there is no copy-email action at all", () => {

@@ -23,11 +23,11 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <JsonLd data={websiteJsonLd(locale)} />
       <HeroSection locale={locale} dict={dict} />
       <WorkSection locale={locale} dict={dict} />
-      <ServicesSection dict={dict} />
-      <AboutSection dict={dict} />
+      <ServicesSection locale={locale} dict={dict} />
       <ProcessSection dict={dict} />
+      <AboutSection dict={dict} />
       <FaqSection dict={dict} />
-      <ContactSection dict={dict} />
+      <ContactSection locale={locale} dict={dict} />
     </PageShell>
   );
 }

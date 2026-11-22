@@ -1,7 +1,12 @@
 export type SectionId = "projects" | "services" | "about" | "process" | "faq" | "contact";
-export type ProjectSlug = "mythiep" | "hadi" | "crossweave";
-export type ProjectKind = "web" | "mobile" | "tool";
-export type MetricKey = "templates" | "migrations" | "commits" | "languages" | "version" | "license" | "testFiles";
+import type { HeroFigures } from "./stats";
+
+export type ProjectSlug = "tingtingvac" | "rankdle" | "mythiep" | "hadi" | "tinvid";
+export type BuildingSlug = "classnote" | "hanyu";
+export type ProjectStatus = "live" | "launching" | "forSale" | "building" | "testBuild";
+export type ServiceKind = "web" | "webapp" | "mobile" | "ai";
+export type ContactKind = ServiceKind | "other";
+export type ContactField = "name" | "company" | "reply" | "kind" | "message" | "timeline";
 
 export interface SectionHead {
   index: string;
@@ -19,16 +24,28 @@ export interface TechnicalChoice {
 
 export interface ProjectCopy {
   title: string;
-  category: string;
+  client: string;
+  platform: string;
   summary: string;
-  role?: string;
-  status: string;
-  problem: string;
-  choices: TechnicalChoice[];
-  flow: string[];
-  services: { label: string; detail: string }[];
-  shipped: string[];
-  imageAlt: string;
+  problem?: string;
+  delivered: string[];
+  choices?: TechnicalChoice[];
+  coverAlt: string;
+  galleryAlt: string[];
+}
+
+export interface ContactFormCopy {
+  title: string;
+  fields: Record<ContactField, string>;
+  kindPrompt: string;
+  kinds: Record<ContactKind, string>;
+  placeholders: { message: string; timeline: string };
+  submit: string;
+  sending: string;
+  success: string;
+  failure: string;
+  invalid: Record<ContactField, string>;
+  noScript: string;
 }
 
 export interface Dictionary {
@@ -52,51 +69,62 @@ export interface Dictionary {
     intro: string;
     primaryCta: string;
     secondaryCta: string;
+    stripLabel: string;
+    stripGroupLabel: string;
+    stripPause: string;
     statsLabel: string;
-    stats: { value: string; label: string }[];
+    figures: Record<keyof HeroFigures, string>;
   };
   sections: Record<SectionId, SectionHead>;
   work: {
     viewCaseStudy: string;
     live: string;
-    repository: string;
-    metricLabels: Record<MetricKey, string>;
+    askSource: string;
+    statusLabels: Record<ProjectStatus, string>;
     items: Record<ProjectSlug, ProjectCopy>;
+    building: {
+      heading: string;
+      lede: string;
+      items: Record<BuildingSlug, { title: string; summary: string }>;
+    };
   };
   caseStudy: {
     back: string;
-    role: string;
+    client: string;
+    period: string;
     platform: string;
     status: string;
-    stack: string;
-    links: string;
     problem: string;
-    choices: string;
+    delivered: string;
+    gallery: string;
+    links: string;
+    technical: string;
     why: string;
     tradeoff: string;
-    architecture: string;
-    flow: string;
-    services: string;
-    shipped: string;
-    facts: string;
+    stack: string;
     next: string;
     previous: string;
-    platforms: Record<ProjectKind, string>;
   };
-  services: { items: { title: string; description: string; tags: string[] }[] };
+  services: {
+    provenBy: string;
+    request: string;
+    items: Record<ServiceKind, { title: string; description: string; duration?: string }>;
+  };
   about: {
     paragraphs: string[];
-    habitsLabel: string;
-    habits: { title: string; detail: string }[];
     skillsTitle: string;
     skillGroups: { name: string; items: string[] }[];
-    portraitAlt: string;
   };
-  process: { steps: { title: string; duration: string; description: string }[] };
+  process: {
+    steps: { title: string; duration: string; description: string }[];
+    ownership: string;
+    payment: string;
+  };
   faq: { items: { q: string; a: string }[] };
   contact: {
-    labels: Record<"email" | "telegram" | "phone" | "github" | "cv", string>;
+    labels: Record<"zalo" | "phone" | "email" | "github" | "cv", string>;
     response: string;
+    form: ContactFormCopy;
   };
   palette: {
     open: string;

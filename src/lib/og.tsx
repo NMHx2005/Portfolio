@@ -50,7 +50,7 @@ export async function renderOg({ eyebrow, title, subtitle, footer }: OgProps) {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 14, fontSize: 28, color: "#a1a1aa" }}>
-          <div style={{ width: 12, height: 12, borderRadius: 6, background: "#6ee7b7" }} />
+          <div style={{ width: 12, height: 12, background: "#6ee7b7" }} />
           <div>{ogText(eyebrow)}</div>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>

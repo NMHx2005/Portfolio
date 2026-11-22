@@ -19,7 +19,7 @@ export interface PaletteItem {
   action: PaletteAction;
 }
 
-const sectionOrder: SectionId[] = ["projects", "services", "about", "process", "faq", "contact"];
+const sectionOrder: SectionId[] = ["projects", "services", "process", "about", "faq", "contact"];
 
 export function buildPaletteItems(
   locale: Locale,

@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 // The project promises 44x44 CSS px targets on coarse pointers. The phone layout hides the inline nav and the
 // palette button, so tablet widths and the 404 page must be covered separately.
-const controls = "header button:visible, header a:visible, footer a:visible, summary:visible, #contact a:visible, #contact button:visible";
+const controls = "header button:visible, header a:visible, footer a:visible, summary:visible, #hero a:visible, #projects a[target=_blank]:visible, #services a:visible, #contact a:visible, #contact button:visible";
 
 for (const width of [390, 768, 1024]) {
   test.describe(`coarse pointer, ${width}px`, () => {

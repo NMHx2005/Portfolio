@@ -25,6 +25,16 @@ test.describe("locale redirect", () => {
   });
 });
 
+test.describe("removed projects", () => {
+  test("crossweave redirects to the locale home with a permanent redirect", async ({ request }) => {
+    for (const locale of ["vi", "en"]) {
+      const res = await request.get(`/${locale}/projects/crossweave`, { maxRedirects: 0 });
+      expect(res.status()).toBe(308);
+      expect(new URL(res.headers()["location"] ?? "", "http://localhost").pathname).toBe(`/${locale}`);
+    }
+  });
+});
+
 test.describe("locale redirect: caching and matcher", () => {
   test("the redirect varies on the negotiation headers and is not shareable", async ({ request }) => {
     const res = await request.get("/", { maxRedirects: 0 });

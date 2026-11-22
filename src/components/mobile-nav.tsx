@@ -51,6 +51,7 @@ export function MobileNav({ items, home, labels }: MobileNavProps) {
       <dialog
         ref={dialogRef}
         id="mobile-nav"
+        data-lenis-prevent
         aria-label={labels.nav}
         onClose={() => setOpen(false)}
         className="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none bg-bg p-0 text-fg backdrop:bg-transparent"

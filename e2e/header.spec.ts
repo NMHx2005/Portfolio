@@ -4,7 +4,7 @@ test("desktop shows inline navigation, no menu button", async ({ page, isMobile 
   test.skip(isMobile, "desktop only");
   await page.goto("/en");
   const nav = page.getByRole("navigation", { name: "Main navigation" });
-  await expect(nav.getByRole("link")).toHaveText(["Work", "Services", "About", "Process", "FAQ", "Contact"]);
+  await expect(nav.getByRole("link")).toHaveText(["Work", "Services", "Process", "About", "FAQ", "Contact"]);
   await expect(page.getByRole("button", { name: "Open menu" })).toBeHidden();
 });
 
@@ -133,6 +133,7 @@ test("the navigation highlights the section being read while scrolling", async (
   await expect(current).toHaveCount(0); // the hero is not in the navigation
   for (const [id, label] of [
     ["services", "Services"],
+    ["process", "Process"],
     ["about", "About"],
     ["faq", "FAQ"],
     ["contact", "Contact"],

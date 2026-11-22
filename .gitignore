@@ -43,3 +43,7 @@ next-env.d.ts
 # test output
 /test-results/
 /playwright-report/
+
+# design scratch (mockups, direction sheets)
+/.superpowers/
+/.taste-skill/

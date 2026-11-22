@@ -2,7 +2,9 @@ import { expect, test } from "@playwright/test";
 
 test("sitemap lists both locales and every case study with hreflang alternates", async ({ request }) => {
   const body = await (await request.get("/sitemap.xml")).text();
-  for (const path of ["/vi", "/en", "/vi/projects/hadi", "/en/projects/mythiep", "/en/projects/crossweave"]) expect(body).toContain(path);
+  expect(body.match(/<loc>/g)).toHaveLength(12);
+  for (const path of ["/vi", "/en", "/vi/projects/hadi", "/en/projects/mythiep", "/en/projects/tinvid"]) expect(body).toContain(path);
+  expect(body).not.toContain("crossweave");
   expect(body).toContain('hreflang="en"');
   expect(body).toContain('hreflang="vi"');
 });
@@ -13,7 +15,7 @@ test("robots.txt references the sitemap", async ({ request }) => {
 });
 
 test("open graph images render as PNG for home and a case study", async ({ request }) => {
-  for (const path of ["/vi/opengraph-image", "/en/projects/hadi/opengraph-image"]) {
+  for (const path of ["/vi/opengraph-image", "/en/projects/rankdle/opengraph-image"]) {
     const res = await request.get(path);
     expect(res.status(), path).toBe(200);
     expect(res.headers()["content-type"]).toContain("image/png");
